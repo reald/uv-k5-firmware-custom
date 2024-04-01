@@ -163,6 +163,11 @@ int32_t TX_freq_check(const uint32_t Frequency)
 {	// return '0' if TX frequency is allowed
 	// otherwise return '-1'
 
+#ifdef ENABLE_PREVENT_TX
+        // TX completely disabled
+        return -1;
+#endif
+
 	if (Frequency < frequencyBandTable[0].lower || Frequency > frequencyBandTable[BAND_N_ELEM - 1].upper)
 		return 1;  // not allowed outside this range
 
