@@ -53,7 +53,7 @@ const t_menu_item MenuList[] =
 #ifdef ENABLE_ARDF
 	{"ARDF",   VOICE_ID_INVALID,                       MENU_ARDF          },
 	{"NumFox", VOICE_ID_INVALID,                       MENU_ARDF_NUMFOXES },
-	{"FoxPer", VOICE_ID_INVALID,                       MENU_ARDF_FOXPERIOD},
+	{"FoxDur", VOICE_ID_INVALID,                       MENU_ARDF_FOXDURATION},
 	{"ActFox", VOICE_ID_INVALID,                       MENU_ARDF_SETFOX   },
 #endif
 
@@ -373,7 +373,11 @@ const t_sidefunction gSubMenu_SIDEFUNCTIONS[] =
 	{"BLMIN\nTMP OFF",  ACTION_OPT_BLMIN_TMP_OFF}, 		//BackLight Minimum Temporay OFF
 #endif
 #ifdef ENABLE_SPECTRUM
-	{"SPECTRUM",         ACTION_OPT_SPECTRUM}
+	{"SPECTRUM",         ACTION_OPT_SPECTRUM},
+#endif
+#ifdef ENABLE_ARDF
+	{"ARDF\noff/on",	ACTION_OPT_ARDF_ON_OFF},
+	{"ARDF\nSet\nDef.Gain",	ACTION_OPT_ARDF_GAIN_DEFAULT},
 #endif
 };
 
@@ -585,7 +589,7 @@ void UI_DisplayMenu(void)
 			sprintf(String, "%d", gSubMenuSelection);
 			break;
 
-		case MENU_ARDF_FOXPERIOD:
+		case MENU_ARDF_FOXDURATION:
 			if (!gIsInSubMenu || gInputBoxIndex == 0)
 			{
 				sprintf(String, "%03d.%02u", gSubMenuSelection / 100, gSubMenuSelection % 100);

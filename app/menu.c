@@ -214,7 +214,7 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
                 
                 case MENU_ARDF_NUMFOXES:
 			*pMin = 1;
-			*pMax = 9;
+			*pMax = ARDF_NUM_FOX_MAX;
                 	break;
 
                 case MENU_ARDF_SETFOX:
@@ -498,8 +498,8 @@ void MENU_AcceptSetting(void)
 			gARDFNumFoxes = gSubMenuSelection;
 			break;
 			
-		case MENU_ARDF_FOXPERIOD:
-			gARDFPeriode10ms = gSubMenuSelection;
+		case MENU_ARDF_FOXDURATION:
+			gARDFFoxDuration10ms = gSubMenuSelection;
 			break;
 		
 		case MENU_ARDF_SETFOX:
@@ -953,8 +953,8 @@ void MENU_ShowCurrentSetting(void)
 			gSubMenuSelection = gARDFNumFoxes;
 			break;
 			
-		case MENU_ARDF_FOXPERIOD:
-			gSubMenuSelection = gARDFPeriode10ms;
+		case MENU_ARDF_FOXDURATION:
+			gSubMenuSelection = gARDFFoxDuration10ms;
 			break;	
 
 		case MENU_ARDF_SETFOX:
@@ -1324,18 +1324,18 @@ static void MENU_Key_0_to_9(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 
 #ifdef ENABLE_ARDF
 
-	if (UI_MENU_GetCurrentMenuId() == MENU_ARDF_FOXPERIOD)
+	if (UI_MENU_GetCurrentMenuId() == MENU_ARDF_FOXDURATION)
 	{
-		uint32_t Period10ms;
+		uint32_t Duration10ms;
 
 		if (gInputBoxIndex < 5) 
 		{ 
-			// invalid period
+			// invalid duration
 			return;
 		}
 
-		Period10ms = StrToUL( INPUTBOX_GetAscii() );
-		gSubMenuSelection = Period10ms;
+		Duration10ms = StrToUL( INPUTBOX_GetAscii() );
+		gSubMenuSelection = Duration10ms;
 
 		gInputBoxIndex = 0;
 		return;
@@ -1728,20 +1728,20 @@ static void MENU_Key_UP_DOWN(bool bKeyPressed, bool bKeyHeld, int8_t Direction)
 
 #ifdef ENABLE_ARDF
 
-	if (UI_MENU_GetCurrentMenuId() == MENU_ARDF_FOXPERIOD) 
+	if (UI_MENU_GetCurrentMenuId() == MENU_ARDF_FOXDURATION) 
 	{
-		int32_t Offset = (Direction * 10) + gSubMenuSelection;
-		if (Offset < 99999) 
+		int32_t duration = (Direction * 10) + gSubMenuSelection;
+		if (duration < 99999) 
 		{
-			if (Offset < 0)
-				Offset = 99999;
+			if (duration < 0)
+				duration = 99999;
 		}
 		else
 		{
-			Offset = 0;
+			duration = 0;
 		}
 
-		gSubMenuSelection     = Offset;
+		gSubMenuSelection     = duration;
 		gRequestDisplayScreen = DISPLAY_MENU;
 		return;
 	}

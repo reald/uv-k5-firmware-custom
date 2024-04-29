@@ -110,6 +110,14 @@ void (*action_opt_table[])(void) = {
 #else
 	[ACTION_OPT_SPECTRUM] = &FUNCTION_NOP,
 #endif
+
+#ifdef ENABLE_ARDF
+	[ACTION_OPT_ARDF_ON_OFF] = &ACTION_ARDFOnOff,
+	[ACTION_OPT_ARDF_GAIN_DEFAULT] = &ACTION_ARDFGainDefault,
+#else
+        [ACTION_OPT_ARDF_ON_OFF] = &FUNCTION_NOP,
+        [ACTION_OPT_ARDF_GAIN_DEFAULT] = &FUNCTION_NOP,
+#endif
 };
 
 static_assert(ARRAY_SIZE(action_opt_table) == ACTION_OPT_LEN);
@@ -450,4 +458,30 @@ void ACTION_BlminTmpOff(void)
 		BACKLIGHT_SetBrightness(0);
 	}
 }
+#endif
+
+#ifdef ENABLE_ARDF
+void ACTION_ARDFOnOff(void)
+{
+	if ( gSetting_ARDFEnable )
+	{
+		gSetting_ARDFEnable = false;
+	}
+	else
+	{
+		gSetting_ARDFEnable = true;
+	}
+	RADIO_SetupAGC(gRxVfo->Modulation == MODULATION_AM, false); // if gSetting_ARDFEnable is set, AGC will be switched off
+
+}
+
+void ACTION_ARDFGainDefault(void)
+{
+	if ( gSetting_ARDFEnable )
+	{
+		ardf_gain_index = ARDF_GAIN_INDEX_DEFAULT;
+		BK4819_WriteRegister(BK4819_REG_13, ardf_gain_table[ardf_gain_index].reg_val);
+	}
+}
+
 #endif

@@ -90,11 +90,14 @@ uint8_t           gSetting_F_LOCK;
 bool              gSetting_ScrambleEnable;
 
 #ifdef ENABLE_ARDF
+
 bool              gSetting_ARDFEnable = true;
 uint32_t          gARDFTime10ms = 0;
-uint32_t          gARDFPeriode10ms = 6000;  /* 60s * 100 ticks per second */
+uint32_t          gARDFFoxDuration10ms = 6000;  /* 60s * 100 ticks per second */
 uint8_t           gARDFNumFoxes = 5;
 uint8_t           gARDFActiveFox = 1;
+
+uint8_t ardf_gain_index = ARDF_GAIN_INDEX_DEFAULT; //ARDF_NUM_FOX_MAX
 
 
 t_ardf_gain_table ardf_gain_table[] =
@@ -123,7 +126,6 @@ t_ardf_gain_table ardf_gain_table[] =
 	{0x03FF, 0  },         //  21 .. 3 7 3 7 ..   0dB   0dB  0dB   0dB ..   0dB
 };
 
-unsigned int ardf_gain_index = 17;
 
 void ardf_GainIncr(void)
 {

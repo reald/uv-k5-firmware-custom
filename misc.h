@@ -152,9 +152,12 @@ extern bool                  gSetting_ScrambleEnable;
 
 #ifdef ENABLE_ARDF
 
+#define ARDF_NUM_FOX_MAX 9
+#define ARDF_GAIN_INDEX_DEFAULT 17
+
 extern bool                  gSetting_ARDFEnable;
 extern uint32_t              gARDFTime10ms;
-extern uint32_t              gARDFPeriode10ms;
+extern uint32_t              gARDFFoxDuration10ms;
 extern uint8_t               gARDFNumFoxes;
 extern uint8_t               gARDFActiveFox;
 
@@ -166,7 +169,7 @@ typedef struct
 
 extern t_ardf_gain_table ardf_gain_table[];
 
-extern unsigned int ardf_gain_index;
+extern uint8_t ardf_gain_index;
 
 extern void ardf_GainIncr(void);
 extern void ardf_GainDecr(void);

@@ -22,6 +22,7 @@ Anyway, have fun.
 
 * [Main Features](#main-features)
 * [Manual](#manual)
+* [Manual for ARDF](#manual-for-ardf)
 * [Radio Performance](#radio-performance)
 * [User Customization](#user-customization)
 * [Compiler](#compiler)
@@ -70,32 +71,41 @@ Anyway, have fun.
 
 Up to date manual is available in the [Wiki section](https://github.com/egzumer/uv-k5-firmware-custom/wiki)
 
-## ARDF Manual
+## Manual for ARDF
 
 Compile with ENABLE_ARDF and preferable with ENABLE_PREVENT_TX. To get enough free flash space disable some unneeded
 TX features (e.g. ENABLE_DTMF_CALLING=0). 
 
-In this firmware ARDF mode is on by default after powering on the device. This enables manual gain control (control with up/down from 0..21, default is 17).
-Gain steps should be roughly 5dB but they are completely uncalibrated. Expect surprises everywhere.
+In this firmware ARDF mode is on by default after powering on the device. This enables manual gain control (control with up/down from 0 .. 21, default is 17).
+Gain steps should be roughly 5dB but they are completely uncalibrated. Expect surprises everywhere. ARDF Mode can be disabled/enabled in the menu (ARDF = OFF/ON).
 
-The frequency can be entered by using the number buttons. Choose the used modulation of the foxes in menu "Demod" (e.g. AM).
+Disable squelch first (Menu: Sql = 0), disable dual watch (Menu: RxMode = MAIN ONLY).
 
-Use a narrow bandwidth mode in menu "BW W/N": "U 1K7" is 1.7 kHz, (smallest possible value; shown as "U-") or "NARROWER" which is 2.5 kHz (shown as "N-" in the status bar).
+The frequencies can be entered by using the number buttons. 
 
-Select number of foxes in menu "NumFox". The default is 5.
+Choose the used modulation of the foxes in menu "Demod" (e.g. AM).
 
-Choose time period of a fox transmission in menu "FoxPer". Default is 60s. Modify with up/down in 0.1s steps or enter value as *5 digit 
-number* in 1/100s resolution. Confirm with menu button.
+Use a narrow bandwidth mode in menu "BW W/N": "U 1K7" is 1.7 kHz, (this is the smallest possible value; shown as "U-") or "NARROWER" which is 2.5 kHz (shown as "N-" in the status bar).
 
-By default the device starts with active fox number 1 and a full time period left. In menu "ActFox" the active fox can be changed. Every modification
-will reset the timer, too. Use this for synchronization.
+Select number of foxes in menu "NumFox" (default = 5, min = 1, max = 9).
 
-Unscrew antenna and add a directional antenna. Start hunting foxes and have fun.
+Choose duration time of one fox transmission in menu "FoxDur". Default is 60s. Modify with up/down in 0.1s steps or enter value as *5 digit 
+number* in 1/100s resolution. Confirm with menu button. Maximum duration is 999.99s.
 
+On system boot the device starts with active fox number 1 and full duration time left. In menu "ActFox" the active fox can be changed. Every modification
+here will reset the duration timer. Use this for synchronization.
+
+Unscrew antenna and add a directional antenna with good front/back ratio. Start hunting foxes and have fun.
+
+Two different ARDF actions can be mapped to function keys: 
+* Set manual gain back to default index (e.g. for short press on F2 key) 
+* Enable/Disable ARDF function (e.g. for long press on F1 key).
+ 
 Notes: 
-* Contrary to frequency, modulation and bandwith the ARDF settings (enabled, NumFox, FoxPer) are not stored in the eeprom yet and have to be set every time.
+* Contrary to frequency, modulation and bandwidth the ARDF settings (enabled, NumFox, FoxDur) are *not stored* in the eeprom yet and have to be set every time.
+* Because four bandwidth modes are available (WIDE, NARROW, NARROWER, U 1K7) they cannot programmed with chirp at the moment. Chirps default UV K5 profile only supports 1 bit for bandwidth settings.
 * The lowest possible frequency of the receiver chip is 18 Mhz. So this is NOT usable on 80 m.
-* If ARDF mode is active any TX is disabled. However it is recommended to compile with ENABLE_PREVENT_TX=1 to permanently disable TX.
+* If ARDF mode is active any TX functionality is disabled. However it is recommended to compile with ENABLE_PREVENT_TX=1 to permanently disable TX. ARDF receivers with a builtin TX functionality are not permitted in official competitions anyway.
 
 ## Radio performance
 

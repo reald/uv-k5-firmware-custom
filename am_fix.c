@@ -263,6 +263,14 @@ void AM_fix_10ms(const unsigned vfo)
 	if(!gSetting_AM_fix || !enabled || vfo > 1 )
 		return;
 
+#ifdef ENABLE_ARDF
+        if ( gSetting_ARDFEnable )
+        {
+        	// do not use am fix in ARDF mode!
+        	return;
+	}
+#endif
+
 	if (gCurrentFunction != FUNCTION_FOREGROUND && !FUNCTION_IsRx()) {
 #ifdef ENABLE_AM_FIX_SHOW_DATA
 		counter = display_update_rate;  // queue up a display update as soon as we switch to RX mode
@@ -363,7 +371,7 @@ void AM_fix_10ms(const unsigned vfo)
 		currentGainDiff = gain_table[0].gain_dB - gain_table[index].gain_dB;
 		BK4819_WriteRegister(BK4819_REG_13, gain_table[index].reg_val);
 #ifdef ENABLE_AGC_SHOW_DATA
-		UI_MAIN_PrintAGC(true);
+		// UI_MAIN_PrintAGC(true); // disabled. destroys menus
 #endif
 	}
 

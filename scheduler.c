@@ -65,41 +65,34 @@ void SystickHandler(void)
 
 #ifdef ENABLE_ARDF
 
-	if ( gSetting_ARDFEnable )
-	{
-		gARDFTime10ms++;
+	gARDFTime10ms++;
 	
-		if ( gARDFTime10ms >= (gARDFPeriode10ms * 151 / 150) ) // time correction factor: +24s in 60min
-		{
-			// new fox cycle
-			gARDFTime10ms = 0;
-		
-			if ( gARDFActiveFox >= gARDFNumFoxes )
-			{
-				gARDFActiveFox = 1;
-			}
-			else
-			{
-				gARDFActiveFox++;
-			}
-		
-			gUpdateStatus = 1;
-	
-		}
-		else if ( gGlobalSysTickCounter % 100 )
-		{
-			// update every second
-			if ( gARDFActiveFox > gARDFNumFoxes )
-			{
-				gARDFActiveFox = 1;
-			}
-			
-			gUpdateStatus = 1;
-		}
-	}
-	else
+	if ( gARDFTime10ms >= (gARDFFoxDuration10ms * 151 / 150) ) // time correction factor: -24s in 60min
 	{
+		// new fox cycle
 		gARDFTime10ms = 0;
+		
+		if ( gARDFActiveFox >= gARDFNumFoxes )
+		{
+			gARDFActiveFox = 1;
+		}
+		else
+		{
+			gARDFActiveFox++;
+		}
+		
+		gUpdateStatus = 1;
+		
+	}
+	else if ( gGlobalSysTickCounter % 100 )
+	{
+		// update every second
+		if ( gARDFActiveFox > gARDFNumFoxes )
+		{
+			gARDFActiveFox = 1;
+		}
+			
+		gUpdateStatus = 1;
 	}
 
 #endif

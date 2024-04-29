@@ -37,4 +37,9 @@ void ACTION_BlminTmpOff(void);
 
 void ACTION_Handle(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld);
 
+#ifdef ENABLE_ARDF
+void ACTION_ARDFOnOff(void);
+void ACTION_ARDFGainDefault(void);
+#endif
+
 #endif
