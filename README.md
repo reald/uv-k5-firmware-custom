@@ -182,25 +182,14 @@ You can get it from: https://releases.llvm.org/download.html
 
 ## Building
 
-### Github Codespace build method
+### Compile from source
 
-This is the least demanding option as you don't have to install enything on your computer. All you need is Github account.
+1. Install gcc-arm-none-eabi 10.3.1 or later
+1. Open Makefile
+1. Edit build options, save Makefile changes
+1. Run `make` in main project folder
 
-1. Go to https://github.com/egzumer/uv-k5-firmware-custom
-1. Click green `Code` button
-1. Change tab from `Local` to `Codespace`
-1. Click green `Create codespace on main` button
-
-<img src="images/codespace1.png" width=700 />
-
-5. Open `Makefile`
-1. Edit build options, save `Makefile` changes
-1. Run `./compile-with-docker.sh` in terminal window
-1. Open folder `compiled-firmware`
-1. Right click `firmware.packed.bin`
-1. Click `Download`, now you should have a firmware on your computer that you can proceed to flash on your radio. You can use [online flasher](https://egzumer.github.io/uvtools)
-
-<img src="images/codespace2.png" width=700 />
+If everything is ok `firmware.bin` (unmodified) and `firmware.packed.bin` (obscurified for official flash tool) can be found in the main folder.
 
 ### Docker build method
 
@@ -232,6 +221,17 @@ If you have docker installed you can use [compile-with-docker.bat](./compile-wit
     ```
 
 I've left some notes in the win_make.bat file to maybe help with stuff.
+
+
+## Flashing
+
+For flashing [k5prog](https://github.com/nica-f/k5prog) can be used:
+
+1. Backup your device!
+1. Press PTT while turning the radio on. Will not work if cable is already plugged. White LED must flash.
+1. Connect the programming cable
+1. Run `k5prog -b firmware.bin -F -YYY`
+
 
 ## Credits
 
