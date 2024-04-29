@@ -8,7 +8,6 @@ This is all based on [egzumer custom firmware](https://github.com/egzumer/uv-k5-
 Some features have been added to make it possible to use the radio as an amateur radio direction finding (ARDF) receiver on the 2m band.
 
 Understand this as a *proof of concept*, not as a fully developed project! Especially the display has much room for improvements. Use this
-
 as a base for own experiments.
 
 Despite all the limitations this is one of the quickest and cheapest ways to get a usable ARDF receiver for the 2m band!
@@ -96,6 +95,7 @@ Unscrew antenna and add a directional antenna. Start hunting foxes and have fun.
 Notes: 
 * Contrary to frequency, modulation and bandwith the ARDF settings (enabled, NumFox, FoxPer) are not stored in the eeprom yet and have to be set every time.
 * The lowest possible frequency of the receiver chip is 18 Mhz. So this is NOT usable on 80 m.
+* If ARDF mode is active any TX is disabled. However it is recommended to compile with ENABLE_PREVENT_TX=1 to permanently disable TX.
 
 ## Radio performance
 

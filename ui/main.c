@@ -663,8 +663,19 @@ void UI_DisplayMain(void)
 		{	// show the TX power
 #ifndef ENABLE_PREVENT_TX
 			const char pwr_list[][2] = {"L","M","H"};
+			char buf[2];
 			int i = vfoInfo->OUTPUT_POWER % 3;
-			UI_PrintStringSmallNormal(pwr_list[i], LCD_WIDTH + 46, 0, line + 1);
+			strcpy(buf, pwr_list[i]);
+			
+	#ifdef ENABLE_ARDF
+			if ( gSetting_ARDFEnable )
+			{
+				strcpy(buf, "x");
+			}
+	#endif
+			
+			UI_PrintStringSmallNormal(buf, LCD_WIDTH + 46, 0, line + 1);
+
 #else
 			UI_PrintStringSmallNormal("X", LCD_WIDTH + 46, 0, line + 1);
 #endif
