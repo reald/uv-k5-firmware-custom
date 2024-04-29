@@ -75,7 +75,7 @@ Up to date manual is available in the [Wiki section](https://github.com/egzumer/
 Compile with ENABLE_ARDF and preferable with ENABLE_PREVENT_TX. To get enough free flash space disable some unneeded
 TX features (e.g. ENABLE_DTMF_CALLING=0). 
 
-In this firmware ARDF mode is on by default after powering on the device. This enables manual gain control (control with up/down from 0..21).
+In this firmware ARDF mode is on by default after powering on the device. This enables manual gain control (control with up/down from 0..21, default is 17).
 Gain steps should be roughly 5dB but they are completely uncalibrated. Expect surprises everywhere.
 
 The frequency can be entered by using the number buttons. Choose the used modulation of the foxes in menu "Demod" (e.g. AM).
