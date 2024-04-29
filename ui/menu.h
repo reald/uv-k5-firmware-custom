@@ -42,6 +42,12 @@ enum
 	MENU_OFFSET,
 	MENU_TOT,
 	MENU_W_N,
+#ifdef ENABLE_ARDF
+	MENU_ARDF,
+	MENU_ARDF_NUMFOXES,
+	MENU_ARDF_FOXPERIOD,
+	MENU_ARDF_SETFOX,
+#endif
 	MENU_SCR,
 	MENU_BCL,
 	MENU_MEM_CH,
@@ -131,7 +137,7 @@ extern const t_menu_item MenuList[];
 
 extern const char        gSubMenu_TXP[3][5];
 extern const char        gSubMenu_SFT_D[3][4];
-extern const char        gSubMenu_W_N[2][7];
+extern const char        gSubMenu_W_N[4][9];
 extern const char        gSubMenu_OFF_ON[2][4];
 extern const char        gSubMenu_SAVE[5][4];
 extern const char        gSubMenu_TOT[11][7];

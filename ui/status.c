@@ -56,6 +56,17 @@ void UI_DisplayStatus()
 	x += 8;
 	unsigned int x1 = x;
 
+#ifdef ENABLE_ARDF
+
+	if ( gSetting_ARDFEnable )
+	{
+		char buf[10];
+		sprintf(buf, "F%d-%2d", gARDFActiveFox, ( (gARDFPeriode10ms * 151 / 150) - gARDFTime10ms)/100 );
+		UI_PrintStringSmallBufferNormal(buf, line + 8);
+	}
+
+#endif
+
 #ifdef ENABLE_NOAA
 	if (gIsNoaaMode) { // NOASS SCAN indicator
 		memcpy(line + x, BITMAP_NOAA, sizeof(BITMAP_NOAA));

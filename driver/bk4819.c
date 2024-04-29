@@ -267,6 +267,13 @@ void BK4819_SetAGC(bool enable)
 	// }
 }
 
+bool BK4819_GetAGC(void)
+{
+	uint16_t regVal = BK4819_ReadRegister(BK4819_REG_7E);
+	return ( (regVal & (1 << 15)) == 0 ); // REG_7E <15>: 1=Fix; 0=Auto. => return value: AGC on: true, AGC off: false
+
+}
+
 void BK4819_InitAGC(bool amModulation)
 {
 	// REG_10, REG_11, REG_12 REG_13, REG_14
@@ -312,6 +319,7 @@ void BK4819_InitAGC(bool amModulation)
 	BK4819_WriteRegister(BK4819_REG_12, 0x037B);  // 0x037B / 000000 11 011 11 011 / -24dB
 	BK4819_WriteRegister(BK4819_REG_11, 0x027B);  // 0x027B / 000000 10 011 11 011 / -43dB
 	BK4819_WriteRegister(BK4819_REG_10, 0x007A);  // 0x007A / 000000 00 011 11 010 / -58dB
+
 	if(amModulation) {
 		BK4819_WriteRegister(BK4819_REG_14, 0x0000);
 		BK4819_WriteRegister(BK4819_REG_49, (0 << 14) | (50 << 7) | (32 << 0));
@@ -644,9 +652,8 @@ void BK4819_SetFilterBandwidth(const BK4819_FilterBandwidth_t Bandwidth, const b
 
 			break;
 
-		case BK4819_FILTER_BW_NARROWER:	// 6.25kHz
+/*		case BK4819_FILTER_BW_NARROWER:	// 6.25kHz
 			val = (3u << 12) |     //  3 RF filter bandwidth
-				  (3u <<  9) |     // *0 RF filter bandwidth when signal is weak
 				  (1u <<  6) |     //  1 AFTxLPF2 filter Band Width
 				  (1u <<  4) |     //  1 BW Mode Selection
 				  (1u <<  3) |     //  1
@@ -657,7 +664,29 @@ void BK4819_SetFilterBandwidth(const BK4819_FilterBandwidth_t Bandwidth, const b
 			} else {
 				val |= (0u <<  9);     //  0 RF filter bandwidth when signal is weak
 			}
+			break; */
+
+                case BK4819_FILTER_BW_NARROWER:	// 2.5 kHz modified for ARDF
+			val = (2u << 12) |     //  RF filter bandwidth (010 = 2.5 kHz)
+                              (2u <<  9) |     //  RF filter bandwidth when signal is weak, same (010 = 2.5 kHz)
+                              (1u <<  6) |     //  AFTxLPF2 filter Band Width (smallest, but we don´t care about TX)
+                              (1u <<  4) |     //  BW Mode Selection (00=12.5k; 01=6.25k; 10=25k/20k)
+                              (1u <<  3) |     //  1
+                              (0u <<  2);      //  Gain after FM Demodulation (1=6dB; 0=0 dB)
+
 			break;
+
+		case BK4819_FILTER_BW_U1K7:	// 1.7 kHz modified for ARDF
+			val = (0u << 12) |     //  RF filter bandwidth (000 = 1.7 kHz)
+                              (0u <<  9) |     //  RF filter bandwidth when signal is weak, same (000 = 1.7 kHz)
+                              (1u <<  6) |     //  AFTxLPF2 filter Band Width (smallest, but we don´t care about TX)
+                              (1u <<  4) |     //  BW Mode Selection (00=12.5k; 01=6.25k; 10=25k/20k)
+                              (1u <<  3) |     //  1
+                              (0u <<  2);      //  Gain after FM Demodulation (1=6dB; 0=0 dB)
+
+			break;
+
+
 	}
 
 	BK4819_WriteRegister(BK4819_REG_43, val);

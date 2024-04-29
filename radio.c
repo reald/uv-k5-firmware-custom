@@ -294,7 +294,7 @@ void RADIO_ConfigureChannel(const unsigned int VFO, const unsigned int configure
 		{
 			const uint8_t d4 = data[4];
 			pVfo->FrequencyReverse  = !!((d4 >> 0) & 1u);
-			pVfo->CHANNEL_BANDWIDTH = !!((d4 >> 1) & 1u);
+			pVfo->CHANNEL_BANDWIDTH =   ((d4 >> 5) & 3u); /* incompatible to normal chirp profile but we need more bits */
 			pVfo->OUTPUT_POWER      =   ((d4 >> 2) & 3u);
 			pVfo->BUSY_CHANNEL_LOCK = !!((d4 >> 4) & 1u);
 		}
@@ -540,6 +540,9 @@ void RADIO_SetupRegisters(bool switchToForeground)
 			[[fallthrough]];
 		case BK4819_FILTER_BW_WIDE:
 		case BK4819_FILTER_BW_NARROW:
+		case BK4819_FILTER_BW_NARROWER:
+		case BK4819_FILTER_BW_U1K7:
+
 			#ifdef ENABLE_AM_FIX
 //				BK4819_SetFilterBandwidth(Bandwidth, gRxVfo->Modulation == MODULATION_AM && gSetting_AM_fix);
 				BK4819_SetFilterBandwidth(Bandwidth, true);
@@ -770,6 +773,9 @@ void RADIO_SetTxParameters(void)
 			[[fallthrough]];
 		case BK4819_FILTER_BW_WIDE:
 		case BK4819_FILTER_BW_NARROW:
+		case BK4819_FILTER_BW_NARROWER:
+		case BK4819_FILTER_BW_U1K7:
+
 			#ifdef ENABLE_AM_FIX
 //				BK4819_SetFilterBandwidth(Bandwidth, gCurrentVfo->Modulation == MODULATION_AM && gSetting_AM_fix);
 				BK4819_SetFilterBandwidth(Bandwidth, true);
@@ -853,11 +859,26 @@ void RADIO_SetModulation(ModulationMode_t modulation)
 void RADIO_SetupAGC(bool listeningAM, bool disable)
 {
 	static uint8_t lastSettings;
+#ifdef ENABLE_ARDF
+	uint8_t newSettings = (listeningAM) | (disable << 1) | (gSetting_ARDFEnable << 2);
+#else
 	uint8_t newSettings = (listeningAM << 1) | (disable << 1);
+#endif
+
 	if(lastSettings == newSettings)
 		return;
 	lastSettings = newSettings;
 
+#ifdef ENABLE_ARDF
+	if ( gSetting_ARDFEnable )
+	{
+		BK4819_WriteRegister(BK4819_REG_13, ardf_gain_table[ardf_gain_index].reg_val);
+		BK4819_SetAGC(false);
+		//BK4819_InitAGC(false); // fixme
+		return;
+	}
+	else
+#endif
 
 	if(!listeningAM) { // if not actively listening AM we don't need any AM specific regulation
 		BK4819_SetAGC(!disable);

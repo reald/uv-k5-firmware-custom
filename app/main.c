@@ -602,6 +602,27 @@ static void MAIN_Key_UP_DOWN(bool bKeyPressed, bool bKeyHeld, int8_t Direction)
 {
 	uint8_t Channel = gEeprom.ScreenChannel[gEeprom.TX_VFO];
 
+#ifdef ENABLE_ARDF
+
+	if ( gSetting_ARDFEnable && bKeyPressed )
+	{
+		// adjust gain
+		
+		if ( Direction == 1 )
+		{
+			ardf_GainIncr();
+		}
+		else
+		{
+			ardf_GainDecr();
+		}
+		BK4819_WriteRegister(BK4819_REG_13, ardf_gain_table[ardf_gain_index].reg_val);
+		
+		return;
+	}
+
+#endif
+
 	if (bKeyHeld || !bKeyPressed) { // key held or released
 		if (gInputBoxIndex > 0)
 			return; // leave if input box active

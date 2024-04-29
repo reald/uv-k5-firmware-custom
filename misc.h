@@ -150,6 +150,29 @@ extern bool                  gSetting_350EN;
 extern uint8_t               gSetting_F_LOCK;
 extern bool                  gSetting_ScrambleEnable;
 
+#ifdef ENABLE_ARDF
+
+extern bool                  gSetting_ARDFEnable;
+extern uint32_t              gARDFTime10ms;
+extern uint32_t              gARDFPeriode10ms;
+extern uint8_t               gARDFNumFoxes;
+extern uint8_t               gARDFActiveFox;
+
+typedef struct
+{
+    uint16_t reg_val;
+    int8_t   gain_dB;
+} __attribute__((packed)) t_ardf_gain_table;
+
+extern t_ardf_gain_table ardf_gain_table[];
+
+extern unsigned int ardf_gain_index;
+
+extern void ardf_GainIncr(void);
+extern void ardf_GainDecr(void);
+
+#endif
+
 extern enum BacklightOnRxTx_t gSetting_backlight_on_tx_rx;
 
 #ifdef ENABLE_AM_FIX

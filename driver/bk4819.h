@@ -48,7 +48,8 @@ enum BK4819_FilterBandwidth_t
 {
 	BK4819_FILTER_BW_WIDE = 0,
 	BK4819_FILTER_BW_NARROW,
-	BK4819_FILTER_BW_NARROWER
+	BK4819_FILTER_BW_NARROWER,
+	BK4819_FILTER_BW_U1K7
 };
 
 typedef enum BK4819_FilterBandwidth_t BK4819_FilterBandwidth_t;
@@ -73,6 +74,7 @@ void     BK4819_WriteU8(uint8_t Data);
 void     BK4819_WriteU16(uint16_t Data);
 
 void     BK4819_SetAGC(bool enable);
+bool     BK4819_GetAGC(void);
 void     BK4819_InitAGC(bool amModulation);
 
 void     BK4819_ToggleGpioOut(BK4819_GPIO_PIN_t Pin, bool bSet);

@@ -661,9 +661,13 @@ void UI_DisplayMain(void)
 
 		if (state == VFO_STATE_NORMAL || state == VFO_STATE_ALARM)
 		{	// show the TX power
+#ifndef ENABLE_PREVENT_TX
 			const char pwr_list[][2] = {"L","M","H"};
 			int i = vfoInfo->OUTPUT_POWER % 3;
 			UI_PrintStringSmallNormal(pwr_list[i], LCD_WIDTH + 46, 0, line + 1);
+#else
+			UI_PrintStringSmallNormal("X", LCD_WIDTH + 46, 0, line + 1);
+#endif
 		}
 
 		if (vfoInfo->freq_config_RX.Frequency != vfoInfo->freq_config_TX.Frequency)
@@ -679,6 +683,26 @@ void UI_DisplayMain(void)
 
 		if (vfoInfo->CHANNEL_BANDWIDTH == BANDWIDTH_NARROW)
 			UI_PrintStringSmallNormal("N", LCD_WIDTH + 70, 0, line + 1);
+
+		if (vfoInfo->CHANNEL_BANDWIDTH == BANDWIDTH_NARROWER)
+			UI_PrintStringSmallNormal("N-", LCD_WIDTH + 70, 0, line + 1);
+
+		if (vfoInfo->CHANNEL_BANDWIDTH == BANDWIDTH_U1K7)
+			UI_PrintStringSmallNormal("U-", LCD_WIDTH + 70, 0, line + 1);
+
+#ifdef ENABLE_ARDF
+
+		// show ARDF mode and selected index of gain table
+		if ( gSetting_ARDFEnable )
+		{
+			UI_PrintStringSmallNormal("ARDF", LCD_WIDTH + 86, 0, line + 1);
+			char buf[3];
+			sprintf(buf, "%2d", ardf_gain_index);
+			//UI_PrintStringSmallNormal(buf, LCD_WIDTH + 112, 0, line + 1);
+			UI_PrintStringSmallBold(buf, 20, 0, line + 1);
+		}
+		
+#endif
 
 #ifdef ENABLE_DTMF_CALLING
 		// show the DTMF decoding symbol

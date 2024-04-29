@@ -205,6 +205,25 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
 			*pMax = ARRAY_SIZE(gSubMenu_W_N) - 1;
 			break;
 
+                #ifdef ENABLE_ARDF
+                
+		case MENU_ARDF:
+			*pMin = 0;
+			*pMax = ARRAY_SIZE(gSubMenu_OFF_ON) - 1;
+			break;
+                
+                case MENU_ARDF_NUMFOXES:
+			*pMin = 1;
+			*pMax = 9;
+                	break;
+
+                case MENU_ARDF_SETFOX:
+			*pMin = 1;
+			*pMax = gARDFNumFoxes;
+                	break;
+
+                #endif
+
 		#ifdef ENABLE_ALARM
 			case MENU_AL_MOD:
 				*pMin = 0;
@@ -465,6 +484,30 @@ void MENU_AcceptSetting(void)
 			gTxVfo->CHANNEL_BANDWIDTH = gSubMenuSelection;
 			gRequestSaveChannel       = 1;
 			return;
+
+		#ifdef ENABLE_ARDF
+		
+		case MENU_ARDF: ;
+
+			gSetting_ARDFEnable = gSubMenuSelection;
+                      	RADIO_SetupAGC(gRxVfo->Modulation == MODULATION_AM, false); // if gSetting_ARDFEnable is set, AGC will be switched off
+			
+			return;
+		
+		case MENU_ARDF_NUMFOXES:
+			gARDFNumFoxes = gSubMenuSelection;
+			break;
+			
+		case MENU_ARDF_FOXPERIOD:
+			gARDFPeriode10ms = gSubMenuSelection;
+			break;
+		
+		case MENU_ARDF_SETFOX:
+			gARDFActiveFox = gSubMenuSelection;
+			gARDFTime10ms = 0;
+			break;
+		
+		#endif
 
 		case MENU_SCR:
 			gTxVfo->SCRAMBLING_TYPE = gSubMenuSelection;
@@ -900,6 +943,26 @@ void MENU_ShowCurrentSetting(void)
 			gSubMenuSelection = gTxVfo->CHANNEL_BANDWIDTH;
 			break;
 
+		#ifdef ENABLE_ARDF
+
+		case MENU_ARDF:
+			gSubMenuSelection = gSetting_ARDFEnable;
+			break;
+			
+		case MENU_ARDF_NUMFOXES:
+			gSubMenuSelection = gARDFNumFoxes;
+			break;
+			
+		case MENU_ARDF_FOXPERIOD:
+			gSubMenuSelection = gARDFPeriode10ms;
+			break;	
+
+		case MENU_ARDF_SETFOX:
+			gSubMenuSelection = gARDFActiveFox;
+			break;	
+	
+		#endif	
+
 		case MENU_SCR:
 			gSubMenuSelection = gTxVfo->SCRAMBLING_TYPE;
 			break;
@@ -1256,6 +1319,29 @@ static void MENU_Key_0_to_9(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 		gInputBoxIndex = 0;
 		return;
 	}
+
+
+
+#ifdef ENABLE_ARDF
+
+	if (UI_MENU_GetCurrentMenuId() == MENU_ARDF_FOXPERIOD)
+	{
+		uint32_t Period10ms;
+
+		if (gInputBoxIndex < 5) 
+		{ 
+			// invalid period
+			return;
+		}
+
+		Period10ms = StrToUL( INPUTBOX_GetAscii() );
+		gSubMenuSelection = Period10ms;
+
+		gInputBoxIndex = 0;
+		return;
+	}
+
+#endif
 
 	if (UI_MENU_GetCurrentMenuId() == MENU_MEM_CH ||
 		UI_MENU_GetCurrentMenuId() == MENU_DEL_CH ||
@@ -1638,6 +1724,29 @@ static void MENU_Key_UP_DOWN(bool bKeyPressed, bool bKeyHeld, int8_t Direction)
 		gRequestDisplayScreen = DISPLAY_MENU;
 		return;
 	}
+
+
+#ifdef ENABLE_ARDF
+
+	if (UI_MENU_GetCurrentMenuId() == MENU_ARDF_FOXPERIOD) 
+	{
+		int32_t Offset = (Direction * 10) + gSubMenuSelection;
+		if (Offset < 99999) 
+		{
+			if (Offset < 0)
+				Offset = 99999;
+		}
+		else
+		{
+			Offset = 0;
+		}
+
+		gSubMenuSelection     = Offset;
+		gRequestDisplayScreen = DISPLAY_MENU;
+		return;
+	}
+
+#endif
 
 	VFO = 0;
 

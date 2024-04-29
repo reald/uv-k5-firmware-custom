@@ -13,13 +13,13 @@ ENABLE_VOX                    ?= 0
 ENABLE_ALARM                  ?= 0
 ENABLE_TX1750                 ?= 0
 ENABLE_PWRON_PASSWORD         ?= 0
-ENABLE_DTMF_CALLING           ?= 1
+ENABLE_DTMF_CALLING           ?= 0
 ENABLE_FLASHLIGHT             ?= 1
 
 # ---- CUSTOM MODS ----
 ENABLE_BIG_FREQ               ?= 1
 ENABLE_SMALL_BOLD             ?= 1
-ENABLE_CUSTOM_MENU_LAYOUT     ?= 1
+ENABLE_CUSTOM_MENU_LAYOUT     ?= 0
 ENABLE_KEEP_MEM_NAME          ?= 1
 ENABLE_WIDE_RX                ?= 1
 ENABLE_TX_WHEN_AM             ?= 0
@@ -37,14 +37,15 @@ ENABLE_AUDIO_BAR              ?= 1
 ENABLE_COPY_CHAN_TO_VFO       ?= 1
 ENABLE_SPECTRUM               ?= 1
 ENABLE_REDUCE_LOW_MID_TX_POWER?= 0
-ENABLE_BYP_RAW_DEMODULATORS   ?= 0
+ENABLE_BYP_RAW_DEMODULATORS   ?= 1
 ENABLE_BLMIN_TMP_OFF          ?= 0
 ENABLE_SCAN_RANGES            ?= 1
 ENABLE_PREVENT_TX             ?= 1
+ENABLE_ARDF                   ?= 1
 
 # ---- DEBUGGING ----
 ENABLE_AM_FIX_SHOW_DATA       ?= 0
-ENABLE_AGC_SHOW_DATA          ?= 0
+ENABLE_AGC_SHOW_DATA          ?= 1
 ENABLE_UART_RW_BK_REGS        ?= 0
 
 # ---- COMPILER/LINKER OPTIONS ----
@@ -201,7 +202,7 @@ endif
 OBJCOPY = arm-none-eabi-objcopy
 SIZE = arm-none-eabi-size
 
-AUTHOR_STRING ?= EGZUMER
+AUTHOR_STRING ?= ARDF
 # the user might not have/want git installed
 # can set own version string here (max 7 chars)
 ifneq (, $(shell $(WHERE) git))
@@ -365,6 +366,9 @@ ifeq ($(ENABLE_SCAN_RANGES),1)
 endif
 ifeq ($(ENABLE_PREVENT_TX),1)
 	CFLAGS  += -DENABLE_PREVENT_TX
+endif
+ifeq ($(ENABLE_ARDF),1)
+	CFLAGS  += -DENABLE_ARDF
 endif
 ifeq ($(ENABLE_DTMF_CALLING),1)
 	CFLAGS  += -DENABLE_DTMF_CALLING

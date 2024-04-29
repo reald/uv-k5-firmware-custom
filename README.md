@@ -1,14 +1,22 @@
-# Open re-implementation of the Quansheng UV-K5/K6/5R v2.1.27 firmware
+# Open re-implementation of the Quansheng UV-K5/K6/5R v2.1.27 firmware with 2m ARDF support
 
 This repository is a merge of [OneOfEleven custom firmware](https://github.com/OneOfEleven/uv-k5-firmware-custom) with [fagci spectrum analizer](https://github.com/fagci/uv-k5-firmware-fagci-mod/tree/refactor) plus my few changes.<br>
 All is a cloned and customized version of DualTachyon's open firmware found [here](https://github.com/DualTachyon/uv-k5-firmware) ... a cool achievement !
 
-> [!TIP]
-> There is a work done by others on forks of this repository. I encourage you to take a look at those too. [SEE HERE](https://github.com/egzumer/uv-k5-firmware-custom/discussions/485)
+This is all based on [egzumer custom firmware](https://github.com/egzumer/uv-k5-firmware-custom)!
+
+Some features have been added to make it possible to use the radio as an amateur radio direction finding (ARDF) receiver on the 2m band.
+
+Understand this as a *proof of concept*, not as a full developed project! Especially the display has much room for improvements. Use this
+as a base for own experiments.
+
+Despite all the limitations this is one of the quickest and cheapest ways to get a usable ARDF receiver for the 2m band!
+
 
 > [!WARNING]  
 > Use this firmware at your own risk (entirely). There is absolutely no guarantee that it will work in any way shape or form on your radio(s), it may even brick your radio(s), in which case, you'd need to buy another radio.
 Anyway, have fun.
+
 
 ## Table of Contents
 
@@ -40,7 +48,7 @@ Anyway, have fun.
    * more frequency steps
    * squelch more sensitive
 * fagci spectrum analyzer (**F+5** to turn on)
-* some other mods introduced by me:
+* some other mods introduced by egzumer:
    * SSB demodulation (adopted from fagci)
    * backlight dimming
    * battery voltage calibration from menu
@@ -53,10 +61,40 @@ Anyway, have fun.
    * reordered and renamed menu entries
    * LCD interference crash fix
    * many others...
+* ARDF features
+   * manual gain control
+   * small bandwidth modes
+   * active fox and remaining cycle time display
 
- ## Manual
+## Manual
 
 Up to date manual is available in the [Wiki section](https://github.com/egzumer/uv-k5-firmware-custom/wiki)
+
+## ARDF Manual
+
+Compile with ENABLE_ARDF and preferable with ENABLE_PREVENT_TX. To get enough free flash space disable some unneeded
+TX features (e.g. ENABLE_DTMF_CALLING=0). 
+
+In this firmware ARDF mode is on by default after powering on the device. This enables manual gain control (control with up/down from 0..21).
+Gain steps should be roughly 5dB but they are completely uncalibrated. Expect surprises everywhere.
+
+The frequency can be entered by using the number buttons. Choose the used modulation of the foxes in menu "Demod" (e.g. AM).
+
+Use a narrow bandwidth mode in menu "BW W/N" ("U 1K7: 1.7 kHz or "NARROWER": 2.5 kHz).
+
+Select number of foxes in menu "NumFox". The default is 5.
+
+Choose time period of a fox transmission in menu "FoxPer". Default is 60s. Modify with up/down in 0.1s steps or enter value as *5 digit 
+number* in 1/100s resolution. Confirm with menu button.
+
+By default the device starts with active fox number 1 and a full time period left. In menu "ActFox" the active fox can be set. Every modification
+will reset the timer, too. Use this for synchronization.
+
+Unscrew antenna and add a directional antenna.
+
+Notes: 
+* Contrary to frequency, modulation and bandwith the ARDF settings (enabled, NumFox, FoxPer) are not stored in the eeprom yet and have to be set every time.
+* The lowest possible frequency of the receiver chip is 18 Mhz. So this is NOT usable on 80 m.
 
 ## Radio performance
 
@@ -120,6 +158,9 @@ You'll find the options at the top of "Makefile" ('0' = disable, '1' = enable) .
 | ENABLE_BYP_RAW_DEMODULATORS | additional BYP (bypass?) and RAW demodulation options, proved not to be very useful, but it is there if you want to experiment |
 | ENABLE_BLMIN_TMP_OFF | additional function for configurable buttons that toggles `BLMin` on and off wihout saving it to the EEPROM |
 | ENABLE_SCAN_RANGES | scan range mode for frequency scanning, see wiki for instructions (radio operation -> frequency scanning) |
+| ENABLE_PREVENT_TX | prevent TX in any case |
+| ENABLE_ARDF | enable ARDF features |
+
 |🧰 **DEBUGGING** ||
 | ENABLE_AM_FIX_SHOW_DATA| displays settings used by  AM-fix when AM transmission is received |
 | ENABLE_AGC_SHOW_DATA | displays AGC settings |
@@ -209,6 +250,7 @@ Many thanks to various people on Telegram for putting up with me during this eff
 * [OneOfEleven](https://github.com/OneOfEleven)
 * @d1ced95
 * and others I forget
+* [egzumer](https://github.com/egzumer)
 
 ## Other sources of information
 

@@ -48,7 +48,15 @@ const t_menu_item MenuList[] =
 	{"TxCTCS", VOICE_ID_CTCSS,                         MENU_T_CTCS        }, // was "T_CTCS"
 	{"TxODir", VOICE_ID_TX_OFFSET_FREQUENCY_DIRECTION, MENU_SFT_D         }, // was "SFT_D"
 	{"TxOffs", VOICE_ID_TX_OFFSET_FREQUENCY,           MENU_OFFSET        }, // was "OFFSET"
-	{"W/N",    VOICE_ID_CHANNEL_BANDWIDTH,             MENU_W_N           },
+	{"BW W/N", VOICE_ID_CHANNEL_BANDWIDTH,             MENU_W_N           }, // was "W/N"
+
+#ifdef ENABLE_ARDF
+	{"ARDF",   VOICE_ID_INVALID,                       MENU_ARDF          },
+	{"NumFox", VOICE_ID_INVALID,                       MENU_ARDF_NUMFOXES },
+	{"FoxPer", VOICE_ID_INVALID,                       MENU_ARDF_FOXPERIOD},
+	{"ActFox", VOICE_ID_INVALID,                       MENU_ARDF_SETFOX   },
+#endif
+
 	{"Scramb", VOICE_ID_SCRAMBLER_ON,                  MENU_SCR           }, // was "SCR"
 	{"BusyCL", VOICE_ID_BUSY_LOCKOUT,                  MENU_BCL           }, // was "BCL"
 	{"Compnd", VOICE_ID_INVALID,                       MENU_COMPAND       },
@@ -158,10 +166,12 @@ const char gSubMenu_SFT_D[][4] =
 	"-"
 };
 
-const char gSubMenu_W_N[][7] =
+const char gSubMenu_W_N[][9] =
 {
 	"WIDE",
-	"NARROW"
+	"NARROW",
+	"NARROWER",
+	"U 1K7"
 };
 
 const char gSubMenu_OFF_ON[][4] =
@@ -565,6 +575,41 @@ void UI_DisplayMenu(void)
 			strcpy(String, gSubMenu_W_N[gSubMenuSelection]);
 			break;
 
+		#ifdef ENABLE_ARDF
+
+		case MENU_ARDF:
+			strcpy(String, gSubMenu_OFF_ON[gSubMenuSelection]);
+			break;
+
+		case MENU_ARDF_NUMFOXES:
+			sprintf(String, "%d", gSubMenuSelection);
+			break;
+
+		case MENU_ARDF_FOXPERIOD:
+			if (!gIsInSubMenu || gInputBoxIndex == 0)
+			{
+				sprintf(String, "%03d.%02u", gSubMenuSelection / 100, gSubMenuSelection % 100);
+				UI_PrintString(String, menu_item_x1, menu_item_x2, 1, 8);
+			}
+			else
+			{
+				const char * ascii = INPUTBOX_GetAscii();
+				sprintf(String, "%03d.%02u", StrToUL(ascii) / 100, StrToUL(ascii) % 100 );
+				UI_PrintString(String, menu_item_x1, menu_item_x2, 1, 8);
+			}
+
+			UI_PrintString("s",  menu_item_x1, menu_item_x2, 3, 8);
+			
+			already_printed = true;
+			break;
+
+		case MENU_ARDF_SETFOX:
+			sprintf(String, "%d", gSubMenuSelection);
+			break;
+
+
+		#endif
+		
 		case MENU_SCR:
 			strcpy(String, gSubMenu_SCRAMBLER[gSubMenuSelection]);
 			#if 1
