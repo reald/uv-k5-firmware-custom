@@ -7,7 +7,8 @@ This is all based on [egzumer custom firmware](https://github.com/egzumer/uv-k5-
 
 Some features have been added to make it possible to use the radio as an amateur radio direction finding (ARDF) receiver on the 2m band.
 
-Understand this as a *proof of concept*, not as a full developed project! Especially the display has much room for improvements. Use this
+Understand this as a *proof of concept*, not as a fully developed project! Especially the display has much room for improvements. Use this
+
 as a base for own experiments.
 
 Despite all the limitations this is one of the quickest and cheapest ways to get a usable ARDF receiver for the 2m band!
@@ -80,17 +81,17 @@ Gain steps should be roughly 5dB but they are completely uncalibrated. Expect su
 
 The frequency can be entered by using the number buttons. Choose the used modulation of the foxes in menu "Demod" (e.g. AM).
 
-Use a narrow bandwidth mode in menu "BW W/N" ("U 1K7: 1.7 kHz or "NARROWER": 2.5 kHz).
+Use a narrow bandwidth mode in menu "BW W/N" ("U 1K7": 1.7 kHz or "NARROWER": 2.5 kHz).
 
 Select number of foxes in menu "NumFox". The default is 5.
 
 Choose time period of a fox transmission in menu "FoxPer". Default is 60s. Modify with up/down in 0.1s steps or enter value as *5 digit 
 number* in 1/100s resolution. Confirm with menu button.
 
-By default the device starts with active fox number 1 and a full time period left. In menu "ActFox" the active fox can be set. Every modification
+By default the device starts with active fox number 1 and a full time period left. In menu "ActFox" the active fox can be changed. Every modification
 will reset the timer, too. Use this for synchronization.
 
-Unscrew antenna and add a directional antenna.
+Unscrew antenna and add a directional antenna. Start hunting foxes and have fun.
 
 Notes: 
 * Contrary to frequency, modulation and bandwith the ARDF settings (enabled, NumFox, FoxPer) are not stored in the eeprom yet and have to be set every time.
