@@ -61,7 +61,7 @@ void UI_DisplayStatus()
 	if ( gSetting_ARDFEnable )
 	{
 		char buf[10];
-		sprintf(buf, "F%d-%2d", gARDFActiveFox, ( (gARDFPeriode10ms * 151 / 150) - gARDFTime10ms)/100 ); // 151/150 is for clock correction
+		sprintf(buf, "F%d %2d", gARDFActiveFox, ( -(int32_t)((gARDFPeriode10ms * 151 / 150) - gARDFTime10ms)/100) ); // 151/150 is for clock correction
 		UI_PrintStringSmallBufferBold(buf, line + 8);
 	}
 

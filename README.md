@@ -80,7 +80,7 @@ Gain steps should be roughly 5dB but they are completely uncalibrated. Expect su
 
 The frequency can be entered by using the number buttons. Choose the used modulation of the foxes in menu "Demod" (e.g. AM).
 
-Use a narrow bandwidth mode in menu "BW W/N" ("U 1K7": 1.7 kHz or "NARROWER": 2.5 kHz).
+Use a narrow bandwidth mode in menu "BW W/N": "U 1K7" is 1.7 kHz, (smallest possible value; shown as "U-") or "NARROWER" which is 2.5 kHz (shown as "N-" in the status bar).
 
 Select number of foxes in menu "NumFox". The default is 5.
 
@@ -161,7 +161,6 @@ You'll find the options at the top of "Makefile" ('0' = disable, '1' = enable) .
 | ENABLE_SCAN_RANGES | scan range mode for frequency scanning, see wiki for instructions (radio operation -> frequency scanning) |
 | ENABLE_PREVENT_TX | prevent TX in any case |
 | ENABLE_ARDF | enable ARDF features |
-
 |🧰 **DEBUGGING** ||
 | ENABLE_AM_FIX_SHOW_DATA| displays settings used by  AM-fix when AM transmission is received |
 | ENABLE_AGC_SHOW_DATA | displays AGC settings |
