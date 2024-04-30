@@ -80,6 +80,9 @@ void SystickHandler(void)
 		{
 			gARDFActiveFox++;
 		}
+
+		// recall last gain index
+		ARDF_ActivateGainIndex();
 		
 		gUpdateStatus = 1;
 		

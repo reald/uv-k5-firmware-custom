@@ -521,6 +521,11 @@ void RADIO_SelectVfos(void)
 	gRxVfo = &gEeprom.VfoInfo[gEeprom.RX_VFO];
 
 	RADIO_SelectCurrentVfo();
+
+#ifdef ENABLE_ARDF
+	ARDF_ActivateGainIndex();
+#endif
+
 }
 
 void RADIO_SetupRegisters(bool switchToForeground)
@@ -872,7 +877,7 @@ void RADIO_SetupAGC(bool listeningAM, bool disable)
 #ifdef ENABLE_ARDF
 	if ( gSetting_ARDFEnable )
 	{
-		BK4819_WriteRegister(BK4819_REG_13, ardf_gain_table[ardf_gain_index].reg_val);
+		ARDF_ActivateGainIndex();
 		BK4819_SetAGC(false);
 		//BK4819_InitAGC(false); // fixme
 		return;

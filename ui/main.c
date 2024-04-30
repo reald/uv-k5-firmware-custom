@@ -708,7 +708,7 @@ void UI_DisplayMain(void)
 		{
 			UI_PrintStringSmallNormal("ARDF", LCD_WIDTH + 86, 0, line + 1);
 			char buf[3];
-			sprintf(buf, "%2d", ardf_gain_index);
+			sprintf(buf, "%2d", ARDF_Get_GainIndex(vfo_num) );
 			//UI_PrintStringSmallNormal(buf, LCD_WIDTH + 112, 0, line + 1);
 			UI_PrintStringSmallBold(buf, 20, 0, line + 1);
 		}

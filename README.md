@@ -76,9 +76,6 @@ Up to date manual is available in the [Wiki section](https://github.com/egzumer/
 Compile with ENABLE_ARDF and preferable with ENABLE_PREVENT_TX. To get enough free flash space disable some unneeded
 TX features (e.g. ENABLE_DTMF_CALLING=0). 
 
-In this firmware ARDF mode is on by default after powering on the device. This enables manual gain control (control with up/down from 0 .. 21, default is 17).
-Gain steps should be roughly 5dB but they are completely uncalibrated. Expect surprises everywhere. ARDF Mode can be disabled/enabled in the menu (ARDF = OFF/ON).
-
 Disable squelch first (Menu: Sql = 0), disable dual watch (Menu: RxMode = MAIN ONLY).
 
 The frequencies can be entered by using the number buttons. 
@@ -91,6 +88,15 @@ Select number of foxes in menu "NumFox" (default = 5, min = 1, max = 9).
 
 Choose duration time of one fox transmission in menu "FoxDur". Default is 60s. Modify with up/down in 0.1s steps or enter value as *5 digit 
 number* in 1/100s resolution. Confirm with menu button. Maximum duration is 999.99s.
+
+In this firmware ARDF mode is on by default after powering on the device. This enables **manual gain control** 
+(control with **UP/DOWN key** from 0 .. 21, default is 17).
+Gain steps should be roughly 5dB but they are completely uncalibrated. Expect surprises everywhere. 
+ARDF Mode can be disabled/enabled in the menu (ARDF = OFF/ON).
+
+On the second (lower) VFO the manual gain index is handled for every fox seperately. At the beginning of a fox cycle the last gain
+index for this fox is restored from the last cycle. So it is recommended to use the second VFO for foxes and the first (upper) VFO for
+the destination beacon. Here only one gain index value is used independent from any fox cycle times.
 
 On system boot the device starts with active fox number 1 and full duration time left. In menu "ActFox" the active fox can be changed. Every modification
 here will reset the duration timer. Use this for synchronization.

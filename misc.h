@@ -169,10 +169,13 @@ typedef struct
 
 extern t_ardf_gain_table ardf_gain_table[];
 
-extern uint8_t ardf_gain_index;
+extern uint8_t ardf_gain_index[2][ARDF_NUM_FOX_MAX];
 
-extern void ardf_GainIncr(void);
-extern void ardf_GainDecr(void);
+extern void ARDF_init(void);
+extern void ARDF_GainIncr(void);
+extern void ARDF_GainDecr(void);
+extern uint8_t ARDF_Get_GainIndex(uint8_t vfo);
+extern void ARDF_ActivateGainIndex(void);
 
 #endif
 

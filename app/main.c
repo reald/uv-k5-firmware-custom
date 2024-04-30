@@ -610,13 +610,14 @@ static void MAIN_Key_UP_DOWN(bool bKeyPressed, bool bKeyHeld, int8_t Direction)
 		
 		if ( Direction == 1 )
 		{
-			ardf_GainIncr();
+			ARDF_GainIncr();
 		}
 		else
 		{
-			ardf_GainDecr();
+			ARDF_GainDecr();
 		}
-		BK4819_WriteRegister(BK4819_REG_13, ardf_gain_table[ardf_gain_index].reg_val);
+		
+		ARDF_ActivateGainIndex();
 		
 		return;
 	}

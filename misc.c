@@ -18,6 +18,7 @@
 
 #include "misc.h"
 #include "settings.h"
+#include "driver/bk4819.h"
 
 const uint8_t     fm_radio_countdown_500ms         =  2000 / 500;  // 2 seconds
 const uint16_t    fm_play_countdown_scan_10ms      =   100 / 10;   // 100ms
@@ -97,7 +98,7 @@ uint32_t          gARDFFoxDuration10ms = 6000;  /* 60s * 100 ticks per second */
 uint8_t           gARDFNumFoxes = 5;
 uint8_t           gARDFActiveFox = 1;
 
-uint8_t ardf_gain_index = ARDF_GAIN_INDEX_DEFAULT; //ARDF_NUM_FOX_MAX
+uint8_t ardf_gain_index[2][ARDF_NUM_FOX_MAX];
 
 
 t_ardf_gain_table ardf_gain_table[] =
@@ -127,23 +128,73 @@ t_ardf_gain_table ardf_gain_table[] =
 };
 
 
-void ardf_GainIncr(void)
+void ARDF_init(void)
 {
-        if ( ardf_gain_index < (sizeof(ardf_gain_table)/sizeof(t_ardf_gain_table))-1 )
+	for ( uint8_t i; i<ARDF_NUM_FOX_MAX; i++ )
+	{
+		ardf_gain_index[0][i] = ARDF_GAIN_INDEX_DEFAULT;
+		ardf_gain_index[1][i] = ARDF_GAIN_INDEX_DEFAULT;
+	}
+}
+
+
+void ARDF_GainIncr(void)
+{
+	uint8_t vfo = gEeprom.RX_VFO;
+	uint8_t activefox = gARDFActiveFox - 1;
+	
+	if ( vfo == 0 )
+	{
+		// remember fox gains only on vfo 2
+		activefox = 0;
+	}
+	
+        if ( ardf_gain_index[vfo][activefox] < (sizeof(ardf_gain_table)/sizeof(t_ardf_gain_table))-1 )
         {
-                ardf_gain_index++;
+                ardf_gain_index[vfo][activefox]++;
         }
 }
 
 
-void ardf_GainDecr(void)
+void ARDF_GainDecr(void)
 {
-        if ( ardf_gain_index > 0 )
+	uint8_t vfo = gEeprom.RX_VFO;
+	uint8_t activefox = gARDFActiveFox - 1;
+
+	if ( vfo == 0 )
+	{
+		// remember fox gains only on vfo 2
+		activefox = 0;
+	}
+
+        if ( ardf_gain_index[vfo][activefox] > 0 )
         {
-                ardf_gain_index--;
+                ardf_gain_index[vfo][activefox]--;
         }
 }
 
+
+uint8_t ARDF_Get_GainIndex(uint8_t vfo)
+{
+	uint8_t activefox = gARDFActiveFox - 1;
+	 
+	if ( vfo == 0 )
+	{
+		// seperate fox gains only on vfo 2
+		return ardf_gain_index[0][0];
+	}
+	else
+	{
+		return ardf_gain_index[vfo][activefox];
+	}
+}
+
+
+void ARDF_ActivateGainIndex(void)
+{
+	BK4819_WriteRegister(BK4819_REG_13, ardf_gain_table[ ARDF_Get_GainIndex(gEeprom.RX_VFO) ].reg_val);
+	gUpdateDisplay = true;
+}
 
 
 #endif

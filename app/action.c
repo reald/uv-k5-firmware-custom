@@ -461,6 +461,7 @@ void ACTION_BlminTmpOff(void)
 #endif
 
 #ifdef ENABLE_ARDF
+
 void ACTION_ARDFOnOff(void)
 {
 	if ( gSetting_ARDFEnable )
@@ -475,12 +476,24 @@ void ACTION_ARDFOnOff(void)
 
 }
 
+
 void ACTION_ARDFGainDefault(void)
 {
 	if ( gSetting_ARDFEnable )
 	{
-		ardf_gain_index = ARDF_GAIN_INDEX_DEFAULT;
-		BK4819_WriteRegister(BK4819_REG_13, ardf_gain_table[ardf_gain_index].reg_val);
+	        uint8_t vfo = gEeprom.RX_VFO;
+        	uint8_t activefox = gARDFActiveFox - 1;
+
+	        if ( vfo == 0 )
+        	{
+	                // remember fox gains only on vfo 2
+                	activefox = 0;
+                }
+
+	        ardf_gain_index[vfo][activefox] = ARDF_GAIN_INDEX_DEFAULT;
+	         
+	        ARDF_ActivateGainIndex();
+
 	}
 }
 

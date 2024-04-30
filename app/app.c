@@ -556,6 +556,10 @@ static void DualwatchAlternate(void)
 	#else
 		gDualWatchCountdown_10ms = dual_watch_count_toggle_10ms;
 	#endif
+
+	#ifdef ENABLE_ARDF
+	ARDF_ActivateGainIndex();
+	#endif
 }
 
 static void CheckRadioInterrupts(void)

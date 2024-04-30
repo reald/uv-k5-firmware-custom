@@ -112,6 +112,10 @@ void Main(void)
 	AM_fix_init();
 #endif
 
+#ifdef ENABLE_ARDF
+	ARDF_init();
+#endif
+
 	const BOOT_Mode_t  BootMode = BOOT_GetMode();
 
 	if (BootMode == BOOT_MODE_F_LOCK)
