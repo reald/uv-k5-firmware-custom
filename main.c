@@ -88,6 +88,10 @@ void Main(void)
 	memset(gDTMF_String, '-', sizeof(gDTMF_String));
 	gDTMF_String[sizeof(gDTMF_String) - 1] = 0;
 
+#ifdef ENABLE_ARDF
+	ARDF_init();
+#endif
+
 	BK4819_Init();
 
 	BOARD_ADC_GetBatteryInfo(&gBatteryCurrentVoltage, &gBatteryCurrent);
@@ -112,9 +116,6 @@ void Main(void)
 	AM_fix_init();
 #endif
 
-#ifdef ENABLE_ARDF
-	ARDF_init();
-#endif
 
 	const BOOT_Mode_t  BootMode = BOOT_GetMode();
 

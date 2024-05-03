@@ -90,7 +90,7 @@ Choose duration time of one fox transmission in menu "FoxDur". Default is 60s. M
 number* in 1/100s resolution. Confirm with menu button. Maximum duration is 999.99s.
 
 In this firmware ARDF mode is on by default after powering on the device. This enables **manual gain control** 
-(control with **UP/DOWN key** from 0 .. 21, default is 17).
+(use **UP/DOWN key** from 0 .. 21, default is 17).
 Gain steps should be roughly 5dB but they are completely uncalibrated. Expect surprises everywhere. 
 ARDF Mode can be disabled/enabled in the menu (ARDF = OFF/ON).
 
