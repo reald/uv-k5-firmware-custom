@@ -292,8 +292,8 @@ You may obtain a copy of the License at
 ## Example of ARDF changes/updates
 
 <p float="left">
-  <img src="/images/ardf1.png" width=300 />
-  <img src="/images/ardf2.png" width=300 />
-  <img src="/images/ardf3.png" width=300 />
+  <img src="/images/ardf1.jpg" width=300 />
+  <img src="/images/ardf2.jpg" width=300 />
+  <img src="/images/ardf3.jpg" width=300 />
 </p>
 
