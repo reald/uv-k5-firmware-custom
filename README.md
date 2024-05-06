@@ -78,11 +78,12 @@ free flash space disable some unneeded TX features (e.g. ENABLE_DTMF_CALLING=0).
 For flashing [k5prog](https://github.com/nica-f/k5prog) can be used:
 
 1. Backup your device!
-1. Press PTT while turning the radio on. Will not work if cable is already plugged. White LED must flash.
+1. Press PTT while turning the radio on. Will not work if cable is already plugged. White LED must be on.
 1. Connect the programming cable
 1. Run `k5prog -b firmware.bin -F -YYY`
 
-The `firmware.packed.bin` file can be flashed with the official flash tool.
+The `firmware.packed.bin` file can be flashed with the official flash tool. If device does not boot after flashing something was wrong. Try reflashing
+another firmware or a different flash tool.
 
 ### Usage
 
