@@ -1,8 +1,5 @@
 # Open re-implementation of the Quansheng UV-K5/K6/5R v2.1.27 firmware with 2m ARDF support
 
-This repository is a merge of [OneOfEleven custom firmware](https://github.com/OneOfEleven/uv-k5-firmware-custom) with [fagci spectrum analizer](https://github.com/fagci/uv-k5-firmware-fagci-mod/tree/refactor) plus my few changes.<br>
-All is a cloned and customized version of DualTachyon's open firmware found [here](https://github.com/DualTachyon/uv-k5-firmware) ... a cool achievement !
-
 This is all based on [egzumer custom firmware](https://github.com/egzumer/uv-k5-firmware-custom)!
 
 Some features have been added to make it possible to use the radio as an amateur radio direction finding (ARDF) receiver on the 2m band.
@@ -33,6 +30,10 @@ Anyway, have fun.
 * [Example changes/updates](#example-changesupdates)
 
 ## Main features:
+* ARDF features
+   * manual gain control
+   * small bandwidth modes
+   * active fox and remaining cycle time display
 * many of OneOfEleven mods:
    * AM fix, huge improvement in reception quality
    * long press buttons functions replicating F+ action
@@ -62,10 +63,6 @@ Anyway, have fun.
    * reordered and renamed menu entries
    * LCD interference crash fix
    * many others...
-* ARDF features
-   * manual gain control
-   * small bandwidth modes
-   * active fox and remaining cycle time display
 
 ## Manual
 
@@ -73,30 +70,40 @@ Up to date manual is available in the [Wiki section](https://github.com/egzumer/
 
 ## Manual for ARDF
 
-Compile with ENABLE_ARDF and preferable with ENABLE_PREVENT_TX. To get enough free flash space disable some unneeded
-TX features (e.g. ENABLE_DTMF_CALLING=0). 
+Download precompiled release or compile with ENABLE_ARDF and preferable with ENABLE_PREVENT_TX. To get enough 
+free flash space disable some unneeded TX features (e.g. ENABLE_DTMF_CALLING=0). 
 
-Disable squelch first (Menu: Sql = 0), disable dual watch (Menu: RxMode = MAIN ONLY).
+### Flashing
 
-The frequencies can be entered by using the number buttons. 
+For flashing [k5prog](https://github.com/nica-f/k5prog) can be used:
 
-Choose the used modulation of the foxes in menu "Demod" (e.g. AM).
+1. Backup your device!
+1. Press PTT while turning the radio on. Will not work if cable is already plugged. White LED must flash.
+1. Connect the programming cable
+1. Run `k5prog -b firmware.bin -F -YYY`
 
-Use a narrow bandwidth mode in menu "BW W/N": "U 1K7" is 1.7 kHz, (this is the smallest possible value; shown as "U-") or "NARROWER" which is 2.5 kHz (shown as "N-" in the status bar).
+The `firmware.packed.bin` file can be flashed with the official flash tool.
 
-Select number of foxes in menu "NumFox" (default = 5, min = 1, max = 9).
+### Usage
 
-Choose duration time of one fox transmission in menu "FoxDur". Default is 60s. Modify with up/down in 0.1s steps or enter value as *5 digit 
-number* in 1/100s resolution. Confirm with menu button. Maximum duration is 999.99s.
+- Disable squelch (Menu: Sql = 0)
+- Disable dual watch (Menu: RxMode = MAIN ONLY).
+- Choose the used modulation of the foxes in menu "Demod" (e.g. AM).
+- Use a narrow bandwidth mode in menu "BW W/N": "U 1K7" is 1.7 kHz, (this is the smallest possible value; shown as "U-") or "NARROWER" which is 2.5 kHz (shown as "N-" in the status bar).
+- Select number of foxes in menu "NumFox" (default = 5, min = 1, max = 9).
+- Choose duration time of one fox transmission in menu "FoxDur". Default is 60s. Modify with up/down in 0.1s steps or enter value as *5 digit 
+number* in 1/100s resolution. Confirm with menu button. (Maximum duration is 999.99s.)
+- The frequencies can be entered by using the number buttons (top: use for beacon, bottom: for foxes)
 
 In this firmware ARDF mode is on by default after powering on the device. This enables **manual gain control** 
-(use **UP/DOWN key** from 0 .. 21, default is 17).
+(use **UP/DOWN key**, index reaches from 0 to 21, default is 17).
 Gain steps should be roughly 5dB but they are completely uncalibrated. Expect surprises everywhere. 
+
 ARDF Mode can be disabled/enabled in the menu (ARDF = OFF/ON).
 
-On the second (lower) VFO the manual gain index is handled for every fox seperately. At the beginning of a fox cycle the last gain
-index for this fox is restored from the last cycle. So it is recommended to use the second VFO for foxes and the first (upper) VFO for
-the destination beacon. Here only one gain index value is used independent from any fox cycle times.
+On the second (lower) VFO the **manual gain** index is handled **for every fox seperately**. At the beginning of a fox cycle the last gain
+index for this fox is restored from the last cycle. So it is recommended to use the **second VFO** for **foxes** and the **first** (upper) VFO for
+the **destination beacon**. Here only one gain index value is used independent from any fox cycle times.
 
 On system boot the device starts with active fox number 1 and full duration time left. In menu "ActFox" the active fox can be changed. Every modification
 here will reset the duration timer. Use this for synchronization.
@@ -239,14 +246,6 @@ If you have docker installed you can use [compile-with-docker.bat](./compile-wit
 I've left some notes in the win_make.bat file to maybe help with stuff.
 
 
-## Flashing
-
-For flashing [k5prog](https://github.com/nica-f/k5prog) can be used:
-
-1. Backup your device!
-1. Press PTT while turning the radio on. Will not work if cable is already plugged. White LED must flash.
-1. Connect the programming cable
-1. Run `k5prog -b firmware.bin -F -YYY`
 
 
 ## Credits
@@ -290,16 +289,11 @@ You may obtain a copy of the License at
     See the License for the specific language governing permissions and
     limitations under the License.
 
-## Example changes/updates
+## Example of ARDF changes/updates
 
 <p float="left">
-  <img src="/images/image1.png" width=300 />
-  <img src="/images/image2.png" width=300 />
-  <img src="/images/image3.png" width=300 />
+  <img src="/images/ardf1.png" width=300 />
+  <img src="/images/ardf2.png" width=300 />
+  <img src="/images/ardf3.png" width=300 />
 </p>
 
-Video showing the AM fix working ..
-
-<video src="/images/AM_fix.mp4"></video>
-
-<video src="https://github.com/OneOfEleven/uv-k5-firmware-custom/assets/51590168/2a3a9cdc-97da-4966-bf0d-1ce6ad09779c"></video>
