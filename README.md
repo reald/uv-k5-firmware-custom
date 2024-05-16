@@ -110,15 +110,16 @@ Gain steps should be roughly 5dB but they are completely uncalibrated. Expect su
 
 #### Main Screen ####
 
-<img src="/images/ardf_mainscreen.jpg" width=300 />
+<img src="/images/ardf_mainscreen.jpg" width=800 />
 
 This is the radio screen if ARDF mode is enabled. The manual gain index value can be choosen with UP/DOWN keys from 0 to 21. RSSI_max is
-the maximum of the raw RSSI register in the last half second. The line below show the settings for the active VFO:
+the max RSSI in the last half second. This is an uncalibrated raw value. (The RSSI value next to the S-meter shows roughly dBm.)
+The **bold line** below show the settings for the **active VFO**:
 VFO number "1", demodulation "USB", smallest bandwidth mode "U-" (1.7kHz) and
 receiving frequency "144.001 MHz". For this VFO the gain remember mode (details below) is active so the gain index history for up to 5 foxes is shown.
 The active fox number is bold.
 
-The last line shows the configuration for VFO 2. It is recommended to put the fox settings in VFO 1 and the return beacon on VFO 2.
+The **last line** shows the configuration for the **inactive VFO**. It is recommended to put the fox settings in VFO 1 and the return beacon on VFO 2.
 By long pressing "2 A/B" key can quickly be switched between both configurations.
 
 #### Gain Remember Mode ####
