@@ -27,6 +27,9 @@
 #ifdef ENABLE_AIRCOPY
 	#include "ui/aircopy.h"
 #endif
+#ifdef ENABLE_ARDF
+	#include "ui/ardf.h"
+#endif
 #ifdef ENABLE_FMRADIO
 	#include "ui/fmradio.h"
 #endif
@@ -56,6 +59,10 @@ void (*UI_DisplayFunctions[])(void) = {
 
 #ifdef ENABLE_AIRCOPY
 	[DISPLAY_AIRCOPY] = &UI_DisplayAircopy,
+#endif
+
+#ifdef ENABLE_ARDF
+	[DISPLAY_ARDF] = &UI_DisplayARDF,
 #endif
 };
 

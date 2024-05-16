@@ -55,6 +55,8 @@ const t_menu_item MenuList[] =
 	{"NumFox", VOICE_ID_INVALID,                       MENU_ARDF_NUMFOXES },
 	{"FoxDur", VOICE_ID_INVALID,                       MENU_ARDF_FOXDURATION},
 	{"ActFox", VOICE_ID_INVALID,                       MENU_ARDF_SETFOX   },
+        {"TiRst",  VOICE_ID_INVALID,                       MENU_ARDF_TIME_RESET },
+        {"GainRe", VOICE_ID_INVALID,                       MENU_ARDF_GAIN_REMEMBER },
 #endif
 
 	{"Scramb", VOICE_ID_SCRAMBLER_ON,                  MENU_SCR           }, // was "SCR"
@@ -151,6 +153,16 @@ const t_menu_item MenuList[] =
 };
 
 const uint8_t FIRST_HIDDEN_MENU_ITEM = MENU_F_LOCK;
+
+#ifdef ENABLE_ARDF
+const char gSubMenu_ARDF_Remember_Gain[][5] =
+{
+	"OFF",
+	"VFO1",
+	"VFO2",
+	"BOTH"
+};
+#endif
 
 const char gSubMenu_TXP[][5] =
 {
@@ -377,7 +389,7 @@ const t_sidefunction gSubMenu_SIDEFUNCTIONS[] =
 #endif
 #ifdef ENABLE_ARDF
 	{"ARDF\noff/on",	ACTION_OPT_ARDF_ON_OFF},
-	{"ARDF\nSet\nDef.Gain",	ACTION_OPT_ARDF_GAIN_DEFAULT},
+	{"ARDF\nSet\nMed.Gain",	ACTION_OPT_ARDF_GAIN_MIDDLE},
 #endif
 };
 
@@ -611,6 +623,13 @@ void UI_DisplayMenu(void)
 			sprintf(String, "%d", gSubMenuSelection);
 			break;
 
+		case MENU_ARDF_TIME_RESET:
+			sprintf(String, "ARDF Timer\nReset");
+			break;
+
+		case MENU_ARDF_GAIN_REMEMBER:
+			strcpy(String, gSubMenu_ARDF_Remember_Gain[gSubMenuSelection]);
+			break;
 
 		#endif
 		

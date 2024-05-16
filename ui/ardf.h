@@ -1,5 +1,5 @@
-/* Copyright 2023 Dual Tachyon
- * https://github.com/DualTachyon
+/* Copyright 2024 Dennis Real
+ * https://github.com/reald
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,14 @@
  *     limitations under the License.
  */
 
-#ifndef APP_ACTION_H
-#define APP_ACTION_H
-
-#include "driver/keyboard.h"
-
-void ACTION_Power(void);
-void ACTION_Monitor(void);
-void ACTION_Scan(bool bRestart);
-#ifdef ENABLE_VOX
-	void ACTION_Vox(void);
-#endif
-
-#ifdef ENABLE_FMRADIO
-	void ACTION_FM(void);
-#endif
-void ACTION_SwitchDemodul(void);
-
-#ifdef ENABLE_BLMIN_TMP_OFF
-void ACTION_BlminTmpOff(void);
-#endif
-
-void ACTION_Handle(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld);
+#ifndef UI_ARDF_H
+#define UI_ARDF_H
 
 #ifdef ENABLE_ARDF
-void ACTION_ARDFOnOff(void);
-void ACTION_ARDFGainMiddle(void);
+void UI_DisplayARDF_Timer(void);
+void UI_DisplayARDF_RSSI(void);
+void UI_DisplayARDF_Debug(void);
+void UI_DisplayARDF(void);
 #endif
 
 #endif

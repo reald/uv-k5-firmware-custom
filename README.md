@@ -68,10 +68,10 @@ Anyway, have fun.
 
 Up to date manual is available in the [Wiki section](https://github.com/egzumer/uv-k5-firmware-custom/wiki)
 
-## Manual for ARDF
+## Specific Manual for ARDF Features
 
-Download precompiled release or compile with ENABLE_ARDF and preferable with ENABLE_PREVENT_TX. To get enough 
-free flash space disable some unneeded TX features (e.g. ENABLE_DTMF_CALLING=0). 
+Download a [precompiled release](https://github.com/reald/uv-k5-firmware-custom/releases) or compile with ENABLE_ARDF=1 and preferable with ENABLE_PREVENT_TX=1. 
+To get enough free flash space disable some unneeded TX features (e.g. ENABLE_DTMF_CALLING=0). 
 
 ### Flashing
 
@@ -87,39 +87,91 @@ another firmware or a different flash tool.
 
 ### Usage
 
-- Disable squelch (Menu: Sql = 0)
-- Disable dual watch (Menu: RxMode = MAIN ONLY).
-- Choose the used modulation of the foxes in menu "Demod" (e.g. AM).
-- Use a narrow bandwidth mode in menu "BW W/N": "U 1K7" is 1.7 kHz, (this is the smallest possible value; shown as "U-") or "NARROWER" which is 2.5 kHz (shown as "N-" in the status bar).
-- Select number of foxes in menu "NumFox" (default = 5, min = 1, max = 9).
-- Choose duration time of one fox transmission in menu "FoxDur". Default is 60s. Modify with up/down in 0.1s steps or enter value as *5 digit 
-number* in 1/100s resolution. Confirm with menu button. (Maximum duration is 999.99s.)
-- The frequencies can be entered by using the number buttons (top: use for beacon, bottom: for foxes)
+#### Quick Setup ####
 
-In this firmware ARDF mode is on by default after powering on the device. This enables **manual gain control** 
-(use **UP/DOWN key**, index reaches from 0 to 21, default is 17).
+Turn the power knob a bit less than a quarter to turn the device on.
+ARDF Mode can be disabled/enabled in the menu (ARDF = OFF/ON). This enables **manual gain control** 
+by pressing **UP/DOWN keys**. The index reaches from 0 to 21, default is 17.
 Gain steps should be roughly 5dB but they are completely uncalibrated. Expect surprises everywhere. 
 
-ARDF Mode can be disabled/enabled in the menu (ARDF = OFF/ON).
+- Disable squelch (Menu: Sql = 0)
+- Disable dual watch (Menu: RxMode = MAIN ONLY).
+- Select number of foxes in menu "NumFox" (default = 5, min = 1, max = 10).
+- Choose duration time of one fox transmission in menu "FoxDur". Default is 60s. Modify with up/down in 0.1s steps or enter value as *5 digit number* in 1/100s resolution. Confirm with menu button (min = 1s, max = 999.99s).
 
-On the second (lower) VFO the **manual gain** index is handled **for every fox seperately**. At the beginning of a fox cycle the last gain
-index for this fox is restored from the last cycle. So it is recommended to use the **second VFO** for **foxes** and the **first** (upper) VFO for
-the **destination beacon**. Here only one gain index value is used independent from any fox cycle times.
+- Activate VFO 1 (long pressing key "2 A/B" toggles between both VFOs).
+- Enter the frequency of the foxes using the number keys.
+- Choose the used modulation of the foxes in menu "Demod" (e.g. AM).
+- Use a narrow bandwidth mode in menu "BW W/N": "U 1K7" is 1.7 kHz, (this is the smallest possible value; shown as "U-") or "NARROWER" which is 2.5 kHz (shown as "N-" in the status bar).
+- Switch to VFO 2 by long pressing "2 A/B". This VFO will mostly be used for the return beacon.
+- Configure frequency, modulation and bandwidth the same way as for VFO 1.
+- Change back to VFO 1 by long pressing "2 A/B".
+- Listen for foxes, synchronize fox number and timer in menu with "ActFox" and "TiRst" options (details below).
 
-On system boot the device starts with active fox number 1 and full duration time left. In menu "ActFox" the active fox can be changed. Every modification
-here will reset the duration timer. Use this for synchronization.
+#### Main Screen ####
+
+<img src="/images/ardf_mainscreen.jpg" width=300 />
+
+This is the radio screen if ARDF mode is enabled. The manual gain index value can be choosen with UP/DOWN keys from 0 to 21. RSSI_max is
+the maximum of the raw RSSI register in the last half second. The line below show the settings for the active VFO:
+VFO number "1", demodulation "USB", smallest bandwidth mode "U-" (1.7kHz) and
+receiving frequency "144.001 MHz". For this VFO the gain remember mode (details below) is active so the gain index history for up to 5 foxes is shown.
+The active fox number is bold.
+
+The last line shows the configuration for VFO 2. It is recommended to put the fox settings in VFO 1 and the return beacon on VFO 2.
+By long pressing "2 A/B" key can quickly be switched between both configurations.
+
+#### Gain Remember Mode ####
+This firmware supports **gain remember** for manual gain control. If gain remember is **activated**, the
+**manual gain index** is handled **for every fox seperately**. At the **beginning of a fox cycle** the **last gain
+index for this fox** is **restored from the last cycle**. The manual gain index history for up to 5 foxes is shown 
+in the lower part of the screen. 
+
+If **gain remember** is **off**, there is only one gain index for all foxes independent from any fox cycle times.
+This feature can be **configured for both VFOs separately** (menu "GainRe": Off / VFO 1 / VFO 2 / BOTH).
+
+A usage scenario would be to configure the fox frequency on VFO 1 with gain remember mode on. Put the return beacon 
+frequency on VFO 2 without gain remember on. (Because the return beacon is permanently transmitting there is no need 
+different gains in different time slots.)
+
+You can quickly switch between both VFOs by long pressing "2 (A/B)" or a configured function key (see below).
+
+If gain remember is not activated on the actual VFO, no gain index history is shown in the lower part of the screen.
+
+On system boot the device starts with active fox number 1 and full duration time left. In menu "ActFox" the active fox can be changed. 
+The timer can be reset in menu "TiRst". Select "TiRst" with "M"-key, a triangle appears. Another press on "M"-key will reset the timer.
+Use this for synchronization. Active fox and timer are shown on the top in the status bar if the menu is openend.
 
 Unscrew antenna and add a directional antenna with good front/back ratio. Start hunting foxes and have fun.
 
+#### Function keys ####
 Two different ARDF actions can be mapped to function keys: 
-* Set manual gain back to default index (e.g. for short press on F2 key) 
+* Set manual gain to a medium index value (10). It is recommended to configure "ARDF Set Med.Gain" to short press on F2 key) 
 * Enable/Disable ARDF function (e.g. for long press on F1 key).
+It is recommended to configure "Switch VFO" to F1 short.
  
-Notes: 
-* Contrary to frequency, modulation and bandwidth the ARDF settings (enabled, NumFox, FoxDur) are *not stored* in the eeprom yet and have to be set every time.
+#### Notes ####
 * Because four bandwidth modes are available (WIDE, NARROW, NARROWER, U 1K7) they cannot programmed with chirp at the moment. Chirps default UV K5 profile only supports 1 bit for bandwidth settings.
 * The lowest possible frequency of the receiver chip is 18 Mhz. So this is NOT usable on 80 m.
 * If ARDF mode is active any TX functionality is disabled. However it is recommended to compile with ENABLE_PREVENT_TX=1 to permanently disable TX. ARDF receivers with a builtin TX functionality are not permitted in official competitions anyway.
+* You can glue an arrow on the volume knob to keep the position under control (simply cut a triangle from a sticker).
+
+It is possible (but not recommended) to use memory mode instead of frequency mode on each VFO. If memory mode is active on the current VFO, 
+frequency and memory number are are displayed alternately one after each other. Number keys change the memory number (enter 3 digits) 
+and not the frequency. You can switch between memory mode and frequency mode by long pressing "3 VFO/MR" key.
+
+## Headphones
+
+Headphones can be connected to the 2.5mm jack. The audio signal is between the tip and sleeve of the jack.
+
+> [!WARNING]
+> There is a DC voltage of around 4V between tip and sleeve, too. Use a DC blocker before connecting your headphones to the device!
+> Your headphones might be destroyed otherwise!
+
+I use this circuit for removing the DC voltage from the audio signal:
+<img src="/images/headphone_adapter.png" width=800 />
+This might not be the best solution so don´t blame me for any damages. Better solutions are welcome.
+
 
 ## Radio performance
 
@@ -293,8 +345,12 @@ You may obtain a copy of the License at
 ## Example of ARDF changes/updates
 
 <p float="left">
-  <img src="/images/ardf1.jpg" width=300 />
   <img src="/images/ardf2.jpg" width=300 />
   <img src="/images/ardf3.jpg" width=300 />
+  <img src="/images/ardf6.jpg" width=300 />
+  <img src="/images/ardf5.jpg" width=300 />
+  <img src="/images/ardf4.jpg" width=300 />
+
+
 </p>
 

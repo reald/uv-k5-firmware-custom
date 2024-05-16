@@ -879,7 +879,7 @@ void RADIO_SetupAGC(bool listeningAM, bool disable)
 	{
 		ARDF_ActivateGainIndex();
 		BK4819_SetAGC(false);
-		//BK4819_InitAGC(false); // fixme
+		//BK4819_InitAGC(false); // agc register for ARDF were set in ARDF_ActivateGainIndex()
 		return;
 	}
 	else

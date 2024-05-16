@@ -113,10 +113,10 @@ void (*action_opt_table[])(void) = {
 
 #ifdef ENABLE_ARDF
 	[ACTION_OPT_ARDF_ON_OFF] = &ACTION_ARDFOnOff,
-	[ACTION_OPT_ARDF_GAIN_DEFAULT] = &ACTION_ARDFGainDefault,
+	[ACTION_OPT_ARDF_GAIN_MIDDLE] = &ACTION_ARDFGainMiddle,
 #else
         [ACTION_OPT_ARDF_ON_OFF] = &FUNCTION_NOP,
-        [ACTION_OPT_ARDF_GAIN_DEFAULT] = &FUNCTION_NOP,
+        [ACTION_OPT_ARDF_GAIN_MIDDLE] = &FUNCTION_NOP,
 #endif
 };
 
@@ -477,20 +477,20 @@ void ACTION_ARDFOnOff(void)
 }
 
 
-void ACTION_ARDFGainDefault(void)
+void ACTION_ARDFGainMiddle(void)
 {
 	if ( gSetting_ARDFEnable )
 	{
 	        uint8_t vfo = gEeprom.RX_VFO;
-        	uint8_t activefox = gARDFActiveFox - 1;
+        	uint8_t activefox = gARDFActiveFox;
 
-	        if ( vfo == 0 )
+	        if ( ARDF_ActVfoHasGainRemember(vfo) == false )
         	{
-	                // remember fox gains only on vfo 2
+	                // do not remember fox gains on this vfo
                 	activefox = 0;
                 }
 
-	        ardf_gain_index[vfo][activefox] = ARDF_GAIN_INDEX_DEFAULT;
+	        ardf_gain_index[vfo][activefox] = ARDF_GAIN_INDEX_MIDDLE;
 	         
 	        ARDF_ActivateGainIndex();
 

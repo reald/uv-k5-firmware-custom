@@ -25,6 +25,9 @@
 	#include "app/aircopy.h"
 #endif
 #include "app/app.h"
+#ifdef ENABLE_ARDF
+	#include "app/ardf.h"
+#endif
 #include "app/chFrScanner.h"
 #include "app/dtmf.h"
 #ifdef ENABLE_FLASHLIGHT
@@ -91,6 +94,11 @@ void (*ProcessKeysFunctions[])(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld) 
 #ifdef ENABLE_AIRCOPY
 	[DISPLAY_AIRCOPY] = &AIRCOPY_ProcessKeys,
 #endif
+
+#ifdef ENABLE_ARDF
+	[DISPLAY_ARDF] = &MAIN_ProcessKeys,
+#endif
+
 };
 
 static_assert(ARRAY_SIZE(ProcessKeysFunctions) == DISPLAY_N_ELEM);
@@ -1114,6 +1122,10 @@ void APP_TimeSlice10ms(void)
 	}
 #endif
 
+#ifdef ENABLE_ARDF
+	ARDF_10ms();
+#endif
+
 	if (gReducedService)
 		return;
 
@@ -1314,6 +1326,11 @@ void APP_TimeSlice500ms(void)
 #endif
 
 	// Skipped authentic device check
+
+#ifdef ENABLE_ARDF
+	ARDF_500ms();
+#endif
+
 
 #ifdef ENABLE_FMRADIO
 	if (gFmRadioCountdown_500ms > 0)

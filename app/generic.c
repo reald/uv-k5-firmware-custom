@@ -56,13 +56,17 @@ void GENERIC_Key_F(bool bKeyPressed, bool bKeyHeld)
 			COMMON_KeypadLockToggle();
 		}
 		else { // released
+
+			if (
 #ifdef ENABLE_FMRADIO
-			if ((gFmRadioMode || gScreenToDisplay != DISPLAY_MAIN) && gScreenToDisplay != DISPLAY_FM)
-				return;
-#else
-			if (gScreenToDisplay != DISPLAY_MAIN)
-				return;
+				(gFmRadioMode && gScreenToDisplay != DISPLAY_FM) &&
 #endif
+#if ENABLE_ARDF
+				(gScreenToDisplay != DISPLAY_ARDF) &&
+#endif
+				(gScreenToDisplay != DISPLAY_MAIN)
+			   )
+				return;
 
 			gWasFKeyPressed = !gWasFKeyPressed; // toggle F function
 

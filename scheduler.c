@@ -63,43 +63,6 @@ void SystickHandler(void)
 	if ((gGlobalSysTickCounter & 3) == 0)
 		gNextTimeslice40ms = true;
 
-#ifdef ENABLE_ARDF
-
-	gARDFTime10ms++;
-	
-	if ( gARDFTime10ms >= (gARDFFoxDuration10ms * 151 / 150) ) // time correction factor: -24s in 60min
-	{
-		// new fox cycle
-		gARDFTime10ms = 0;
-		
-		if ( gARDFActiveFox >= gARDFNumFoxes )
-		{
-			gARDFActiveFox = 1;
-		}
-		else
-		{
-			gARDFActiveFox++;
-		}
-
-		// recall last gain index
-		ARDF_ActivateGainIndex();
-		
-		gUpdateStatus = 1;
-		
-	}
-	else if ( gGlobalSysTickCounter % 100 )
-	{
-		// update every second
-		if ( gARDFActiveFox > gARDFNumFoxes )
-		{
-			gARDFActiveFox = 1;
-		}
-			
-		gUpdateStatus = 1;
-	}
-
-#endif
-
 #ifdef ENABLE_NOAA
 	DECREMENT(gNOAACountdown_10ms);
 #endif

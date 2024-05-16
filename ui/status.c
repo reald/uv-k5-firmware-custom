@@ -60,9 +60,19 @@ void UI_DisplayStatus()
 
 	if ( gSetting_ARDFEnable )
 	{
-		char buf[10];
-		sprintf(buf, "F%d %2d", gARDFActiveFox, ( -(int32_t)((gARDFFoxDuration10ms * 151 / 150) - gARDFTime10ms)/100) ); // factor 151/150 is for clock correction
-		UI_PrintStringSmallBufferBold(buf, line + 32);
+		if ( gScreenToDisplay == DISPLAY_MENU )	
+		{
+			char buf[10];
+			uint8_t activefox = gARDFActiveFox + 1;
+			if ( activefox >= 10 )
+				activefox = 0;
+			sprintf(buf, "F%d %2d", activefox, ( -(int32_t)((gARDFFoxDuration10ms * 151 / 150) - gARDFTime10ms)/100) ); // factor 151/150 is for clock correction
+			UI_PrintStringSmallBufferBold(buf, line + 32);
+		}
+		else
+		{
+			UI_PrintStringSmallBufferBold("ARDF", line + 32);
+		}
 	}
 
 #endif

@@ -39,6 +39,12 @@ void COMMON_SwitchVFOs()
     gScheduleDualWatch = true;
 
     gRequestDisplayScreen = DISPLAY_MAIN;
+
+#ifdef ENABLE_ARDF
+    if ( gScreenToDisplay == DISPLAY_ARDF )
+        gRequestDisplayScreen = DISPLAY_ARDF;
+#endif
+
 }
 
 void COMMON_SwitchVFOMode()

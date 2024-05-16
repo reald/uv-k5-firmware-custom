@@ -92,7 +92,7 @@ enum ACTION_OPT_t {
 	ACTION_OPT_BLMIN_TMP_OFF, //BackLight Minimum Temporay OFF
 	ACTION_OPT_SPECTRUM,
 	ACTION_OPT_ARDF_ON_OFF,
-	ACTION_OPT_ARDF_GAIN_DEFAULT,
+	ACTION_OPT_ARDF_GAIN_MIDDLE,
 	ACTION_OPT_LEN
 };
 
@@ -266,6 +266,11 @@ void     SETTINGS_FactoryReset(bool bIsAll);
 #ifdef ENABLE_FMRADIO
 	void SETTINGS_SaveFM(void);
 #endif
+
+#ifdef ENABLE_ARDF
+void SETTINGS_SaveARDF(void);
+#endif
+
 void SETTINGS_SaveVfoIndices(void);
 void SETTINGS_SaveSettings(void);
 void SETTINGS_SaveChannelName(uint8_t channel, const char * name);

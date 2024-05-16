@@ -152,14 +152,25 @@ extern bool                  gSetting_ScrambleEnable;
 
 #ifdef ENABLE_ARDF
 
-#define ARDF_NUM_FOX_MAX 9
+#define ARDF_NUM_FOX_MAX 10
 #define ARDF_GAIN_INDEX_DEFAULT 17
+#define ARDF_GAIN_INDEX_MIDDLE 10
+#define ARDF_MEM_MODE_FREQ_TOGGLE_S 3 // in frequency mode: toggle memory number and frequency every 3 s
+
+#define ARDF_DEFAULT_ENABLE true
+#define ARDF_DEFAULT_NUM_FOXES 5
+#define ARDF_DEFAULT_FOX_DURATION 6000
+#define ARDF_DEFAULT_GAIN_REMEMBER 1
 
 extern bool                  gSetting_ARDFEnable;
 extern uint32_t              gARDFTime10ms;
 extern uint32_t              gARDFFoxDuration10ms;
 extern uint8_t               gARDFNumFoxes;
 extern uint8_t               gARDFActiveFox;
+extern uint8_t               gARDFGainRemember;
+extern unsigned int          gARDFRssiMax;
+extern uint8_t               gARDFMemModeFreqToggleCnt_s;
+extern bool                  gARDFRequestSaveEEPROM;
 
 typedef struct
 {
@@ -175,6 +186,7 @@ extern void ARDF_init(void);
 extern void ARDF_GainIncr(void);
 extern void ARDF_GainDecr(void);
 extern uint8_t ARDF_Get_GainIndex(uint8_t vfo);
+extern bool ARDF_ActVfoHasGainRemember(uint8_t vfo);
 extern void ARDF_ActivateGainIndex(void);
 
 #endif

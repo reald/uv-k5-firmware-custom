@@ -185,7 +185,11 @@ void DisplayRSSIBar(const bool now)
 		return;     // display is in use
 
 	if (gCurrentFunction == FUNCTION_TRANSMIT ||
-		gScreenToDisplay != DISPLAY_MAIN
+		( (gScreenToDisplay != DISPLAY_MAIN)
+#ifdef	ENABLE_ARDF
+                  && (gScreenToDisplay != DISPLAY_ARDF)
+#endif
+                )
 #ifdef ENABLE_DTMF_CALLING
 		|| gDTMF_CallState != DTMF_CALL_STATE_NONE
 #endif
@@ -288,7 +292,12 @@ void UI_MAIN_PrintAGC(bool now)
 
 void UI_MAIN_TimeSlice500ms(void)
 {
-	if(gScreenToDisplay==DISPLAY_MAIN) {
+	if( (gScreenToDisplay==DISPLAY_MAIN)
+#ifdef ENABLE_ARDF
+            || (gScreenToDisplay==DISPLAY_MAIN)
+#endif
+          )	
+	{
 #ifdef ENABLE_AGC_SHOW_DATA
 		UI_MAIN_PrintAGC(true);
 		return;
@@ -667,13 +676,6 @@ void UI_DisplayMain(void)
 			int i = vfoInfo->OUTPUT_POWER % 3;
 			strcpy(buf, pwr_list[i]);
 			
-	#ifdef ENABLE_ARDF
-			if ( gSetting_ARDFEnable )
-			{
-				strcpy(buf, "x");
-			}
-	#endif
-			
 			UI_PrintStringSmallNormal(buf, LCD_WIDTH + 46, 0, line + 1);
 
 #else
@@ -701,19 +703,6 @@ void UI_DisplayMain(void)
 		if (vfoInfo->CHANNEL_BANDWIDTH == BANDWIDTH_U1K7)
 			UI_PrintStringSmallNormal("U-", LCD_WIDTH + 70, 0, line + 1);
 
-#ifdef ENABLE_ARDF
-
-		// show ARDF mode and selected index of gain table
-		if ( gSetting_ARDFEnable )
-		{
-			UI_PrintStringSmallNormal("ARDF", LCD_WIDTH + 86, 0, line + 1);
-			char buf[3];
-			sprintf(buf, "%2d", ARDF_Get_GainIndex(vfo_num) );
-			//UI_PrintStringSmallNormal(buf, LCD_WIDTH + 112, 0, line + 1);
-			UI_PrintStringSmallBold(buf, 20, 0, line + 1);
-		}
-		
-#endif
 
 #ifdef ENABLE_DTMF_CALLING
 		// show the DTMF decoding symbol

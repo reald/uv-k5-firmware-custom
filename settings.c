@@ -228,6 +228,38 @@ void SETTINGS_InitEEPROM(void)
 		gEeprom.SCANLIST_PRIORITY_CH2[i] =  Data[j + 2];
 	}
 
+#ifdef ENABLE_ARDF
+	// 0F24..0F2C
+	EEPROM_ReadBuffer(0x0F24, Data, 5);
+
+	if ( Data[4] != 0xFF )
+	{
+		gSetting_ARDFEnable = Data[4] & 0x01;
+		gARDFNumFoxes = (Data[4] >> 1) & 0x0f;
+		gARDFGainRemember = (Data[4] >> 5) & 0x03;
+	}
+	else
+	{
+		// eeprom empty. use defaults
+		gSetting_ARDFEnable = ARDF_DEFAULT_ENABLE;
+		gARDFNumFoxes = ARDF_DEFAULT_NUM_FOXES;
+		gARDFGainRemember = ARDF_DEFAULT_GAIN_REMEMBER;
+	}
+	
+	if ( (Data[0] != 0xFF) || (Data[1] != 0xFF) || (Data[2] != 0xFF) || (Data[3] != 0xFF) )
+	{
+		memcpy(&gARDFFoxDuration10ms, Data, sizeof(gARDFFoxDuration10ms));
+	}
+	else
+	{
+		gARDFFoxDuration10ms = ARDF_DEFAULT_FOX_DURATION;
+	}
+
+	if ( gARDFFoxDuration10ms < 100 )
+		gARDFFoxDuration10ms = ARDF_DEFAULT_FOX_DURATION;
+
+#endif
+	
 	// 0F40..0F47
 	EEPROM_ReadBuffer(0x0F40, Data, 8);
 	gSetting_F_LOCK            = (Data[0] < F_LOCK_LEN) ? Data[0] : F_LOCK_DEF;
@@ -443,6 +475,34 @@ void SETTINGS_SaveFM(void)
 		for (unsigned i = 0; i < 5; i++)
 			EEPROM_WriteBuffer(0x0E40 + (i * 8), &gFM_Channels[i * 4]);
 	}
+#endif
+
+#ifdef ENABLE_ARDF
+
+// 0F24..0F2C
+void SETTINGS_SaveARDF(void)
+{
+	union {
+		struct {
+			uint32_t FoxDuration;
+			uint8_t  ARDFEnable:1;
+			uint8_t  NumFoxes:4;
+			uint8_t  GainRemember:2;
+		};
+		uint8_t __raw[5];
+	} __attribute__((packed)) ARDFCfg;
+
+	memset(ARDFCfg.__raw, 0xFF, sizeof(ARDFCfg.__raw));
+	
+	ARDFCfg.FoxDuration = gARDFFoxDuration10ms;
+	ARDFCfg.ARDFEnable = gSetting_ARDFEnable;
+	ARDFCfg.NumFoxes = gARDFNumFoxes;
+	ARDFCfg.GainRemember = gARDFGainRemember;
+
+	EEPROM_WriteBuffer(0x0F24, ARDFCfg.__raw);
+
+}
+
 #endif
 
 void SETTINGS_SaveVfoIndices(void)

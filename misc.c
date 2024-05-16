@@ -27,7 +27,7 @@ const uint16_t    fm_restore_countdown_10ms        =  5000 / 10;   // 5 seconds
 
 const uint8_t     vfo_state_resume_countdown_500ms =  2500 / 500;  // 2.5 seconds
 
-const uint8_t     menu_timeout_500ms               =  20000 / 500;  // 20 seconds
+const uint8_t     menu_timeout_500ms               =  90000 / 500;  // 90 seconds
 const uint16_t    menu_timeout_long_500ms          = 120000 / 500;  // 2 minutes
 
 const uint8_t     DTMF_RX_live_timeout_500ms       =  6000 / 500;  // 6 seconds live decoder on screen
@@ -92,11 +92,15 @@ bool              gSetting_ScrambleEnable;
 
 #ifdef ENABLE_ARDF
 
-bool              gSetting_ARDFEnable = true;
+bool              gSetting_ARDFEnable = ARDF_DEFAULT_ENABLE;
 uint32_t          gARDFTime10ms = 0;
-uint32_t          gARDFFoxDuration10ms = 6000;  /* 60s * 100 ticks per second */
-uint8_t           gARDFNumFoxes = 5;
-uint8_t           gARDFActiveFox = 1;
+uint32_t          gARDFFoxDuration10ms = ARDF_DEFAULT_FOX_DURATION;  /* 60s * 100 ticks per second */
+uint8_t           gARDFNumFoxes = ARDF_DEFAULT_NUM_FOXES;
+uint8_t           gARDFActiveFox = 0;
+uint8_t           gARDFGainRemember = ARDF_DEFAULT_GAIN_REMEMBER; /* remember gain on VFO 1 by default. */
+unsigned int      gARDFRssiMax = 0; /* max rssi of last half second */
+uint8_t           gARDFMemModeFreqToggleCnt_s = 0; /* toggle memory bank/frequency display every x s */
+bool              gARDFRequestSaveEEPROM = false;
 
 uint8_t ardf_gain_index[2][ARDF_NUM_FOX_MAX];
 
@@ -141,11 +145,11 @@ void ARDF_init(void)
 void ARDF_GainIncr(void)
 {
 	uint8_t vfo = gEeprom.RX_VFO;
-	uint8_t activefox = gARDFActiveFox - 1;
+	uint8_t activefox = gARDFActiveFox;
 	
-	if ( vfo == 0 )
+	if ( ARDF_ActVfoHasGainRemember(vfo) == false )
 	{
-		// remember fox gains only on vfo 2
+		// do not remember fox gains on this vfo
 		activefox = 0;
 	}
 	
@@ -159,13 +163,14 @@ void ARDF_GainIncr(void)
 void ARDF_GainDecr(void)
 {
 	uint8_t vfo = gEeprom.RX_VFO;
-	uint8_t activefox = gARDFActiveFox - 1;
+	uint8_t activefox = gARDFActiveFox;
 
-	if ( vfo == 0 )
-	{
-		// remember fox gains only on vfo 2
-		activefox = 0;
-	}
+        if ( ARDF_ActVfoHasGainRemember(vfo) == false )
+        {
+                // do not remember fox gains on this vfo
+                activefox = 0;
+        }
+
 
         if ( ardf_gain_index[vfo][activefox] > 0 )
         {
@@ -176,16 +181,32 @@ void ARDF_GainDecr(void)
 
 uint8_t ARDF_Get_GainIndex(uint8_t vfo)
 {
-	uint8_t activefox = gARDFActiveFox - 1;
-	 
-	if ( vfo == 0 )
+	if ( ARDF_ActVfoHasGainRemember(vfo) == false )
 	{
-		// seperate fox gains only on vfo 2
-		return ardf_gain_index[0][0];
+		// remember fox gains not on this vfo
+		return ardf_gain_index[vfo][0];
 	}
 	else
 	{
-		return ardf_gain_index[vfo][activefox];
+		return ardf_gain_index[vfo][gARDFActiveFox];
+	}
+}
+
+
+bool ARDF_ActVfoHasGainRemember(uint8_t vfo)
+{
+        /* "OFF", 0
+        "VFO1", 1
+        "VFO2", 2
+        "BOTH" 3 */
+	
+	if ( (vfo+1) & gARDFGainRemember )
+	{
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
 
@@ -193,6 +214,7 @@ uint8_t ARDF_Get_GainIndex(uint8_t vfo)
 void ARDF_ActivateGainIndex(void)
 {
 	BK4819_WriteRegister(BK4819_REG_13, ardf_gain_table[ ARDF_Get_GainIndex(gEeprom.RX_VFO) ].reg_val);
+	gARDFRssiMax = 0;
 	gUpdateDisplay = true;
 }
 

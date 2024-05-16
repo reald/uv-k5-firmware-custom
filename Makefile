@@ -45,7 +45,7 @@ ENABLE_ARDF                   ?= 1
 
 # ---- DEBUGGING ----
 ENABLE_AM_FIX_SHOW_DATA       ?= 0
-ENABLE_AGC_SHOW_DATA          ?= 1
+ENABLE_AGC_SHOW_DATA          ?= 0
 ENABLE_UART_RW_BK_REGS        ?= 0
 
 # ---- COMPILER/LINKER OPTIONS ----
@@ -115,6 +115,9 @@ ifeq ($(ENABLE_AIRCOPY),1)
 	OBJS += app/aircopy.o
 endif
 OBJS += app/app.o
+ifeq ($(ENABLE_ARDF),1)
+	OBJS += app/ardf.o
+endif
 OBJS += app/chFrScanner.o
 OBJS += app/common.o
 OBJS += app/dtmf.o
@@ -152,6 +155,9 @@ OBJS += scheduler.o
 OBJS += settings.o
 ifeq ($(ENABLE_AIRCOPY),1)
 	OBJS += ui/aircopy.o
+endif
+ifeq ($(ENABLE_ARDF),1)
+	OBJS += ui/ardf.o
 endif
 OBJS += ui/battery.o
 ifeq ($(ENABLE_FMRADIO),1)
@@ -216,7 +222,7 @@ endif
 ifeq (, $(VERSION_STRING))
 	VERSION_STRING := NOGIT
 endif
-#VERSION_STRING := 230930b
+VERSION_STRING := v0.2
 
 
 ASFLAGS = -c -mcpu=cortex-m0
