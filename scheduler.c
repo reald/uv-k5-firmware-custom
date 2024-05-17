@@ -53,6 +53,10 @@ void SystickHandler(void)
 	
 	gNextTimeslice = true;
 
+#ifdef ENABLE_ARDF
+	gARDFTime10ms++;
+#endif
+
 	if ((gGlobalSysTickCounter % 50) == 0) {
 		gNextTimeslice_500ms = true;
 		

@@ -473,6 +473,8 @@ void ACTION_ARDFOnOff(void)
 		gSetting_ARDFEnable = true;
 	}
 	RADIO_SetupAGC(gRxVfo->Modulation == MODULATION_AM, false); // if gSetting_ARDFEnable is set, AGC will be switched off
+	
+	gARDFRequestSaveEEPROM = true;
 
 }
 

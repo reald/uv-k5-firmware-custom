@@ -61,8 +61,6 @@ b=b;
 void ARDF_10ms(void)
 {
 
-   gARDFTime10ms++;
-   
    if ( gARDFTime10ms >= (gARDFFoxDuration10ms * 151 / 150) ) // time correction factor: -24s in 60min
    {
       // new fox cycle

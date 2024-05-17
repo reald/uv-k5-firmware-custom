@@ -156,14 +156,23 @@ It is recommended to configure "Switch VFO" to F1 short.
 * The lowest possible frequency of the receiver chip is 18 Mhz. So this is NOT usable on 80 m.
 * If ARDF mode is active any TX functionality is disabled. However it is recommended to compile with ENABLE_PREVENT_TX=1 to permanently disable TX. ARDF receivers with a builtin TX functionality are not permitted in official competitions anyway.
 * You can glue an arrow on the volume knob to keep the position under control (simply cut a triangle from a sticker).
-
-It is possible (but not recommended) to use memory mode instead of frequency mode on each VFO. If memory mode is active on the current VFO, 
+* It is possible (but not recommended) to use memory mode instead of frequency mode on each VFO. If memory mode is active on the current VFO, 
 frequency and memory number are are displayed alternately one after each other. Number keys change the memory number (enter 3 digits) 
 and not the frequency. You can switch between memory mode and frequency mode by long pressing "3 VFO/MR" key.
+* If you modify settings in memory mode don´t forget to save them before switching off (menu "ChSave").
+
+#### Troubleshooting ####
+* The gain index history is flickering.
+** Disable dual watch (RxMode = MAIN ONLY).
+* The entered frequency is modified.
+** Decrease frequency step in menu "Step" to desired channel raster.
+* Chirp does read different channel settings than in my radio.
+** If you changed channel settings on the radio you have to store them first (menu "ChSave").
+** Chirp does not support seperate settings for modulation and bandwidth. So bandwidth is selected implicitily by the modulation. This chirp driver uses in AM mode already "narrow" bandwidth and "U1K7" (1.7kHz) for "NAM" and "USB".
 
 ## Headphones
 
-Headphones can be connected to the 2.5mm jack. The audio signal is between the tip and sleeve of the jack.
+Headphones can be connected to the 2.5mm jack. The audio signal is between the tip and sleeve of the jack, but...
 
 > [!WARNING]
 > There is a DC voltage of around 4V between tip and sleeve, too. Use a DC blocker before connecting your headphones to the device!
@@ -351,7 +360,7 @@ You may obtain a copy of the License at
   <img src="/images/ardf6.jpg" width=300 />
   <img src="/images/ardf5.jpg" width=300 />
   <img src="/images/ardf4.jpg" width=300 />
-
+  <img src="/images/ardf_sticker.jpg" width=300 />
 
 </p>
 

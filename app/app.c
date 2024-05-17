@@ -1102,6 +1102,10 @@ void APP_TimeSlice10ms(void)
 	gNextTimeslice = false;
 	gFlashLightBlinkCounter++;
 
+#ifdef ENABLE_ARDF
+	ARDF_10ms();
+#endif
+
 #ifdef ENABLE_BOOT_BEEPS
 	if (boot_counter_10ms > 0 && (boot_counter_10ms % 25) == 0) {
 		AUDIO_PlayBeep(BEEP_880HZ_40MS_OPTIONAL);
@@ -1120,10 +1124,6 @@ void APP_TimeSlice10ms(void)
 		UART_HandleCommand();
 		__enable_irq();
 	}
-#endif
-
-#ifdef ENABLE_ARDF
-	ARDF_10ms();
 #endif
 
 	if (gReducedService)
