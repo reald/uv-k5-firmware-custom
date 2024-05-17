@@ -163,12 +163,12 @@ and not the frequency. You can switch between memory mode and frequency mode by 
 
 #### Troubleshooting ####
 * The gain index history is flickering.
-** Disable dual watch (RxMode = MAIN ONLY).
+  * Disable dual watch (RxMode = MAIN ONLY).
 * The entered frequency is modified.
-** Decrease frequency step in menu "Step" to desired channel raster.
+  * Decrease frequency step in menu "Step" to desired channel raster.
 * Chirp does read different channel settings than in my radio.
-** If you changed channel settings on the radio you have to store them first (menu "ChSave").
-** Chirp does not support seperate settings for modulation and bandwidth. So bandwidth is selected implicitily by the modulation. This chirp driver uses in AM mode already "narrow" bandwidth and "U1K7" (1.7kHz) for "NAM" and "USB".
+  * If you changed channel settings on the radio you have to store them first (menu "ChSave").
+  * Chirp does not support seperate settings for modulation and bandwidth. So bandwidth is selected implicitily by the modulation. This chirp driver uses in AM mode already "narrow" bandwidth and "U1K7" (1.7kHz) for "NAM" and "USB".
 
 ## Headphones
 
