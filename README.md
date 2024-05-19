@@ -20,7 +20,7 @@ Anyway, have fun.
 * [Main Features](#main-features)
 * [Manual](#manual)
 * [Manual for ARDF](#Specific-ARDF-Features)
-* {Headphones](#headphones)
+* [Headphones](#headphones)
 * [Radio Performance](#radio-performance)
 * [User Customization](#user-customization)
 * [Compiler](#compiler)
