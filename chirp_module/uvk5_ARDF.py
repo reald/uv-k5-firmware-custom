@@ -176,11 +176,11 @@ u8 sl2PriorCh2;
 
 #seekto 0xf24;
 ul32 ARDFFoxDuration;
+il16 ARDFClockCorrTicksMin;
 u8 __unused3:1,
    ARDFGainRemember:2,
    ARDFNumFoxes:4,
    ARDFEnable:1;
-
 
 #seekto 0xf40;
 u8 int_flock;
@@ -438,7 +438,7 @@ KEYACTIONS_LIST = ["None",
 
 MIC_GAIN_LIST = ["+1.1dB", "+4.0dB", "+8.0dB", "+12.0dB", "+15.1dB"]
 
-ARDFGainRemember_LIST = ["off", "VFO 1", "VFO 2", "Both"]
+ARDFGainRemember_LIST = ["off", "VFO A", "VFO B", "Both"]
 
 def min_max_def(value, min_val, max_val, default):
     """returns value if in bounds or default otherwise"""
@@ -931,6 +931,9 @@ class UVK5RadioEgzumer(uvk5.UVK5RadioBase):
             elif elname == "ARDFEnable":
                 _mem.ARDFEnable = element.value
 
+            elif elname == "ARDFClockCorrTicksMin":
+                _mem.ARDFClockCorrTicksMin = element.value
+
             elif elname == "ARDFFoxDuration":
                 _mem.ARDFFoxDuration = element.value
             
@@ -1418,6 +1421,10 @@ class UVK5RadioEgzumer(uvk5.UVK5RadioBase):
         tmp_ARDFFoxDuration = _mem.ARDFFoxDuration
         val = RadioSettingValueInteger(100, 99999, tmp_ARDFFoxDuration)
         ARDFFoxDuration_setting = RadioSetting("ARDFFoxDuration", "ARDF Fox Transmitting Duration [1/100 s] (FoxDur)", val)
+
+        tmp_ARDFClockCorrTicksMin = _mem.ARDFClockCorrTicksMin
+        val = RadioSettingValueInteger(-500, 500, tmp_ARDFClockCorrTicksMin)
+        ARDFClockCorrTicksMin_setting = RadioSetting("ARDFClockCorrTicksMin", "ARDF Clock Correction add. 10ms Ticks per Minute", val)
         
         val = RadioSettingValueBoolean(_mem.ARDFEnable)
         ARDFEnable_setting = RadioSetting("ARDFEnable", "ARDF Enable (ARDF)", val)
@@ -1762,6 +1769,7 @@ class UVK5RadioEgzumer(uvk5.UVK5RadioBase):
         # ARDF 
         ardf.append(ARDFEnable_setting)
         ardf.append(ARDFFoxDuration_setting)
+        ardf.append(ARDFClockCorrTicksMin_setting)
         ardf.append(ARDFNumFoxes_setting)
         ardf.append(ARDFGainRemember_setting)
         

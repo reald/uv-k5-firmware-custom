@@ -66,7 +66,11 @@ void UI_DisplayStatus()
 			uint8_t activefox = gARDFActiveFox + 1;
 			if ( activefox >= 10 )
 				activefox = 0;
-			sprintf(buf, "F%d %2d", activefox, ( -(int32_t)((gARDFFoxDuration10ms * 151 / 150) - gARDFTime10ms)/100) ); // factor 151/150 is for clock correction
+				
+			int32_t resttime = ARDF_GetRestTime_s();
+			
+			sprintf(buf, "F%d %d", activefox, resttime);
+
 			UI_PrintStringSmallBufferBold(buf, line + 32);
 		}
 		else

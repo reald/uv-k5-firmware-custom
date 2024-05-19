@@ -19,7 +19,8 @@ Anyway, have fun.
 
 * [Main Features](#main-features)
 * [Manual](#manual)
-* [Manual for ARDF](#manual-for-ardf)
+* [Manual for ARDF](#Specific-ARDF-Features)
+* {Headphones](#headphones)
 * [Radio Performance](#radio-performance)
 * [User Customization](#user-customization)
 * [Compiler](#compiler)
@@ -68,7 +69,7 @@ Anyway, have fun.
 
 Up to date manual is available in the [Wiki section](https://github.com/egzumer/uv-k5-firmware-custom/wiki)
 
-## Specific Manual for ARDF Features
+## Specific ARDF Features
 
 Download a [precompiled release](https://github.com/reald/uv-k5-firmware-custom/releases) or compile with ENABLE_ARDF=1 and preferable with ENABLE_PREVENT_TX=1. 
 To get enough free flash space disable some unneeded TX features (e.g. ENABLE_DTMF_CALLING=0). 
@@ -96,69 +97,95 @@ Gain steps should be roughly 5dB but they are completely uncalibrated. Expect su
 
 - Disable squelch (Menu: Sql = 0)
 - Disable dual watch (Menu: RxMode = MAIN ONLY).
-- Select number of foxes in menu "NumFox" (default = 5, min = 1, max = 10).
-- Choose duration time of one fox transmission in menu "FoxDur". Default is 60s. Modify with up/down in 0.1s steps or enter value as *5 digit number* in 1/100s resolution. Confirm with menu button (min = 1s, max = 999.99s).
+- Adjust clock correction if necessary (menu "ClkCor", details below).
 
-- Activate VFO 1 (long pressing key "2 A/B" toggles between both VFOs).
-- Enter the frequency of the foxes using the number keys.
+- Select number of foxes in menu "NumFox" (default = 5, min = 1, max = 10).
+- Choose duration time of one fox transmission in menu "FoxDur". Default is 60s. 
+Modify with UP/DOWN key in 0.1s steps or enter value as *5 digit number* in 1/100s resolution. Confirm with menu button (min = 1s, max = 999.99s).
+- Activate VFO A (long pressing key "2 A/B" toggles between both VFOs.
+- Enter the frequency of the foxes using the number keys. If memory mode is active long press "3 VFO MR" to change to frequency mode.
 - Choose the used modulation of the foxes in menu "Demod" (e.g. AM).
-- Use a narrow bandwidth mode in menu "BW W/N": "U 1K7" is 1.7 kHz, (this is the smallest possible value; shown as "U-") or "NARROWER" which is 2.5 kHz (shown as "N-" in the status bar).
-- Switch to VFO 2 by long pressing "2 A/B". This VFO will mostly be used for the return beacon.
-- Configure frequency, modulation and bandwidth the same way as for VFO 1.
-- Change back to VFO 1 by long pressing "2 A/B".
+- Select a narrow bandwidth mode in menu "BW W/N": "U 1K7" is 1.7 kHz, (this is the smallest possible value; shown as "U-") or "U 2K5" which is 2.5 kHz (shown as "N-" on the ARDF screen).
+- Switch to VFO B by long pressing "2 A/B". This VFO will mostly be used for the return beacon.
+- Configure frequency, modulation and bandwidth the same way as for VFO A.
+- Change back to VFO A by long pressing "2 A/B".
+
+- Unscrew antenna and add a directional antenna with good front/back ratio.
 - Listen for foxes, synchronize fox number and timer in menu with "ActFox" and "TiRst" options (details below).
+- Start hunting foxes and have fun!
 
 #### Main Screen ####
 
 <img src="/images/ardf_mainscreen.jpg" width=800 />
 
-This is the radio screen if ARDF mode is enabled. The manual gain index value can be choosen with UP/DOWN keys from 0 to 21. RSSI_max is
-the max RSSI in the last half second. This is an uncalibrated raw value. (The RSSI value next to the S-meter shows roughly dBm.)
+This pictures shows the radio screen if ARDF mode is enabled. The manual gain index value can be chosen with UP/DOWN keys from 0 (silent) to 21 (max gain).
+RSSI_max is the highest RSSI in the last half second. This is an uncalibrated raw value. (The RSSI value next to the S-meter shows roughly dBm.)
 The **bold line** below show the settings for the **active VFO**:
-VFO number "1", demodulation "USB", smallest bandwidth mode "U-" (1.7kHz) and
+VFO "A", demodulation "USB", smallest bandwidth mode "U-" (1.7kHz) and
 receiving frequency "144.001 MHz". For this VFO the gain remember mode (details below) is active so the gain index history for up to 5 foxes is shown.
 The active fox number is bold.
 
-The **last line** shows the configuration for the **inactive VFO**. It is recommended to put the fox settings in VFO 1 and the return beacon on VFO 2.
+The **last line** shows the configuration for the **inactive VFO**. It is recommended to put the fox settings in VFO A and the return beacon on VFO B.
 By long pressing "2 A/B" key can quickly be switched between both configurations.
+
+On system boot the device starts with active fox number 1 and full duration time left. In menu "ActFox" the active fox can be changed. 
+The timer can be reset in menu "TiRst". Select "TiRst" with "M"-key, a triangle appears. Another press on "M"-key will reset the timer.
+Use this for synchronization. Active fox and timer are shown on the top in the status bar if the menu is opened.
+
 
 #### Gain Remember Mode ####
 This firmware supports **gain remember** for manual gain control. If gain remember is **activated**, the
-**manual gain index** is handled **for every fox seperately**. At the **beginning of a fox cycle** the **last gain
+**manual gain index** is handled **for every fox separately**. At the **beginning of a fox cycle** the **last gain
 index for this fox** is **restored from the last cycle**. The manual gain index history for up to 5 foxes is shown 
 in the lower part of the screen. 
 
 If **gain remember** is **off**, there is only one gain index for all foxes independent from any fox cycle times.
-This feature can be **configured for both VFOs separately** (menu "GainRe": Off / VFO 1 / VFO 2 / BOTH).
+This feature can be **configured for both VFOs separately** (menu "GainRe": Off / VFO A / VFO B / BOTH).
 
-A usage scenario would be to configure the fox frequency on VFO 1 with gain remember mode on. Put the return beacon 
-frequency on VFO 2 without gain remember on. (Because the return beacon is permanently transmitting there is no need 
+A usage scenario would be to configure the fox frequency on VFO A with gain remember mode on. Put the return beacon 
+frequency on VFO B without gain remember on. (Because the return beacon is permanently transmitting there is no need 
 different gains in different time slots.)
 
 You can quickly switch between both VFOs by long pressing "2 (A/B)" or a configured function key (see below).
 
 If gain remember is not activated on the actual VFO, no gain index history is shown in the lower part of the screen.
 
-On system boot the device starts with active fox number 1 and full duration time left. In menu "ActFox" the active fox can be changed. 
-The timer can be reset in menu "TiRst". Select "TiRst" with "M"-key, a triangle appears. Another press on "M"-key will reset the timer.
-Use this for synchronization. Active fox and timer are shown on the top in the status bar if the menu is openend.
+#### Clock Correction ####
+The microcontroller clock of the radio seems to be not very precise. This leads to a heavily drifting clock. The firmware provides a correction
+mechanism to reach acceptable ranges. Start ARDF mode and stop **how many seconds really pass** until **the radio tells 1 hour is up**. 
+(Useful settings: NumFox = 10, FoxDur = 60.00s, sync to reference clock.) The formula for the correction value is:
 
-Unscrew antenna and add a directional antenna with good front/back ratio. Start hunting foxes and have fun.
+$$ CorrectionValue = 6000 - (StoppedSeconds * 100)/60 $$
+
+E.g. if the radio finished 60 one minute cycles in 59 min and 36 seconds = 59 * 60 + 36 = 3576s the calculation would be:
+
+$$ CorrectionValue = 6000 - (3576 * 100)/60 = 40 $$
+
+Enter this value in menu "ClkCor" using UP/DOWN keys (allowed range: -500 ... 500). The value is stored in eeprom.
 
 #### Function keys ####
 Two different ARDF actions can be mapped to function keys: 
 * Set manual gain to a medium index value (10). It is recommended to configure "ARDF Set Med.Gain" to short press on F2 key) 
 * Enable/Disable ARDF function (e.g. for long press on F1 key).
 It is recommended to configure "Switch VFO" to F1 short.
+
+#### Chirp ####
+There is a [chirp](https://chirpmyradio.com/projects/chirp/wiki/Home) driver in folder [chirp_module/](chirp_module/) for this firmware. 
+The radio (including ARDF settings) can be programmed with this driver only not with the standard UV-K5 driver.
+
+Chirp does not support separate settings for modulation and bandwidth, bandwidth is selected implicitly by the modulation. 
+This chirp driver uses in AM mode already "narrow" bandwidth and "U1K7" (1.7kHz) for "NAM" and "USB".
  
 #### Notes ####
-* Because four bandwidth modes are available (WIDE, NARROW, NARROWER, U 1K7) they cannot programmed with chirp at the moment. Chirps default UV K5 profile only supports 1 bit for bandwidth settings.
-* The lowest possible frequency of the receiver chip is 18 Mhz. So this is NOT usable on 80 m.
-* If ARDF mode is active any TX functionality is disabled. However it is recommended to compile with ENABLE_PREVENT_TX=1 to permanently disable TX. ARDF receivers with a builtin TX functionality are not permitted in official competitions anyway.
+* The lowest possible frequency of the receiver chip is 18 MHz. So this is NOT usable on 80 m.
+* If ARDF mode is active any TX functionality is disabled. However it is recommended to compile with ENABLE_PREVENT_TX=1 to 
+permanently disable TX. This is done for official releases.  ARDF receivers with a builtin TX functionality are not permitted 
+in official competitions anyway. 
 * You can glue an arrow on the volume knob to keep the position under control (simply cut a triangle from a sticker).
-* It is possible (but not recommended) to use memory mode instead of frequency mode on each VFO. If memory mode is active on the current VFO, 
-frequency and memory number are are displayed alternately one after each other. Number keys change the memory number (enter 3 digits) 
-and not the frequency. You can switch between memory mode and frequency mode by long pressing "3 VFO/MR" key.
+* It is possible (but not recommended because it is more complicated) to use memory mode instead of frequency mode on each VFO. 
+If memory mode is active on the current VFO, frequency and memory number are are displayed alternately one after each other. 
+Number keys change the memory number (enter 3 digits)  and not the frequency. You can switch between memory mode and 
+frequency mode by long pressing "3 VFO/MR" key.
 * If you modify settings in memory mode don´t forget to save them before switching off (menu "ChSave").
 
 #### Troubleshooting ####
@@ -168,7 +195,6 @@ and not the frequency. You can switch between memory mode and frequency mode by 
   * Decrease frequency step in menu "Step" to desired channel raster.
 * Chirp does read different channel settings than in my radio.
   * If you changed channel settings on the radio you have to store them first (menu "ChSave").
-  * Chirp does not support seperate settings for modulation and bandwidth. So bandwidth is selected implicitily by the modulation. This chirp driver uses in AM mode already "narrow" bandwidth and "U1K7" (1.7kHz) for "NAM" and "USB".
 
 ## Headphones
 

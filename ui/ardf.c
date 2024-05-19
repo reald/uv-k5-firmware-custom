@@ -32,12 +32,21 @@
 #include "ui/ui.h"
 
 
-
 void UI_DisplayARDF_Timer(void)
 {
    char buffer[4];
 
-   sprintf(buffer, "-%02u", (int32_t)((gARDFFoxDuration10ms * 151 / 150) - gARDFTime10ms)/100 ); // factor 151/150 is for clock correction
+   int32_t resttime = ARDF_GetRestTime_s();
+   
+   if ( resttime <= 99 )
+   { 
+      sprintf(buffer, "-%02u", resttime );
+   }
+   else
+   {
+      sprintf(buffer, "%3u", resttime );
+   }
+   
    UI_DisplayFrequency(buffer, 12, 0, false);
    
    // note: ST7565_BlitLine(0/1) for this screen update is called in UI_DisplayARDF_RSSI()
@@ -65,11 +74,9 @@ void UI_DisplayARDF_RSSI(void)
 
 void UI_DisplayARDF_Debug(void)
 {
-   char buffer[4];
+   char buffer[17];
 
-   UI_PrintStringSmallNormal("debug", 60, 0, 3);
-
-   sprintf(buffer, "%03d", gScreenToDisplay);
+   sprintf(buffer, "Dbg: %d %d", gARDFFoxDuration10ms_corr, gARDFClockCorrAddTicksPerMin);
    UI_PrintStringSmallNormal(buffer, 2, 0, 3);
    
    ST7565_BlitLine(3);
@@ -84,12 +91,12 @@ void UI_DisplayARDF(void)
    
    UI_DisplayClear();
 
-   if( gLowBattery && !gLowBatteryConfirmed )
+   /* if( gLowBattery && !gLowBatteryConfirmed )
    {
       UI_DisplayPopup("LOW BATTERY");
       ST7565_BlitFullScreen();
       return;
-   }
+   } */
 
    /* 1. big line */
    uint8_t activefox = gARDFActiveFox + 1;
@@ -109,7 +116,7 @@ void UI_DisplayARDF(void)
    VFO_Info_t *vfoInfo = &gEeprom.VfoInfo[vfo];
    ModulationMode_t mod = vfoInfo->Modulation;
 
-   sprintf(buffer, "%d", vfo+1 );
+   sprintf(buffer, "%c", 'A' + vfo );
    UI_PrintStringSmallBold(buffer, 0, 0, 2);
 
    UI_PrintStringSmallBold(gModulationStr[mod], 12, 36, 2); // modulation
@@ -121,7 +128,7 @@ void UI_DisplayARDF(void)
          UI_PrintStringSmallBold("N", 42, 58, 2);
          break;
          
-      case BANDWIDTH_NARROWER:
+      case BANDWIDTH_U2K5:
 
          UI_PrintStringSmallBold("N-", 42, 58, 2);
          break;
@@ -175,13 +182,11 @@ void UI_DisplayARDF(void)
 
    /* 3. middle line for debug or rssi bar */
 
-   // UI_PrintStringSmallNormal("line 3", 2, 0, 3);
-   // UI_DisplayARDF_Debug();
-
-#ifdef ENABLE_AGC_SHOW_DATA
+#ifdef ARDF_ENABLE_SHOW_DEBUG_DATA
+   UI_DisplayARDF_Debug();
+#elif defined(ENABLE_AGC_SHOW_DATA)
    UI_MAIN_PrintAGC(true);
 #else
-   // UI_DisplayARDF_Debug();
    center_line = CENTER_LINE_RSSI;
    DisplayRSSIBar(true);
 #endif
@@ -224,7 +229,7 @@ void UI_DisplayARDF(void)
    vfoInfo = &gEeprom.VfoInfo[1-vfo];
    mod = vfoInfo->Modulation;
 
-   sprintf(buffer, "%d", 2-vfo );
+   sprintf(buffer, "%c", 'B' - vfo );
    UI_PrintStringSmallNormal(buffer, 0, 0, 6);
 
    UI_PrintStringSmallNormal(gModulationStr[mod], 12, 36, 6); // modulation
@@ -236,7 +241,7 @@ void UI_DisplayARDF(void)
          UI_PrintStringSmallNormal("N", 42, 58, 6);
          break;
          
-      case BANDWIDTH_NARROWER:
+      case BANDWIDTH_U2K5:
 
          UI_PrintStringSmallNormal("N-", 42, 58, 6);
          break;

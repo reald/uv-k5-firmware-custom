@@ -499,6 +499,7 @@ void MENU_AcceptSetting(void)
 				// value updated
 				gSetting_ARDFEnable = gSubMenuSelection;
         		        RADIO_SetupAGC(gRxVfo->Modulation == MODULATION_AM, false); // if gSetting_ARDFEnable is set, AGC will be switched off
+
 				gARDFRequestSaveEEPROM = true;
 			}
 			
@@ -510,6 +511,7 @@ void MENU_AcceptSetting(void)
 			{
 				// value updated
 				gARDFNumFoxes = gSubMenuSelection;
+
 				gARDFRequestSaveEEPROM = true;
 			}
 			return;
@@ -520,6 +522,8 @@ void MENU_AcceptSetting(void)
 			{
 				// value updated
 				gARDFFoxDuration10ms = gSubMenuSelection;
+				gARDFFoxDuration10ms_corr = (uint32_t)( (int32_t)gARDFFoxDuration10ms + ( (int32_t)gARDFFoxDuration10ms * (int32_t)gARDFClockCorrAddTicksPerMin)/6000 ); // fixme: limit to 1s
+
 				gARDFRequestSaveEEPROM = true;
 			}
 			return;
@@ -542,10 +546,24 @@ void MENU_AcceptSetting(void)
 			{
 				// value updated
 				gARDFGainRemember = gSubMenuSelection;
+
 				gARDFRequestSaveEEPROM = true;
 			}
 
 			return;
+
+		case MENU_ARDF_CLOCK_CORR:
+			
+			if ( gARDFClockCorrAddTicksPerMin != gSubMenuSelection )
+			{
+				// value updated
+				gARDFClockCorrAddTicksPerMin = gSubMenuSelection;
+				gARDFFoxDuration10ms_corr = (uint32_t)( (int32_t)gARDFFoxDuration10ms + ( (int32_t)gARDFFoxDuration10ms * (int32_t)gARDFClockCorrAddTicksPerMin)/6000 ); // fixme: limit to 1s
+
+				gARDFRequestSaveEEPROM = true;
+			}
+			return;
+
 		
 		#endif
 
@@ -1008,7 +1026,10 @@ void MENU_ShowCurrentSetting(void)
 		case MENU_ARDF_GAIN_REMEMBER:
 			gSubMenuSelection = gARDFGainRemember;
 			break;
-	
+
+		case MENU_ARDF_CLOCK_CORR:
+                        gSubMenuSelection = gARDFClockCorrAddTicksPerMin;
+                        break;
 		#endif	
 
 		case MENU_SCR:
@@ -1790,18 +1811,36 @@ static void MENU_Key_UP_DOWN(bool bKeyPressed, bool bKeyHeld, int8_t Direction)
 
 	if (UI_MENU_GetCurrentMenuId() == MENU_ARDF_FOXDURATION) 
 	{
-		int32_t duration = (-Direction * 10) + gSubMenuSelection;
-		if (duration < 99999) 
+		int32_t duration = (Direction * 10) + gSubMenuSelection;
+		if (duration <= 99999) 
 		{
-			if (duration < 0)
+			if (duration < 100)
 				duration = 99999;
 		}
 		else
 		{
-			duration = 0;
+			duration = 100;
 		}
 
 		gSubMenuSelection     = duration;
+		gRequestDisplayScreen = DISPLAY_MENU;
+		return;
+	}
+
+	if (UI_MENU_GetCurrentMenuId() == MENU_ARDF_CLOCK_CORR ) 
+	{
+		int16_t correction = Direction + gSubMenuSelection;
+		if (correction <= 500) 
+		{
+			if (correction < -500)
+				correction = -500;
+		}
+		else
+		{
+			correction = 500;
+		}
+
+		gSubMenuSelection     = correction;
 		gRequestDisplayScreen = DISPLAY_MENU;
 		return;
 	}

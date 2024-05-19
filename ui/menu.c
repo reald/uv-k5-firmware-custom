@@ -57,8 +57,8 @@ const t_menu_item MenuList[] =
 	{"ActFox", VOICE_ID_INVALID,                       MENU_ARDF_SETFOX   },
         {"TiRst",  VOICE_ID_INVALID,                       MENU_ARDF_TIME_RESET },
         {"GainRe", VOICE_ID_INVALID,                       MENU_ARDF_GAIN_REMEMBER },
+        {"ClkCor", VOICE_ID_INVALID,                       MENU_ARDF_CLOCK_CORR },
 #endif
-
 	{"Scramb", VOICE_ID_SCRAMBLER_ON,                  MENU_SCR           }, // was "SCR"
 	{"BusyCL", VOICE_ID_BUSY_LOCKOUT,                  MENU_BCL           }, // was "BCL"
 	{"Compnd", VOICE_ID_INVALID,                       MENU_COMPAND       },
@@ -155,11 +155,11 @@ const t_menu_item MenuList[] =
 const uint8_t FIRST_HIDDEN_MENU_ITEM = MENU_F_LOCK;
 
 #ifdef ENABLE_ARDF
-const char gSubMenu_ARDF_Remember_Gain[][5] =
+const char gSubMenu_ARDF_Remember_Gain[][6] =
 {
 	"OFF",
-	"VFO1",
-	"VFO2",
+	"VFO A",
+	"VFO B",
 	"BOTH"
 };
 #endif
@@ -178,11 +178,11 @@ const char gSubMenu_SFT_D[][4] =
 	"-"
 };
 
-const char gSubMenu_W_N[][9] =
+const char gSubMenu_W_N[][7] =
 {
 	"WIDE",
 	"NARROW",
-	"NARROWER",
+	"U 2K5",
 	"U 1K7"
 };
 
@@ -629,6 +629,10 @@ void UI_DisplayMenu(void)
 
 		case MENU_ARDF_GAIN_REMEMBER:
 			strcpy(String, gSubMenu_ARDF_Remember_Gain[gSubMenuSelection]);
+			break;
+
+		case MENU_ARDF_CLOCK_CORR:
+			sprintf(String, "%d", gSubMenuSelection);
 			break;
 
 		#endif

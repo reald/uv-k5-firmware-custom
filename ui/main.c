@@ -697,7 +697,7 @@ void UI_DisplayMain(void)
 		if (vfoInfo->CHANNEL_BANDWIDTH == BANDWIDTH_NARROW)
 			UI_PrintStringSmallNormal("N", LCD_WIDTH + 70, 0, line + 1);
 
-		if (vfoInfo->CHANNEL_BANDWIDTH == BANDWIDTH_NARROWER)
+		if (vfoInfo->CHANNEL_BANDWIDTH == BANDWIDTH_U2K5)
 			UI_PrintStringSmallNormal("N-", LCD_WIDTH + 70, 0, line + 1);
 
 		if (vfoInfo->CHANNEL_BANDWIDTH == BANDWIDTH_U1K7)

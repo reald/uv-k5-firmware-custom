@@ -95,12 +95,14 @@ bool              gSetting_ScrambleEnable;
 bool              gSetting_ARDFEnable = ARDF_DEFAULT_ENABLE;
 uint32_t          gARDFTime10ms = 0;
 uint32_t          gARDFFoxDuration10ms = ARDF_DEFAULT_FOX_DURATION;  /* 60s * 100 ticks per second */
+uint32_t          gARDFFoxDuration10ms_corr = ARDF_DEFAULT_FOX_DURATION + (ARDF_DEFAULT_FOX_DURATION * ARDF_CLOCK_CORR_TICKS_PER_MIN)/6000;
 uint8_t           gARDFNumFoxes = ARDF_DEFAULT_NUM_FOXES;
 uint8_t           gARDFActiveFox = 0;
 uint8_t           gARDFGainRemember = ARDF_DEFAULT_GAIN_REMEMBER; /* remember gain on VFO 1 by default. */
 unsigned int      gARDFRssiMax = 0; /* max rssi of last half second */
 uint8_t           gARDFMemModeFreqToggleCnt_s = 0; /* toggle memory bank/frequency display every x s */
-bool              gARDFRequestSaveEEPROM = false;
+bool              gARDFRequestSaveEEPROM = true;
+int16_t           gARDFClockCorrAddTicksPerMin = ARDF_CLOCK_CORR_TICKS_PER_MIN;
 
 uint8_t ardf_gain_index[2][ARDF_NUM_FOX_MAX];
 
@@ -196,8 +198,8 @@ uint8_t ARDF_Get_GainIndex(uint8_t vfo)
 bool ARDF_ActVfoHasGainRemember(uint8_t vfo)
 {
         /* "OFF", 0
-        "VFO1", 1
-        "VFO2", 2
+        "VFO A", 1
+        "VFO B", 2
         "BOTH" 3 */
 	
 	if ( (vfo+1) & gARDFGainRemember )
@@ -218,6 +220,11 @@ void ARDF_ActivateGainIndex(void)
 	gUpdateDisplay = true;
 }
 
+
+int32_t ARDF_GetRestTime_s(void)
+{
+	return (int32_t)(gARDFFoxDuration10ms - gARDFTime10ms * gARDFFoxDuration10ms/gARDFFoxDuration10ms_corr )/100;
+}
 
 #endif
 

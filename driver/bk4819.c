@@ -666,7 +666,7 @@ void BK4819_SetFilterBandwidth(const BK4819_FilterBandwidth_t Bandwidth, const b
 			}
 			break; */
 
-                case BK4819_FILTER_BW_NARROWER:	// 2.5 kHz modified for ARDF
+                case BK4819_FILTER_BW_NARROWER:// 2.5 kHz modified for ARDF
 			val = (2u << 12) |     //  RF filter bandwidth (010 = 2.5 kHz)
                               (2u <<  9) |     //  RF filter bandwidth when signal is weak, same (010 = 2.5 kHz)
                               (1u <<  6) |     //  AFTxLPF2 filter Band Width (smallest, but we don´t care about TX)

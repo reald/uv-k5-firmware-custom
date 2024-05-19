@@ -230,13 +230,13 @@ void SETTINGS_InitEEPROM(void)
 
 #ifdef ENABLE_ARDF
 	// 0F24..0F2C
-	EEPROM_ReadBuffer(0x0F24, Data, 5);
+	EEPROM_ReadBuffer(0x0F24, Data, 7);
 
-	if ( Data[4] != 0xFF )
+	if ( Data[6] != 0xFF )
 	{
-		gSetting_ARDFEnable = Data[4] & 0x01;
-		gARDFNumFoxes = (Data[4] >> 1) & 0x0f;
-		gARDFGainRemember = (Data[4] >> 5) & 0x03;
+		gSetting_ARDFEnable = Data[6] & 0x01;
+		gARDFNumFoxes = (Data[6] >> 1) & 0x0f;
+		gARDFGainRemember = (Data[6] >> 5) & 0x03;
 	}
 	else
 	{
@@ -258,6 +258,24 @@ void SETTINGS_InitEEPROM(void)
 	if ( gARDFFoxDuration10ms < 100 )
 		gARDFFoxDuration10ms = ARDF_DEFAULT_FOX_DURATION;
 
+
+        if ( (Data[4] == 0xFF) && (Data[5] == 0xFF) )
+        {
+        	// eeprom empty
+        	gARDFClockCorrAddTicksPerMin = ARDF_CLOCK_CORR_TICKS_PER_MIN;
+        }
+        else
+        {
+        	memcpy(&gARDFClockCorrAddTicksPerMin, &Data[4], sizeof(gARDFClockCorrAddTicksPerMin));
+        	
+        	 if ( (gARDFClockCorrAddTicksPerMin < -500) || (gARDFClockCorrAddTicksPerMin > 500) )
+        		gARDFClockCorrAddTicksPerMin = ARDF_CLOCK_CORR_TICKS_PER_MIN;
+
+        }
+
+        gARDFFoxDuration10ms_corr = (uint32_t)( (int32_t)gARDFFoxDuration10ms + ( (int32_t)gARDFFoxDuration10ms * (int32_t)gARDFClockCorrAddTicksPerMin)/6000 ); // fixme: limit to 1s
+
+        
 #endif
 	
 	// 0F40..0F47
@@ -485,16 +503,18 @@ void SETTINGS_SaveARDF(void)
 	union {
 		struct {
 			uint32_t FoxDuration;
+			int16_t  ARDFClockCorrTicksMin;
 			uint8_t  ARDFEnable:1;
 			uint8_t  NumFoxes:4;
 			uint8_t  GainRemember:2;
 		};
-		uint8_t __raw[5];
+		uint8_t __raw[7];
 	} __attribute__((packed)) ARDFCfg;
 
 	memset(ARDFCfg.__raw, 0xFF, sizeof(ARDFCfg.__raw));
 	
 	ARDFCfg.FoxDuration = gARDFFoxDuration10ms;
+	ARDFCfg.ARDFClockCorrTicksMin = gARDFClockCorrAddTicksPerMin;
 	ARDFCfg.ARDFEnable = gSetting_ARDFEnable;
 	ARDFCfg.NumFoxes = gARDFNumFoxes;
 	ARDFCfg.GainRemember = gARDFGainRemember;

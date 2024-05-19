@@ -61,7 +61,7 @@ b=b;
 void ARDF_10ms(void)
 {
 
-   if ( gARDFTime10ms >= (gARDFFoxDuration10ms * 151 / 150) ) // time correction factor: -24s in 60min
+   if ( gARDFTime10ms >= gARDFFoxDuration10ms_corr )
    {
       // new fox cycle
       gARDFTime10ms = 0;
@@ -90,16 +90,17 @@ void ARDF_10ms(void)
    }
    else if ( (gScreenToDisplay == DISPLAY_ARDF) && ( (gARDFTime10ms % 50) == 0) )
    {
-      // update most important values 2 times per second
+      // update most important values ~2 times per second
       UI_DisplayARDF_Timer();
       UI_DisplayARDF_RSSI();
 
-      gARDFRssiMax = 0;
+      gARDFRssiMax = BK4819_GetRSSI();
 
-#ifdef ENABLE_AGC_SHOW_DATA
+#ifdef ARDF_ENABLE_SHOW_DEBUG_DATA
+      UI_DisplayARDF_Debug();
+#elif defined(ENABLE_AGC_SHOW_DATA)
       UI_MAIN_PrintAGC(true);
 #else
-      // UI_DisplayARDF_Debug();
       center_line = CENTER_LINE_RSSI;
       DisplayRSSIBar(true);
 #endif
@@ -114,7 +115,6 @@ void ARDF_10ms(void)
          gARDFRssiMax = rssi;
       }
    }
-
 
 }
 
@@ -140,6 +140,7 @@ void ARDF_500ms(void)
    
    if ( u8Secnd >= 2 )
    {
+
       // update status bar every second
       gUpdateStatus = 1;
       u8Secnd = 0;

@@ -162,15 +162,21 @@ extern bool                  gSetting_ScrambleEnable;
 #define ARDF_DEFAULT_FOX_DURATION 6000
 #define ARDF_DEFAULT_GAIN_REMEMBER 1
 
+#define ARDF_CLOCK_CORR_TICKS_PER_MIN (+00) // default clock correction
+
+//#define ARDF_ENABLE_SHOW_DEBUG_DATA
+
 extern bool                  gSetting_ARDFEnable;
 extern uint32_t              gARDFTime10ms;
 extern uint32_t              gARDFFoxDuration10ms;
+extern uint32_t              gARDFFoxDuration10ms_corr;
 extern uint8_t               gARDFNumFoxes;
 extern uint8_t               gARDFActiveFox;
 extern uint8_t               gARDFGainRemember;
 extern unsigned int          gARDFRssiMax;
 extern uint8_t               gARDFMemModeFreqToggleCnt_s;
 extern bool                  gARDFRequestSaveEEPROM;
+extern int16_t               gARDFClockCorrAddTicksPerMin;
 
 typedef struct
 {
@@ -188,6 +194,7 @@ extern void ARDF_GainDecr(void);
 extern uint8_t ARDF_Get_GainIndex(uint8_t vfo);
 extern bool ARDF_ActVfoHasGainRemember(uint8_t vfo);
 extern void ARDF_ActivateGainIndex(void);
+extern int32_t ARDF_GetRestTime_s(void);
 
 #endif
 
