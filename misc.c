@@ -103,34 +103,36 @@ unsigned int      gARDFRssiMax = 0; /* max rssi of last half second */
 uint8_t           gARDFMemModeFreqToggleCnt_s = 0; /* toggle memory bank/frequency display every x s */
 bool              gARDFRequestSaveEEPROM = true;
 int16_t           gARDFClockCorrAddTicksPerMin = ARDF_CLOCK_CORR_TICKS_PER_MIN;
+#ifdef ARDF_ENABLE_SHOW_DEBUG_DATA
+int16_t	          gARDFdebug = 0;
+#endif
 
 uint8_t ardf_gain_index[2][ARDF_NUM_FOX_MAX];
 
 
 t_ardf_gain_table ardf_gain_table[] =
 {
-	{0x0000, -98},         //   0 .. 0 0 0 0 .. -33dB -24dB -8dB -33dB .. -98dB
-	{0x0100, -95},         //   1 .. 1 0 0 0 .. -30dB -24dB -8dB -33dB .. -95dB
-	{0x0009, -90},         //   2 .. 0 0 1 1 .. -33dB -24dB -6dB -27dB .. -90dB
-	{0x0130, -85},         //   3 .. 1 1 2 0 .. -30dB -19dB -3dB -33dB .. -85dB
-	{0x0058, -80},         //   4 .. 0 2 3 0 .. -33dB -14dB  0dB -33dB .. -80dB
-	{0x0013, -75},         //   5 .. 0 0 2 3 .. -33dB -24dB -3dB -15dB .. -75dB
-	{0x0239, -70},         //   6 .. 2 1 3 1 .. -24dB -19dB  0dB -27dB .. -70dB
-	{0x015A, -65},         //   7 .. 1 2 3 2 .. -30dB -14dB  0dB -21dB .. -65dB
-	{0x0214, -60},         //   8 .. 2 0 2 4 .. -24dB -24dB -3dB  -9dB .. -60dB
-	{0x00B3, -55},         //   9 .. 0 5 2 3 .. -33dB  -4dB -3dB -15dB .. -55dB
-	{0x015D, -50},         //  10 .. 1 2 3 5 .. -30dB -14dB  0dB  -6dB .. -50dB
-	{0x030B, -45},         //  11 .. 3 0 1 3 ..   0dB -24dB -6dB -15dB .. -45dB
-	{0x02B4, -40},         //  12 .. 2 5 2 4 .. -24dB  -4dB -3dB  -9dB .. -40dB
-	{0x035A, -35},         //  13 .. 3 2 3 2 ..   0dB -14dB  0dB -21dB .. -35dB
-	{0x037A, -30},         //  14 .. 3 3 3 2 ..   0dB  -9dB  0dB -21dB .. -30dB
-	{0x032F, -25},         //  15 .. 3 1 1 7 ..   0dB -19dB -6dB   0dB .. -25dB
-	{0x03D3, -20},         //  16 .. 3 6 2 3 ..   0dB  -2dB -3dB -15dB .. -20dB
-	{0x035E, -17},         //  17 .. 3 2 3 6 ..   0dB -14dB  0dB  -3dB .. -17dB original
-	{0x03EC, -15},         //  18 .. 3 7 1 4 ..   0dB   0dB -6dB  -9dB .. -15dB
-	{0x03BD, -10},         //  19 .. 3 5 3 5 ..   0dB  -4dB  0dB  -6dB .. -10dB
-	{0x03D7, -5 },         //  20 .. 3 6 2 7 ..   0dB  -2dB -3dB   0dB ..  -5dB
-	{0x03FF, 0  },         //  21 .. 3 7 3 7 ..   0dB   0dB  0dB   0dB ..   0dB
+	{0x0000, -90},         //   0 .. 0 0 0 0 .. -27dB -25dB -6dB -32dB .. -90dB
+	{0x0020, -85},         //   1 .. 0 1 0 0 .. -27dB -20dB -6dB -32dB .. -85dB
+	{0x0128, -80},         //   2 .. 1 1 1 0 .. -24dB -20dB -4dB -32dB .. -80dB
+	{0x0060, -75},         //   3 .. 0 3 0 0 .. -27dB -10dB -6dB -32dB .. -75dB
+	{0x0202, -70},         //   4 .. 2 0 0 2 .. -19dB -25dB -6dB -20dB .. -70dB
+	{0x0081, -65},         //   5 .. 0 4 0 1 .. -27dB  -6dB -6dB -26dB .. -65dB
+	{0x0053, -60},         //   6 .. 0 2 2 3 .. -27dB -16dB -2dB -15dB .. -60dB
+	{0x00AA, -55},         //   7 .. 0 5 1 2 .. -27dB  -4dB -4dB -20dB .. -55dB
+	{0x004E, -50},         //   8 .. 0 2 1 6 .. -27dB -16dB -4dB  -3dB .. -50dB
+	{0x02E2, -45},         //   9 .. 2 7 0 2 .. -19dB   0dB -6dB -20dB .. -45dB
+	{0x02B3, -40},         //  10 .. 2 5 2 3 .. -19dB  -4dB -2dB -15dB .. -40dB
+	{0x0097, -35},         //  11 .. 0 4 2 7 .. -27dB  -6dB -2dB   0dB .. -35dB
+	{0x01B7, -30},         //  12 .. 1 5 2 7 .. -24dB  -4dB -2dB   0dB .. -30dB
+	{0x0392, -28},         //  13 .. 3 4 2 2 ..   0dB  -6dB -2dB -20dB .. -28dB
+	{0x0336, -25},         //  14 .. 3 1 2 6 ..   0dB -20dB -2dB  -3dB .. -25dB
+	{0x034F, -20},         //  15 .. 3 2 1 7 ..   0dB -16dB -4dB   0dB .. -20dB
+	{0x039C, -15},         //  16 .. 3 4 3 4 ..   0dB  -6dB  0dB  -9dB .. -15dB
+	{0x03A7, -10},         //  17 .. 3 5 0 7 ..   0dB  -4dB -6dB   0dB .. -10dB
+	{0x03DE, -5 },         //  18 .. 3 6 3 6 ..   0dB  -2dB  0dB  -3dB ..  -5dB
+	{0x03FF, 0  },         //  19 .. 3 7 3 7 ..   0dB   0dB  0dB   0dB ..   0dB
+	
 };
 
 

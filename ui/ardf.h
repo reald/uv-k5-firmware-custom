@@ -20,8 +20,12 @@
 #ifdef ENABLE_ARDF
 void UI_DisplayARDF_Timer(void);
 void UI_DisplayARDF_RSSI(void);
-void UI_DisplayARDF_Debug(void);
 void UI_DisplayARDF(void);
+
+#ifdef ARDF_ENABLE_SHOW_DEBUG_DATA
+void UI_DisplayARDF_Debug(void);
+#endif
+
 #endif
 
 #endif

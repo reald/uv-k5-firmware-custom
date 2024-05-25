@@ -92,8 +92,8 @@ another firmware or a different flash tool.
 
 Turn the power knob a bit less than a quarter to turn the device on.
 ARDF Mode can be disabled/enabled in the menu (ARDF = OFF/ON). This enables **manual gain control** 
-by pressing **UP/DOWN keys**. The index reaches from 0 to 21, default is 17.
-Gain steps should be roughly 5dB but they are completely uncalibrated. Expect surprises everywhere. 
+by pressing **UP/DOWN keys**. The index reaches from 0 to 19, default is 15.
+Gain steps should be roughly 5dB but they are uncalibrated. Expect surprises.
 
 - Disable squelch (Menu: Sql = 0)
 - Disable dual watch (Menu: RxMode = MAIN ONLY).

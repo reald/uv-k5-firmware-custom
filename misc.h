@@ -153,7 +153,7 @@ extern bool                  gSetting_ScrambleEnable;
 #ifdef ENABLE_ARDF
 
 #define ARDF_NUM_FOX_MAX 10
-#define ARDF_GAIN_INDEX_DEFAULT 17
+#define ARDF_GAIN_INDEX_DEFAULT 15
 #define ARDF_GAIN_INDEX_MIDDLE 10
 #define ARDF_MEM_MODE_FREQ_TOGGLE_S 3 // in frequency mode: toggle memory number and frequency every 3 s
 
@@ -177,6 +177,10 @@ extern unsigned int          gARDFRssiMax;
 extern uint8_t               gARDFMemModeFreqToggleCnt_s;
 extern bool                  gARDFRequestSaveEEPROM;
 extern int16_t               gARDFClockCorrAddTicksPerMin;
+#ifdef ARDF_ENABLE_SHOW_DEBUG_DATA
+extern int16_t               gARDFdebug;
+#endif
+
 
 typedef struct
 {

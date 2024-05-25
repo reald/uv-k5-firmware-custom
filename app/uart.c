@@ -456,6 +456,11 @@ static void CMD_0601_ReadBK4819Reg(const uint8_t *pBuffer)
 	reply.header.Size = sizeof(reply.data);
 	reply.data.reg = cmd->reg;
 	reply.data.value = BK4819_ReadRegister(cmd->reg);
+
+#ifdef ARDF_ENABLE_SHOW_DEBUG_DATA
+	gARDFdebug = reply.data.reg;
+#endif
+
 	SendReply(&reply, sizeof(reply));
 }
 
@@ -567,6 +572,7 @@ bool UART_IsCommandAvailable(void)
 
 void UART_HandleCommand(void)
 {
+
 	switch (UART_Command.Header.ID)
 	{
 		case 0x0514:

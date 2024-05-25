@@ -46,7 +46,7 @@ ENABLE_ARDF                   ?= 1
 # ---- DEBUGGING ----
 ENABLE_AM_FIX_SHOW_DATA       ?= 0
 ENABLE_AGC_SHOW_DATA          ?= 0
-ENABLE_UART_RW_BK_REGS        ?= 0
+ENABLE_UART_RW_BK_REGS        ?= 1
 
 # ---- COMPILER/LINKER OPTIONS ----
 ENABLE_CLANG                  ?= 0
@@ -216,13 +216,14 @@ ifneq (, $(shell $(WHERE) git))
 	ifeq (, $(VERSION_STRING))
     	VERSION_STRING := $(shell git rev-parse --short HEAD)
 	endif
+	VERSION_STRING := $(shell echo $(VERSION_STRING) | sed "s/^ARDF-//")
 endif
 # If there is still no VERSION_STRING we need to make one.
 # It is needed for the firmware packing script
 ifeq (, $(VERSION_STRING))
 	VERSION_STRING := NOGIT
 endif
-VERSION_STRING := v0.2
+#VERSION_STRING := v0.3
 
 
 ASFLAGS = -c -mcpu=cortex-m0
