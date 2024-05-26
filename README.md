@@ -35,6 +35,7 @@ Anyway, have fun.
    * manual gain control
    * small bandwidth modes
    * active fox and remaining cycle time display
+   * beep signal before end of fox cycle
 * many of OneOfEleven mods:
    * AM fix, huge improvement in reception quality
    * long press buttons functions replicating F+ action
@@ -132,6 +133,8 @@ On system boot the device starts with active fox number 1 and full duration time
 The timer can be reset in menu "TiRst". Select "TiRst" with "M"-key, a triangle appears. Another press on "M"-key will reset the timer.
 Use this for synchronization. Active fox and timer are shown on the top in the status bar if the menu is opened.
 
+To get a notice if the fox cycle is ending soon a beep sound can be played. The number of seconds for this tone before
+the ending of the fox cycle can be configured in menu "EndSig" (1..30s or "off" for no signal).
 
 #### Gain Remember Mode ####
 This firmware supports **gain remember** for manual gain control. If gain remember is **activated**, the
@@ -187,6 +190,7 @@ If memory mode is active on the current VFO, frequency and memory number are are
 Number keys change the memory number (enter 3 digits)  and not the frequency. You can switch between memory mode and 
 frequency mode by long pressing "3 VFO/MR" key.
 * If you modify settings in memory mode don´t forget to save them before switching off (menu "ChSave").
+* The fox cycle end signal makes a crackling noise. Switch the feature off if is too annoying for you (menu "EndSig").
 
 #### Troubleshooting ####
 * The gain index history is flickering.

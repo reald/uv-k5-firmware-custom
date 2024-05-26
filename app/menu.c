@@ -227,6 +227,11 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
 			*pMax = ARRAY_SIZE(gSubMenu_ARDF_Remember_Gain) - 1;
 			break;
 
+		case MENU_ARDF_CYCLE_END_BEEP:
+			*pMin = 0;
+			*pMax = ARDF_CYCLE_END_BEEP_S_MAX;
+                	break;
+		
                 #endif
 
 		#ifdef ENABLE_ALARM
@@ -550,6 +555,17 @@ void MENU_AcceptSetting(void)
 				gARDFRequestSaveEEPROM = true;
 			}
 
+			return;
+
+		case MENU_ARDF_CYCLE_END_BEEP:
+
+			if ( gARDFCycleEndBeep_s != gSubMenuSelection )
+			{
+				// value updated
+				gARDFCycleEndBeep_s = gSubMenuSelection;
+
+				gARDFRequestSaveEEPROM = true;
+			}
 			return;
 
 		case MENU_ARDF_CLOCK_CORR:
@@ -1025,6 +1041,10 @@ void MENU_ShowCurrentSetting(void)
 		
 		case MENU_ARDF_GAIN_REMEMBER:
 			gSubMenuSelection = gARDFGainRemember;
+			break;
+
+		case MENU_ARDF_CYCLE_END_BEEP:
+			gSubMenuSelection = gARDFCycleEndBeep_s;
 			break;
 
 		case MENU_ARDF_CLOCK_CORR:

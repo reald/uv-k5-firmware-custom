@@ -181,6 +181,7 @@ u8 __unused3:1,
    ARDFGainRemember:2,
    ARDFNumFoxes:4,
    ARDFEnable:1;
+u8 ARDFCycleEndBeep_s;
 
 #seekto 0xf40;
 u8 int_flock;
@@ -942,6 +943,9 @@ class UVK5RadioEgzumer(uvk5.UVK5RadioBase):
 
             elif elname == "ARDFGainRemember":
                 _mem.ARDFGainRemember = element.value
+                
+            elif elname == "ARDFCycleEndBeep_s":
+                _mem.ARDFCycleEndBeep_s = element.value
 
 
     def get_settings(self):
@@ -1437,6 +1441,9 @@ class UVK5RadioEgzumer(uvk5.UVK5RadioBase):
         val = RadioSettingValueList(ARDFGainRemember_LIST, None, tmp_ARDFGainRemember)
         ARDFGainRemember_setting = RadioSetting("ARDFGainRemember", "ARDF Gain Remember (GainRe)", val)
 
+        tmp_ARDFCycleEndBeep_s = _mem.ARDFCycleEndBeep_s
+        val = RadioSettingValueInteger(0, 30, tmp_ARDFCycleEndBeep_s)
+        ARDFCycleEndBeep_s_setting = RadioSetting("ARDFCycleEndBeep_s", "ARDF Time Position End of Fox Cycle Tone Signal [s, 0=off] (EndSig)", val)
         
         # ----------------- Extra settings
 
@@ -1772,6 +1779,7 @@ class UVK5RadioEgzumer(uvk5.UVK5RadioBase):
         ardf.append(ARDFClockCorrTicksMin_setting)
         ardf.append(ARDFNumFoxes_setting)
         ardf.append(ARDFGainRemember_setting)
+        ardf.append(ARDFCycleEndBeep_s_setting)
         
         if _mem.BUILD_OPTIONS.ENABLE_DTMF_CALLING:
             dtmf.append(sep_code_setting)

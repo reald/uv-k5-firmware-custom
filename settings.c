@@ -26,6 +26,7 @@
 #include "misc.h"
 #include "settings.h"
 #include "ui/menu.h"
+#include <assert.h>
 
 static const uint32_t gDefaultFrequencyTable[] =
 {
@@ -229,8 +230,8 @@ void SETTINGS_InitEEPROM(void)
 	}
 
 #ifdef ENABLE_ARDF
-	// 0F24..0F2C
-	EEPROM_ReadBuffer(0x0F24, Data, 7);
+	// 0F24..0F2B
+	EEPROM_ReadBuffer(0x0F24, Data, 8);
 
 	if ( Data[6] != 0xFF )
 	{
@@ -244,6 +245,16 @@ void SETTINGS_InitEEPROM(void)
 		gSetting_ARDFEnable = ARDF_DEFAULT_ENABLE;
 		gARDFNumFoxes = ARDF_DEFAULT_NUM_FOXES;
 		gARDFGainRemember = ARDF_DEFAULT_GAIN_REMEMBER;
+	}
+
+	if ( Data[7] != 0xFF )
+	{
+		gARDFCycleEndBeep_s = Data[7];
+	}
+	else
+	{
+		// eeprom empty. use defaults
+		gARDFCycleEndBeep_s = ARDF_CYCLE_END_BEEP_S_DEFAULT;
 	}
 	
 	if ( (Data[0] != 0xFF) || (Data[1] != 0xFF) || (Data[2] != 0xFF) || (Data[3] != 0xFF) )
@@ -497,7 +508,7 @@ void SETTINGS_SaveFM(void)
 
 #ifdef ENABLE_ARDF
 
-// 0F24..0F2C
+// 0F24..0F2B
 void SETTINGS_SaveARDF(void)
 {
 	union {
@@ -507,9 +518,16 @@ void SETTINGS_SaveARDF(void)
 			uint8_t  ARDFEnable:1;
 			uint8_t  NumFoxes:4;
 			uint8_t  GainRemember:2;
+			uint8_t  CycleEndBeep_s;
 		};
-		uint8_t __raw[7];
+		uint8_t __raw[8];
 	} __attribute__((packed)) ARDFCfg;
+
+	static_assert(sizeof(ARDFCfg) == 8, "ARDFCfg size assumption violated");
+
+#ifdef ARDF_ENABLE_SHOW_DEBUG_DATA
+        gARDFdebug = gARDFCycleEndBeep_s;
+#endif
 
 	memset(ARDFCfg.__raw, 0xFF, sizeof(ARDFCfg.__raw));
 	
@@ -518,6 +536,7 @@ void SETTINGS_SaveARDF(void)
 	ARDFCfg.ARDFEnable = gSetting_ARDFEnable;
 	ARDFCfg.NumFoxes = gARDFNumFoxes;
 	ARDFCfg.GainRemember = gARDFGainRemember;
+	ARDFCfg.CycleEndBeep_s = gARDFCycleEndBeep_s;
 
 	EEPROM_WriteBuffer(0x0F24, ARDFCfg.__raw);
 

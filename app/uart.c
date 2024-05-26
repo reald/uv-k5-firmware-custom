@@ -457,10 +457,6 @@ static void CMD_0601_ReadBK4819Reg(const uint8_t *pBuffer)
 	reply.data.reg = cmd->reg;
 	reply.data.value = BK4819_ReadRegister(cmd->reg);
 
-#ifdef ARDF_ENABLE_SHOW_DEBUG_DATA
-	gARDFdebug = reply.data.reg;
-#endif
-
 	SendReply(&reply, sizeof(reply));
 }
 
