@@ -18,6 +18,7 @@
 
 #include "app/ardf.h"
 #include "driver/bk4819.h"
+#include "audio.h"
 #include "misc.h"
 #include "settings.h"
 #include "ui/main.h"
@@ -116,6 +117,7 @@ void ARDF_10ms(void)
       }
    }
 
+
 }
 
 
@@ -160,6 +162,15 @@ void ARDF_500ms(void)
          gARDFMemModeFreqToggleCnt_s = 0;
          // screen update only really necessary in memory mode
          UI_DisplayARDF();
+      }
+
+      if ( (gScreenToDisplay==DISPLAY_ARDF) 
+           && (gARDFCycleEndBeep_s != 0)
+           && (ARDF_GetRestTime_s() == gARDFCycleEndBeep_s) )
+      {
+         gARDFPlayEndBeep = true;
+         AUDIO_PlayBeep( BEEP_880HZ_60MS_TRIPLE_BEEP );
+         gARDFPlayEndBeep = false;
       }
 
    }

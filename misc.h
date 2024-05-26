@@ -155,6 +155,9 @@ extern bool                  gSetting_ScrambleEnable;
 #define ARDF_NUM_FOX_MAX 10
 #define ARDF_GAIN_INDEX_DEFAULT 15
 #define ARDF_GAIN_INDEX_MIDDLE 10
+#define ARDF_CYCLE_END_BEEP_S_DEFAULT 12 // warn with beep 12s before end of fox cycle
+#define ARDF_CYCLE_END_BEEP_S_MAX 30
+
 #define ARDF_MEM_MODE_FREQ_TOGGLE_S 3 // in frequency mode: toggle memory number and frequency every 3 s
 
 #define ARDF_DEFAULT_ENABLE true
@@ -173,6 +176,8 @@ extern uint32_t              gARDFFoxDuration10ms_corr;
 extern uint8_t               gARDFNumFoxes;
 extern uint8_t               gARDFActiveFox;
 extern uint8_t               gARDFGainRemember;
+extern uint8_t               gARDFCycleEndBeep_s;
+extern bool                  gARDFPlayEndBeep;
 extern unsigned int          gARDFRssiMax;
 extern uint8_t               gARDFMemModeFreqToggleCnt_s;
 extern bool                  gARDFRequestSaveEEPROM;
@@ -185,10 +190,9 @@ extern int16_t               gARDFdebug;
 typedef struct
 {
     uint16_t reg_val;
-    int8_t   gain_dB;
 } __attribute__((packed)) t_ardf_gain_table;
 
-extern t_ardf_gain_table ardf_gain_table[];
+extern uint16_t ardf_gain_table[];
 
 extern uint8_t ardf_gain_index[2][ARDF_NUM_FOX_MAX];
 

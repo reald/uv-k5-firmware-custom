@@ -204,7 +204,12 @@ void DisplayRSSIBar(const bool now)
 	const int16_t rssi_dBm =
 		BK4819_GetRSSI_dBm()
 #ifdef ENABLE_AM_FIX
-		+ ((gSetting_AM_fix && gRxVfo->Modulation == MODULATION_AM) ? AM_fix_get_gain_diff() : 0)
+		+ ((gSetting_AM_fix && gRxVfo->Modulation == MODULATION_AM) 
+	#ifdef ENABLE_ARDF
+			&& ( gSetting_ARDFEnable == false )
+	#endif
+
+		? AM_fix_get_gain_diff() : 0)
 #endif
 		+ dBmCorrTable[gRxVfo->Band];
 

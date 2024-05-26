@@ -50,11 +50,20 @@ void AUDIO_PlayBeep(BEEP_Type_t Beep)
 		return;
 #endif
 
+#ifdef ENABLE_ARDF
+	if ( gARDFPlayEndBeep == false )
+	{
+#endif	
+
 	if (gCurrentFunction == FUNCTION_RECEIVE)
 		return;
 
 	if (gCurrentFunction == FUNCTION_MONITOR)
 		return;
+
+#ifdef ENABLE_ARDF
+	}
+#endif
 
 #ifdef ENABLE_FMRADIO
 	if (gFmRadioMode)

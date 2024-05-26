@@ -75,10 +75,9 @@ void UI_DisplayARDF_RSSI(void)
 #ifdef ARDF_ENABLE_SHOW_DEBUG_DATA
 void UI_DisplayARDF_Debug(void)
 {
-
    char buffer[17];
 
-   sprintf(buffer, "Dbg: %d %d %d", gARDFFoxDuration10ms_corr, gARDFClockCorrAddTicksPerMin, gARDFdebug);
+   sprintf(buffer, "Dbg: %d %d %d", gEeprom.S0_LEVEL, gEeprom.S9_LEVEL, gARDFdebug);
    UI_PrintStringSmallNormal(buffer, 2, 0, 3);
    
    ST7565_BlitLine(3);
