@@ -634,7 +634,7 @@ void UI_DisplayMenu(void)
 
 		case MENU_ARDF_CYCLE_END_BEEP:
 		        if ( gSubMenuSelection != 0 )
-				sprintf(String, "%d s", gSubMenuSelection);
+				sprintf(String, "%d s\nHeadphone:\nUse Filter", gSubMenuSelection);
 			else
 				sprintf(String, "off");
 			break;

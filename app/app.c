@@ -1621,7 +1621,13 @@ static void ProcessKey(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 #endif
 	}
 
-	bool lowBatPopup = gLowBattery && !gLowBatteryConfirmed &&  gScreenToDisplay == DISPLAY_MAIN;
+	bool lowBatPopup = gLowBattery && !gLowBatteryConfirmed 
+	                   && ( (gScreenToDisplay == DISPLAY_MAIN) 
+#ifdef ENABLE_ARDF
+				|| ( gScreenToDisplay == DISPLAY_ARDF )
+#endif
+	                   
+	                      );
 
 	if ((gEeprom.KEY_LOCK || lowBatPopup) && gCurrentFunction != FUNCTION_TRANSMIT && Key != KEY_PTT)
 	{	// keyboard is locked or low battery popup
@@ -1834,7 +1840,14 @@ Skip:
 			flagSaveChannel = gRequestSaveChannel;
 
 			if (gRequestDisplayScreen == DISPLAY_INVALID)
+			{
 				gRequestDisplayScreen = DISPLAY_MAIN;
+#ifdef ENABLE_ARDF
+				if ( gScreenToDisplay == DISPLAY_ARDF )
+				        gRequestDisplayScreen = DISPLAY_ARDF;
+#endif
+			}
+
 		}
 
 		gRequestSaveChannel = 0;
@@ -1849,7 +1862,13 @@ Skip:
 			RADIO_ConfigureChannel(gEeprom.TX_VFO, gVfoConfigureMode);
 
 		if (gRequestDisplayScreen == DISPLAY_INVALID)
+		{
 			gRequestDisplayScreen = DISPLAY_MAIN;
+#ifdef ENABLE_ARDF
+			if ( gScreenToDisplay == DISPLAY_ARDF )
+			        gRequestDisplayScreen = DISPLAY_ARDF;
+#endif
+		}
 
 		gFlagReconfigureVfos = true;
 		gVfoConfigureMode    = VFO_CONFIGURE_NONE;

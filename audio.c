@@ -53,6 +53,7 @@ void AUDIO_PlayBeep(BEEP_Type_t Beep)
 #ifdef ENABLE_ARDF
 	if ( gARDFPlayEndBeep == false )
 	{
+	   // ARDF: play sound even when receiving
 #endif	
 
 	if (gCurrentFunction == FUNCTION_RECEIVE)

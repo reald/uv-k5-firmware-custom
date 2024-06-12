@@ -18,6 +18,7 @@
 
 #include "app/ardf.h"
 #include "driver/bk4819.h"
+#include "driver/system.h"
 #include "audio.h"
 #include "misc.h"
 #include "settings.h"
@@ -107,7 +108,7 @@ void ARDF_10ms(void)
 #endif
 
    }
-   else if ( (gScreenToDisplay == DISPLAY_ARDF) )
+   else if ( (gScreenToDisplay == DISPLAY_ARDF) && ( (gARDFTime10ms % 5) == 0) )
    {
       // reduce call rate if i2c traffic is too high
       unsigned int rssi = BK4819_GetRSSI();
@@ -154,15 +155,18 @@ void ARDF_500ms(void)
             && (gARDFMemModeFreqToggleCnt_s == ARDF_MEM_MODE_FREQ_TOGGLE_S) )
       {
          // screen update only really necessary in memory mode
-         UI_DisplayARDF();
+         UI_DisplayARDF_FreqCh();
       }
       else if ( (gScreenToDisplay==DISPLAY_ARDF)
                  && (gARDFMemModeFreqToggleCnt_s >= (2 * ARDF_MEM_MODE_FREQ_TOGGLE_S)) )
       {
          gARDFMemModeFreqToggleCnt_s = 0;
          // screen update only really necessary in memory mode
-         UI_DisplayARDF();
+         UI_DisplayARDF_FreqCh();
       }
+
+
+      // generate fox cycle end signal
 
       if ( (gScreenToDisplay==DISPLAY_ARDF) 
            && (gARDFCycleEndBeep_s != 0)

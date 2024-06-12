@@ -4,8 +4,8 @@ This is all based on [egzumer custom firmware](https://github.com/egzumer/uv-k5-
 
 Some features have been added to make it possible to use the radio as an amateur radio direction finding (ARDF) receiver on the 2m band.
 
-Understand this as a *proof of concept*, not as a fully developed project! Especially the display has much room for improvements. Use this
-as a base for own experiments.
+Understand this as a *proof of concept*! This is experimental software, there is absolutely no warranty! Use it at your OWN RISK as a 
+base for your own experiments.
 
 Despite all the limitations this is one of the quickest and cheapest ways to get a usable ARDF receiver for the 2m band!
 
@@ -35,7 +35,7 @@ Anyway, have fun.
    * manual gain control
    * small bandwidth modes
    * active fox and remaining cycle time display
-   * beep signal before end of fox cycle
+   * beep signal before end of fox cycle (read description first)
 * many of OneOfEleven mods:
    * AM fix, huge improvement in reception quality
    * long press buttons functions replicating F+ action
@@ -91,7 +91,7 @@ another firmware or a different flash tool.
 
 #### Quick Setup ####
 
-Turn the power knob a bit less than a quarter to turn the device on.
+Turn the power knob to turn the device on. 
 ARDF Mode can be disabled/enabled in the menu (ARDF = OFF/ON). This enables **manual gain control** 
 by pressing **UP/DOWN keys**. The index reaches from 0 to 19, default is 15.
 Gain steps should be roughly 5dB but they are uncalibrated. Expect surprises.
@@ -102,7 +102,8 @@ Gain steps should be roughly 5dB but they are uncalibrated. Expect surprises.
 
 - Select number of foxes in menu "NumFox" (default = 5, min = 1, max = 10).
 - Choose duration time of one fox transmission in menu "FoxDur". Default is 60s. 
-Modify with UP/DOWN key in 0.1s steps or enter value as *5 digit number* in 1/100s resolution. Confirm with menu button (min = 1s, max = 999.99s).
+Modify with UP/DOWN key in 0.1s steps or enter value as *5 digit number* in 1/100s resolution. Confirm with menu button (min = 001.00s, max = 999.99s).
+- Enter beep signal before end of fox cycle time (menu "EndSig", 0s = off, 1..30s).
 - Activate VFO A (long pressing key "2 A/B" toggles between both VFOs.
 - Enter the frequency of the foxes using the number keys. If memory mode is active long press "3 VFO MR" to change to frequency mode.
 - Choose the used modulation of the foxes in menu "Demod" (e.g. AM).
@@ -112,6 +113,7 @@ Modify with UP/DOWN key in 0.1s steps or enter value as *5 digit number* in 1/10
 - Change back to VFO A by long pressing "2 A/B".
 
 - Unscrew antenna and add a directional antenna with good front/back ratio.
+- Select a medium volume and try not to change it. Volume adjustment should be done with gain control.
 - Listen for foxes, synchronize fox number and timer in menu with "ActFox" and "TiRst" options (details below).
 - Start hunting foxes and have fun!
 
@@ -119,7 +121,7 @@ Modify with UP/DOWN key in 0.1s steps or enter value as *5 digit number* in 1/10
 
 <img src="/images/ardf_mainscreen.jpg" width=800 />
 
-This pictures shows the radio screen if ARDF mode is enabled. The manual gain index value can be chosen with UP/DOWN keys from 0 (silent) to 21 (max gain).
+This pictures shows the radio screen if ARDF mode is enabled. The manual gain index value can be chosen with UP/DOWN keys from 0 (silent) to 19 (max gain).
 RSSI_max is the highest RSSI in the last half second. This is an uncalibrated raw value. (The RSSI value next to the S-meter shows roughly dBm.)
 The **bold line** below show the settings for the **active VFO**:
 VFO "A", demodulation "USB", smallest bandwidth mode "U-" (1.7kHz) and
@@ -134,27 +136,31 @@ The timer can be reset in menu "TiRst". Select "TiRst" with "M"-key, a triangle 
 Use this for synchronization. Active fox and timer are shown on the top in the status bar if the menu is opened.
 
 To get a notice if the fox cycle is ending soon a beep sound can be played. The number of seconds for this tone before
-the ending of the fox cycle can be configured in menu "EndSig" (1..30s or "off" for no signal).
+the ending of a fox cycle can be configured in menu "EndSig" (1..30s or "off" for no signal). Please read the [headphone section](#headphones)
+before activating this feature with headphones.
+
 
 #### Gain Remember Mode ####
-This firmware supports **gain remember** for manual gain control. If gain remember is **activated**, the
+This firmware supports **gain remember** for manual gain control. If gain remember is activated, the
 **manual gain index** is handled **for every fox separately**. At the **beginning of a fox cycle** the **last gain
 index for this fox** is **restored from the last cycle**. The manual gain index history for up to 5 foxes is shown 
 in the lower part of the screen. 
 
-If **gain remember** is **off**, there is only one gain index for all foxes independent from any fox cycle times.
+If gain remember is **off**, there is only one gain index for all foxes independent from any fox cycle times.
 This feature can be **configured for both VFOs separately** (menu "GainRe": Off / VFO A / VFO B / BOTH).
 
 A usage scenario would be to configure the fox frequency on VFO A with gain remember mode on. Put the return beacon 
-frequency on VFO B without gain remember on. (Because the return beacon is permanently transmitting there is no need 
+frequency on VFO B without gain remember on. (The return beacon is transmitting permanently so there is no need for
 different gains in different time slots.)
 
 You can quickly switch between both VFOs by long pressing "2 (A/B)" or a configured function key (see below).
 
 If gain remember is not activated on the actual VFO, no gain index history is shown in the lower part of the screen.
 
+
 #### Clock Correction ####
-The microcontroller clock of the radio seems to be not very precise. This leads to a heavily drifting clock. The firmware provides a correction
+The microcontroller of the radio has no crystal oscillator and runs on an internal 48 MHz resonator only.
+So all timer in the CPU are not very precise. This leads to a heavily drifting clock. The firmware provides a correction
 mechanism to reach acceptable ranges. Start ARDF mode and stop **how many seconds really pass** until **the radio tells 1 hour is up**. 
 (Useful settings: NumFox = 10, FoxDur = 60.00s, sync to reference clock.) The formula for the correction value is:
 
@@ -166,11 +172,13 @@ $$ CorrectionValue = 6000 - (3576 * 100)/60 = 40 $$
 
 Enter this value in menu "ClkCor" using UP/DOWN keys (allowed range: -500 ... 500). The value is stored in eeprom.
 
+
 #### Function keys ####
 Two different ARDF actions can be mapped to function keys: 
 * Set manual gain to a medium index value (10). It is recommended to configure "ARDF Set Med.Gain" to short press on F2 key) 
 * Enable/Disable ARDF function (e.g. for long press on F1 key).
 It is recommended to configure "Switch VFO" to F1 short.
+
 
 #### Chirp ####
 There is a [chirp](https://chirpmyradio.com/projects/chirp/wiki/Home) driver in folder [chirp_module/](chirp_module/) for this firmware. 
@@ -178,11 +186,12 @@ The radio (including ARDF settings) can be programmed with this driver only not 
 
 Chirp does not support separate settings for modulation and bandwidth, bandwidth is selected implicitly by the modulation. 
 This chirp driver uses in AM mode already "narrow" bandwidth and "U1K7" (1.7kHz) for "NAM" and "USB".
+
  
 #### Notes ####
-* The lowest possible frequency of the receiver chip is 18 MHz. So this is NOT usable on 80 m.
+* The lowest possible frequency of the receiver chip is 18 MHz. So this is NOT usable on 80 m without hardware modifications.
 * If ARDF mode is active any TX functionality is disabled. However it is recommended to compile with ENABLE_PREVENT_TX=1 to 
-permanently disable TX. This is done for official releases.  ARDF receivers with a builtin TX functionality are not permitted 
+permanently disable TX. This is done for official releases. ARDF receivers with a builtin TX functionality are not permitted 
 in official competitions anyway. 
 * You can glue an arrow on the volume knob to keep the position under control (simply cut a triangle from a sticker).
 * It is possible (but not recommended because it is more complicated) to use memory mode instead of frequency mode on each VFO. 
@@ -190,7 +199,7 @@ If memory mode is active on the current VFO, frequency and memory number are are
 Number keys change the memory number (enter 3 digits)  and not the frequency. You can switch between memory mode and 
 frequency mode by long pressing "3 VFO/MR" key.
 * If you modify settings in memory mode don´t forget to save them before switching off (menu "ChSave").
-* The fox cycle end signal makes a crackling noise. Switch the feature off if is too annoying for you (menu "EndSig").
+
 
 #### Troubleshooting ####
 * The gain index history is flickering.
@@ -202,15 +211,31 @@ frequency mode by long pressing "3 VFO/MR" key.
 
 ## Headphones
 
-Headphones can be connected to the 2.5mm jack. The audio signal is between the tip and sleeve of the jack, but...
+--
+
+Headphones can be connected to the 2.5mm jack. The audio signal is between the tip and sleeve of the jack, but
+there are some limitations:
 
 > [!WARNING]
-> There is a DC voltage of around 4V between tip and sleeve, too. Use a DC blocker before connecting your headphones to the device!
-> Your headphones might be destroyed otherwise!
+> **There is a DC voltage of around 4V between tip and sleeve**, too. Use a DC blocker before connecting your headphones to the device!
+> Your **headphones might be destroyed** otherwise!
+
+To make it even worse the DC voltage is switched off and on when playing signal tones (fox cycle end warning beep). This leads to
+high gradients and crackling noises in your headphones.
 
 I use this circuit for removing the DC voltage from the audio signal:
 <img src="/images/headphone_adapter.png" width=800 />
-This might not be the best solution so don´t blame me for any damages. Better solutions are welcome.
+
+The idea is to use a high pass to get rid of the DC voltage. The 10k resistor is for capacitor charging if no headphone is connected and can be left out.
+
+My headphone channels are connected in a row, this leads to a resistance of around 32 ohm. By experiment capacitor values of around 1uF fit for this
+configuration. The edge frequency is $$ f_cut = 1/(2*pi*R*C) = 1/(2*pi*32*1e-6) = 4.97 kHz $$ and seems much to high. However the output amplifier of the
+radio is very powerful so some attenuation is desired. Try inline capacitor values if 0.1uF ... 1uF as start and adapt it to your headphones.
+
+This might not be the best solution so don´t blame me for any damages. Better solutions are welcome!
+
+> [!WARNING]
+> Use cheap or headphones you can go without only!!!
 
 
 ## Radio performance

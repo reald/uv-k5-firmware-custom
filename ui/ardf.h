@@ -20,6 +20,7 @@
 #ifdef ENABLE_ARDF
 void UI_DisplayARDF_Timer(void);
 void UI_DisplayARDF_RSSI(void);
+void UI_DisplayARDF_FreqCh(void);
 void UI_DisplayARDF(void);
 
 #ifdef ARDF_ENABLE_SHOW_DEBUG_DATA

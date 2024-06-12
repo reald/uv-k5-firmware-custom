@@ -36,6 +36,9 @@ void UI_DisplayARDF_Timer(void)
 {
    char buffer[4];
 
+  if ( gLowBattery && !gLowBatteryConfirmed )
+      return;
+
    int32_t resttime = ARDF_GetRestTime_s();
    
    if ( resttime <= 99 )
@@ -58,16 +61,14 @@ void UI_DisplayARDF_RSSI(void)
 {
    char buffer[4];
 
+  if ( gLowBattery && !gLowBatteryConfirmed )
+      return;
+
    sprintf(buffer, "%03d", gARDFRssiMax);
    UI_DisplayFrequency(buffer, 89, 0, false);
 
    ST7565_BlitLine(0);
    ST7565_BlitLine(1); 
-
-   /* sprintf(buffer, "%03d", BK4819_GetRSSI());
-   UI_PrintStringSmallBold(buffer, 104, 0, 4);
-   ST7565_BlitLine(4); */
-
 }
 
 
@@ -77,75 +78,21 @@ void UI_DisplayARDF_Debug(void)
 {
    char buffer[17];
 
-   sprintf(buffer, "Dbg: %d %d %d", gEeprom.S0_LEVEL, gEeprom.S9_LEVEL, gARDFdebug);
+   sprintf(buffer, "> %d %d", gEnableSpeaker, (uint16_t)gARDFdebug);
    UI_PrintStringSmallNormal(buffer, 2, 0, 3);
-   
    ST7565_BlitLine(3);
 }
 #endif
 
 
 
-void UI_DisplayARDF(void)
+void UI_DisplayARDF_FreqCh(void)
 {
    char buffer[16];
    uint8_t vfo = gEeprom.RX_VFO;
-   
-   UI_DisplayClear();
 
-   /* if( gLowBattery && !gLowBatteryConfirmed )
-   {
-      UI_DisplayPopup("LOW BATTERY");
-      ST7565_BlitFullScreen();
+  if ( gLowBattery && !gLowBatteryConfirmed )
       return;
-   } */
-
-   /* 1. big line */
-   uint8_t activefox = gARDFActiveFox + 1;
-   if ( activefox >= 10 )
-      activefox = 0;
-   sprintf(buffer, "%d", activefox);
-   UI_DisplayFrequency(buffer, 0, 0, false);
-   
-   UI_DisplayARDF_Timer();
-
-   sprintf(buffer, "%02d", ARDF_Get_GainIndex(vfo) );
-   UI_DisplayFrequency(buffer, 57, 0, false);
-
-   UI_DisplayARDF_RSSI();
-
-   /* 2. small line: active vfo */
-   VFO_Info_t *vfoInfo = &gEeprom.VfoInfo[vfo];
-   ModulationMode_t mod = vfoInfo->Modulation;
-
-   sprintf(buffer, "%c", 'A' + vfo );
-   UI_PrintStringSmallBold(buffer, 0, 0, 2);
-
-   UI_PrintStringSmallBold(gModulationStr[mod], 12, 36, 2); // modulation
-
-   switch ( vfoInfo->CHANNEL_BANDWIDTH )
-   {
-      case BANDWIDTH_NARROW:
-   
-         UI_PrintStringSmallBold("N", 42, 58, 2);
-         break;
-         
-      case BANDWIDTH_U2K5:
-
-         UI_PrintStringSmallBold("N-", 42, 58, 2);
-         break;
-
-      case BANDWIDTH_U1K7:
-      
-         UI_PrintStringSmallBold("U-", 42, 58, 2);
-         break;
-
-      default:
-
-         UI_PrintStringSmallBold("W", 42, 58, 2);
-         break;
-
-   }
 
    if ( IS_FREQ_CHANNEL(gEeprom.ScreenChannel[vfo]) 
         || ( (gARDFMemModeFreqToggleCnt_s >= ARDF_MEM_MODE_FREQ_TOGGLE_S) && (gInputBoxIndex == 0) ) )
@@ -181,6 +128,73 @@ void UI_DisplayARDF(void)
       UI_PrintStringSmallBold(buffer, 64, 128, 2);
    
    }
+
+}
+
+
+
+void UI_DisplayARDF(void)
+{
+   char buffer[16];
+   uint8_t vfo = gEeprom.RX_VFO;
+   
+   UI_DisplayClear();
+
+   if( gLowBattery && !gLowBatteryConfirmed )
+   {
+      UI_DisplayPopup("LOW BATTERY");
+      ST7565_BlitFullScreen();
+      return;
+   }
+
+   /* 1. big line */
+   uint8_t activefox = gARDFActiveFox + 1;
+   if ( activefox >= 10 )
+      activefox = 0;
+   sprintf(buffer, "%d", activefox);
+   UI_DisplayFrequency(buffer, 0, 0, false);
+   
+   UI_DisplayARDF_Timer();
+
+   sprintf(buffer, "%02d", ARDF_Get_GainIndex(vfo) );
+   UI_DisplayFrequency(buffer, 57, 0, false);
+
+   UI_DisplayARDF_RSSI();
+
+
+   /* 2. small line: active vfo */
+   VFO_Info_t *vfoInfo = &gEeprom.VfoInfo[vfo];
+   ModulationMode_t mod = vfoInfo->Modulation;
+
+   sprintf(buffer, "%c", 'A' + vfo );
+   UI_PrintStringSmallBold(buffer, 0, 0, 2);
+
+   UI_PrintStringSmallBold(gModulationStr[mod], 12, 36, 2); // modulation
+
+   switch ( vfoInfo->CHANNEL_BANDWIDTH )
+   {
+      case BANDWIDTH_NARROW:
+   
+         UI_PrintStringSmallBold("N", 42, 58, 2);
+         break;
+         
+      case BANDWIDTH_U2K5:
+
+         UI_PrintStringSmallBold("N-", 42, 58, 2);
+         break;
+
+      case BANDWIDTH_U1K7:
+      
+         UI_PrintStringSmallBold("U-", 42, 58, 2);
+         break;
+
+      default:
+
+         UI_PrintStringSmallBold("W", 42, 58, 2);
+         break;
+   }
+
+   UI_DisplayARDF_FreqCh();
 
    /* 3. middle line for debug or rssi bar */
 
