@@ -19,7 +19,7 @@ Anyway, have fun.
 
 * [Main Features](#main-features)
 * [Manual](#manual)
-* [Manual for ARDF](#Specific-ARDF-Features)
+* [Manual for ARDF](#specific-ardf-features)
 * [Headphones](#headphones)
 * [Radio Performance](#radio-performance)
 * [User Customization](#user-customization)
@@ -211,8 +211,6 @@ frequency mode by long pressing "3 VFO/MR" key.
 
 ## Headphones
 
---
-
 Headphones can be connected to the 2.5mm jack. The audio signal is between the tip and sleeve of the jack, but
 there are some limitations:
 
@@ -229,13 +227,17 @@ I use this circuit for removing the DC voltage from the audio signal:
 The idea is to use a high pass to get rid of the DC voltage. The 10k resistor is for capacitor charging if no headphone is connected and can be left out.
 
 My headphone channels are connected in a row, this leads to a resistance of around 32 ohm. By experiment capacitor values of around 1uF fit for this
-configuration. The edge frequency is $$ f_cut = 1/(2*pi*R*C) = 1/(2*pi*32*1e-6) = 4.97 kHz $$ and seems much to high. However the output amplifier of the
-radio is very powerful so some attenuation is desired. Try inline capacitor values if 0.1uF ... 1uF as start and adapt it to your headphones.
+configuration. The edge frequency is 
+
+$$ f_{cut} = \frac {1} {2 \cdot \pi \cdot R \cdot C} = \frac {1} {2 \cdot \pi \cdot 32 \cdot 1\mu } = 4.97 ~kHz $$
+
+and seems much to high. However the output amplifier of the radio is very powerful so some attenuation is desired. 
+Try inline capacitor values of 0.1uF .. 1uF as start and adapt it to your headphones.
 
 This might not be the best solution so don´t blame me for any damages. Better solutions are welcome!
 
-> [!WARNING]
-> Use cheap or headphones you can go without only!!!
+> [!Warning]
+> Use cheap headphones or some you can go without only!!!
 
 
 ## Radio performance
