@@ -5,7 +5,7 @@ This is all based on [egzumer custom firmware](https://github.com/egzumer/uv-k5-
 Some features have been added to make it possible to use the radio as an amateur radio direction finding (ARDF) receiver on the 2m band.
 
 Understand this as a *proof of concept*! This is experimental software, there is absolutely no warranty! Use it at your OWN RISK as a 
-base for your own experiments.
+base for own experiments.
 
 Despite all the limitations this is one of the quickest and cheapest ways to get a usable ARDF receiver for the 2m band!
 
@@ -35,7 +35,7 @@ Anyway, have fun.
    * manual gain control
    * small bandwidth modes
    * active fox and remaining cycle time display
-   * beep signal before end of fox cycle (read description first)
+   * beep signal before end of fox cycle
 * many of OneOfEleven mods:
    * AM fix, huge improvement in reception quality
    * long press buttons functions replicating F+ action
@@ -80,20 +80,22 @@ To get enough free flash space disable some unneeded TX features (e.g. ENABLE_DT
 For flashing [k5prog](https://github.com/nica-f/k5prog) can be used:
 
 1. Backup your device!
-1. Press PTT while turning the radio on. Will not work if cable is already plugged. White LED must be on.
+1. Press PTT while turning the radio on. It will not work if cable is already plugged. White LED must be on.
 1. Connect the programming cable
 1. Run `k5prog -b firmware.bin -F -YYY`
 
-The `firmware.packed.bin` file can be flashed with the official flash tool. If device does not boot after flashing something was wrong. Try reflashing
+The `firmware.packed.bin` file can be flashed with the official flash tool. If device does not boot after flashing something was wrong. Try flashing
 another firmware or a different flash tool.
 
 ### Usage
 
 #### Quick Setup ####
 
-Turn the power knob to turn the device on. 
+Turn the power knob to switch the device on. 
+
 ARDF Mode can be disabled/enabled in the menu (ARDF = OFF/ON). This enables **manual gain control** 
 by pressing **UP/DOWN keys**. The index reaches from 0 to 19, default is 15.
+
 Gain steps should be roughly 5dB but they are uncalibrated. Expect surprises.
 
 - Disable squelch (Menu: Sql = 0)
@@ -106,14 +108,14 @@ Modify with UP/DOWN key in 0.1s steps or enter value as *5 digit number* in 1/10
 - Enter beep signal before end of fox cycle time (menu "EndSig", 0s = off, 1..30s).
 - Activate VFO A (long pressing key "2 A/B" toggles between both VFOs.
 - Enter the frequency of the foxes using the number keys. If memory mode is active long press "3 VFO MR" to change to frequency mode.
-- Choose the used modulation of the foxes in menu "Demod" (e.g. AM).
+- Choose the modulation type of the foxes in menu "Demod" (e.g. AM).
 - Select a narrow bandwidth mode in menu "BW W/N": "U 1K7" is 1.7 kHz, (this is the smallest possible value; shown as "U-") or "U 2K5" which is 2.5 kHz (shown as "N-" on the ARDF screen).
 - Switch to VFO B by long pressing "2 A/B". This VFO will mostly be used for the return beacon.
 - Configure frequency, modulation and bandwidth the same way as for VFO A.
 - Change back to VFO A by long pressing "2 A/B".
 
 - Unscrew antenna and add a directional antenna with good front/back ratio.
-- Select a medium volume and try not to change it. Volume adjustment should be done with gain control.
+- Select a medium volume and try not to change it. Volume adjustment should be done with gain control (UP/DOWN keys).
 - Listen for foxes, synchronize fox number and timer in menu with "ActFox" and "TiRst" options (details below).
 - Start hunting foxes and have fun!
 
@@ -160,7 +162,7 @@ If gain remember is not activated on the actual VFO, no gain index history is sh
 
 #### Clock Correction ####
 The microcontroller of the radio has no crystal oscillator and runs on an internal 48 MHz resonator only.
-So all timer in the CPU are not very precise. This leads to a heavily drifting clock. The firmware provides a correction
+So all timers in the CPU are not very precise. This leads to a heavily drifting clock. The firmware provides a correction
 mechanism to reach acceptable ranges. Start ARDF mode and stop **how many seconds really pass** until **the radio tells 1 hour is up**. 
 (Useful settings: NumFox = 10, FoxDur = 60.00s, sync to reference clock.) The formula for the correction value is:
 
@@ -175,14 +177,15 @@ Enter this value in menu "ClkCor" using UP/DOWN keys (allowed range: -500 ... 50
 
 #### Function keys ####
 Two different ARDF actions can be mapped to function keys: 
-* Set manual gain to a medium index value (10). It is recommended to configure "ARDF Set Med.Gain" to short press on F2 key) 
-* Enable/Disable ARDF function (e.g. for long press on F1 key).
-It is recommended to configure "Switch VFO" to F1 short.
+* Set manual gain to a medium index value (10). It is recommended to configure "ARDF Set Med.Gain" to short press on F2 key, menu: F2Shrt) 
+* Enable/Disable ARDF function (e.g. for long press on F1 key / menu: F1Long = "ARDF off/on").
+
+It is recommended to configure "Switch VFO" to F1 short (menu F1Shrt).
 
 
 #### Chirp ####
 There is a [chirp](https://chirpmyradio.com/projects/chirp/wiki/Home) driver in folder [chirp_module/](chirp_module/) for this firmware. 
-The radio (including ARDF settings) can be programmed with this driver only not with the standard UV-K5 driver.
+The radio (including ARDF settings) can be programmed only with this driver and not with the standard UV-K5 driver.
 
 Chirp does not support separate settings for modulation and bandwidth, bandwidth is selected implicitly by the modulation. 
 This chirp driver uses in AM mode already "narrow" bandwidth and "U1K7" (1.7kHz) for "NAM" and "USB".
@@ -215,11 +218,11 @@ Headphones can be connected to the 2.5mm jack. The audio signal is between the t
 there are some limitations:
 
 > [!WARNING]
-> **There is a DC voltage of around 4V between tip and sleeve**, too. Use a DC blocker before connecting your headphones to the device!
+> **There is a DC voltage of around 4V between tip and sleeve**. Use a DC blocker before connecting your headphones to the device!
 > Your **headphones might be destroyed** otherwise!
 
 To make it even worse the DC voltage is switched off and on when playing signal tones (fox cycle end warning beep). This leads to
-high gradients and crackling noises in your headphones.
+voltage peaks and crackling noises in your headphones.
 
 I use this circuit for removing the DC voltage from the audio signal:
 <img src="/images/headphone_adapter.png" width=800 />
@@ -231,8 +234,8 @@ configuration. The edge frequency is
 
 $$ f_{cut} = \frac {1} {2 \cdot \pi \cdot R \cdot C} = \frac {1} {2 \cdot \pi \cdot 32 \cdot 1\mu } = 4.97 ~kHz $$
 
-and seems much to high. However the output amplifier of the radio is very powerful so some attenuation is desired. 
-Try inline capacitor values of 0.1uF .. 1uF as start and adapt it to your headphones.
+and seems much too high. However the output amplifier of the radio is very powerful so some attenuation is desired. 
+Try inline capacitor values of 0.1uF .. 10uF as start and adapt it to your headphones.
 
 This might not be the best solution so don´t blame me for any damages. Better solutions are welcome!
 
