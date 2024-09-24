@@ -29,6 +29,10 @@
 #include "bsp/dp32g030/gpio.h"
 #include "driver/gpio.h"
 
+#ifdef ENABLE_ARDF
+#include "app/ardf.h"
+#endif
+
 #define DECREMENT(cnt) \
 	do {               \
 		if (cnt > 0)   \

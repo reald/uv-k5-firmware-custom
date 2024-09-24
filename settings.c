@@ -28,6 +28,10 @@
 #include "ui/menu.h"
 #include <assert.h>
 
+#ifdef ENABLE_ARDF
+#include "app/ardf.h"
+#endif
+
 static const uint32_t gDefaultFrequencyTable[] =
 {
 	14500000,    //

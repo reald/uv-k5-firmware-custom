@@ -37,6 +37,10 @@
 #include "ui/main.h"
 #include "ui/ui.h"
 
+#ifdef ENABLE_ARDF
+#include "app/ardf.h"
+#endif
+
 center_line_t center_line = CENTER_LINE_NONE;
 
 const int8_t dBmCorrTable[7] = {

@@ -31,6 +31,10 @@
 #include "settings.h"
 #include "ui/ui.h"
 
+#ifdef ENABLE_ARDF
+#include "app/ardf.h"
+#endif
+
 
 BEEP_Type_t gBeepToPlay = BEEP_NONE;
 

@@ -37,6 +37,10 @@
 #include "settings.h"
 #include "ui/menu.h"
 
+#ifdef ENABLE_ARDF
+#include "app/ardf.h"
+#endif
+
 VFO_Info_t    *gTxVfo;
 VFO_Info_t    *gRxVfo;
 VFO_Info_t    *gCurrentVfo;

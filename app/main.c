@@ -43,6 +43,10 @@
 #include "ui/ui.h"
 #include <stdlib.h>
 
+#ifdef ENABLE_ARDF
+#include "app/ardf.h"
+#endif
+
 void toggle_chan_scanlist(void)
 {	// toggle the selected channels scanlist setting
 

@@ -34,6 +34,10 @@
 #include "ui/ui.h"
 #include "ui/status.h"
 
+#ifdef ENABLE_ARDF
+#include "app/ardf.h"
+#endif
+
 void UI_DisplayStatus()
 {
 	gUpdateStatus = false;

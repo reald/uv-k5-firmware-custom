@@ -43,6 +43,10 @@
 #include "ui/inputbox.h"
 #include "ui/ui.h"
 
+#ifdef ENABLE_ARDF
+#include "app/ardf.h"
+#endif
+
 #if defined(ENABLE_FMRADIO)
 static void ACTION_Scan_FM(bool bRestart);
 #endif

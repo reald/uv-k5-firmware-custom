@@ -49,6 +49,11 @@
 #include "ui/lock.h"
 #include "ui/welcome.h"
 #include "ui/menu.h"
+
+#ifdef ENABLE_ARDF
+#include "app/ardf.h"
+#endif
+
 void _putchar(__attribute__((unused)) char c)
 {
 

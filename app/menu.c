@@ -42,6 +42,10 @@
 #include "ui/menu.h"
 #include "ui/ui.h"
 
+#ifdef ENABLE_ARDF
+#include "app/ardf.h"
+#endif
+
 #ifndef ARRAY_SIZE
 	#define ARRAY_SIZE(x) (sizeof(x) / sizeof(x[0]))
 #endif
