@@ -190,9 +190,11 @@ extern int16_t               gARDFdebug;
 typedef struct
 {
     uint16_t reg_val;
+    int8_t   gain_dB;
 } __attribute__((packed)) t_ardf_gain_table;
 
-extern uint16_t ardf_gain_table[];
+
+extern t_ardf_gain_table ardf_gain_table[];
 
 extern uint8_t ardf_gain_index[2][ARDF_NUM_FOX_MAX];
 
@@ -203,6 +205,7 @@ extern uint8_t ARDF_Get_GainIndex(uint8_t vfo);
 extern bool ARDF_ActVfoHasGainRemember(uint8_t vfo);
 extern void ARDF_ActivateGainIndex(void);
 extern int32_t ARDF_GetRestTime_s(void);
+extern int8_t ARDF_Get_GainDiff(void);
 
 #endif
 

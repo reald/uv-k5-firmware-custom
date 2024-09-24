@@ -208,10 +208,14 @@ void DisplayRSSIBar(const bool now)
 	#ifdef ENABLE_ARDF
 			&& ( gSetting_ARDFEnable == false )
 	#endif
-
 		? AM_fix_get_gain_diff() : 0)
 #endif
+#ifdef ENABLE_ARDF
+		+ ( (gSetting_ARDFEnable != false) ? ARDF_Get_GainDiff() : 0 )
+#endif
+
 		+ dBmCorrTable[gRxVfo->Band];
+
 
 	int s0_9 = gEeprom.S0_LEVEL - gEeprom.S9_LEVEL;
 	const uint8_t s_level = MIN(MAX((int32_t)(rssi_dBm - s0_dBm)*100 / (s0_9*100/9), 0), 9); // S0 - S9
