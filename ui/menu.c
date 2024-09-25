@@ -599,7 +599,10 @@ void UI_DisplayMenu(void)
 			break;
 
 		case MENU_ARDF_NUMFOXES:
-			sprintf(String, "%d", gSubMenuSelection);
+		        if ( gSubMenuSelection != 0 )
+				sprintf(String, "%d", gSubMenuSelection);
+			else
+				sprintf(String, "No Timing");
 			break;
 
 		case MENU_ARDF_FOXDURATION:

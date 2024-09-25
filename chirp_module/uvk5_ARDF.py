@@ -1434,8 +1434,8 @@ class UVK5RadioEgzumer(uvk5.UVK5RadioBase):
         ARDFEnable_setting = RadioSetting("ARDFEnable", "ARDF Enable (ARDF)", val)
 
         tmp_numfoxes = _mem.ARDFNumFoxes
-        val = RadioSettingValueInteger(1, 10, tmp_numfoxes)
-        ARDFNumFoxes_setting = RadioSetting("ARDFNumFoxes", "ARDF Number of Foxes (NumFox)", val)
+        val = RadioSettingValueInteger(0, 10, tmp_numfoxes)
+        ARDFNumFoxes_setting = RadioSetting("ARDFNumFoxes", "ARDF Number of Foxes (NumFox) [0=No Timing]", val)
 
         tmp_ARDFGainRemember = list_def(_mem.ARDFGainRemember, ARDFGainRemember_LIST, 1)
         val = RadioSettingValueList(ARDFGainRemember_LIST, None, tmp_ARDFGainRemember)
@@ -1443,7 +1443,7 @@ class UVK5RadioEgzumer(uvk5.UVK5RadioBase):
 
         tmp_ARDFCycleEndBeep_s = _mem.ARDFCycleEndBeep_s
         val = RadioSettingValueInteger(0, 30, tmp_ARDFCycleEndBeep_s)
-        ARDFCycleEndBeep_s_setting = RadioSetting("ARDFCycleEndBeep_s", "ARDF Time Position End of Fox Cycle Tone Signal [s, 0=off] (EndSig)", val)
+        ARDFCycleEndBeep_s_setting = RadioSetting("ARDFCycleEndBeep_s", "ARDF End of Fox Cycle Tone Signal Time Position [s, 0=off] (EndSig)", val)
         
         # ----------------- Extra settings
 

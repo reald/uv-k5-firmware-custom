@@ -217,13 +217,13 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
 			break;
                 
                 case MENU_ARDF_NUMFOXES:
-			*pMin = 1;
+			*pMin = 0;
 			*pMax = ARDF_NUM_FOX_MAX;
                 	break;
 
                 case MENU_ARDF_SETFOX:
 			*pMin = 1;
-			*pMax = gARDFNumFoxes;
+			*pMax = MAX(1, gARDFNumFoxes);
                 	break;
 		
 		case MENU_ARDF_GAIN_REMEMBER:

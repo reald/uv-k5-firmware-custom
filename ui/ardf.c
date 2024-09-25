@@ -148,13 +148,16 @@ void UI_DisplayARDF(void)
    }
 
    /* 1. big line */
-   uint8_t activefox = gARDFActiveFox + 1;
-   if ( activefox >= 10 )
-      activefox = 0;
-   sprintf(buffer, "%d", activefox);
-   UI_DisplayFrequency(buffer, 0, 0, false);
+   if ( gARDFNumFoxes > 0 )
+   {
+      uint8_t activefox = gARDFActiveFox + 1;
+      if ( activefox >= 10 )
+         activefox = 0;
+      sprintf(buffer, "%d", activefox);
+      UI_DisplayFrequency(buffer, 0, 0, false);
    
-   UI_DisplayARDF_Timer();
+      UI_DisplayARDF_Timer();
+   }
 
    sprintf(buffer, "%02d", ARDF_Get_GainIndex(vfo) );
    UI_DisplayFrequency(buffer, 57, 0, false);

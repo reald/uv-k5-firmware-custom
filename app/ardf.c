@@ -120,7 +120,7 @@ void ARDF_10ms(void)
       // new fox cycle
       gARDFTime10ms = 0;
       
-      if ( (gARDFActiveFox + 1) >= gARDFNumFoxes )
+      if ( (gARDFActiveFox + 1) >= gARDFNumFoxes ) // gARDFNumFoxes can be 0 if timing is disabled
       {
          gARDFActiveFox = 0;
       }
@@ -145,7 +145,10 @@ void ARDF_10ms(void)
    else if ( (gScreenToDisplay == DISPLAY_ARDF) && ( (gARDFTime10ms % 50) == 0) )
    {
       // update most important values ~2 times per second
-      UI_DisplayARDF_Timer();
+      if ( gARDFNumFoxes > 0 )
+      {
+         UI_DisplayARDF_Timer();
+      }
       UI_DisplayARDF_RSSI();
 
       gARDFRssiMax = BK4819_GetRSSI();
@@ -219,7 +222,8 @@ void ARDF_500ms(void)
 
       // generate fox cycle end signal
 
-      if ( (gScreenToDisplay==DISPLAY_ARDF) 
+      if ( (gScreenToDisplay==DISPLAY_ARDF)
+           && (gARDFNumFoxes > 0)
            && (gARDFCycleEndBeep_s != 0)
            && (ARDF_GetRestTime_s() == gARDFCycleEndBeep_s) )
       {
