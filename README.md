@@ -204,7 +204,7 @@ frequency mode by long pressing "3 VFO/MR" key.
 * If you modify settings in memory mode don´t forget to save them before switching off (menu "ChSave").
 * You can long press F/# to lock the keypad. If keypad is locked a small lock symbol in the top status bar is shown.
 As result in ARDF mode only manual gain control (with up/down keys) and "Switch VFO" and "ARDF Medium Gain"
-on the function keys is possible (if configured, see #function-keys). So ARDF function is possible but no configuration
+on the function keys is possible (if configured, see [Function keys](#function-keys)). So ARDF function is possible but no configuration
 changes can be done. This can be useful if preconfigured devices are handed to non experienced users. To unlock the keypad just hold F/# key.
 
 #### Troubleshooting ####
