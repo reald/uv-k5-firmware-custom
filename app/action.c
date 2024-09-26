@@ -333,6 +333,19 @@ void ACTION_Handle(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 
 	// held or released after short press beyond this point
 
+#ifdef ENABLE_ARDF
+	if ( gSetting_ARDFEnable
+	     && gEeprom.KEY_LOCK
+	     && !( (funcShort==ACTION_OPT_A_B) || (funcShort==ACTION_OPT_ARDF_GAIN_MIDDLE) )
+	   )
+	{
+		// ARDF mode is on and keys are locked:
+		// allow only A/B switch and gain middle setting on the function keys, nothing else
+		return;
+	}
+
+#endif
+
 	action_opt_table[funcShort]();
 }
 

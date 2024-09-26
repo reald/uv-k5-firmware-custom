@@ -102,7 +102,7 @@ Gain steps should be roughly 5dB but they are uncalibrated. Expect surprises.
 - Disable dual watch (Menu: RxMode = MAIN ONLY).
 - Adjust clock correction if necessary (menu "ClkCor", details below).
 
-- Select number of foxes in menu "NumFox" (default = 5, min = 1, max = 10).
+- Select number of foxes in menu "NumFox" (default = 5, min = 1, max = 10; 0 disables fox timing).
 - Choose duration time of one fox transmission in menu "FoxDur". Default is 60s. 
 Modify with UP/DOWN key in 0.1s steps or enter value as *5 digit number* in 1/100s resolution. Confirm with menu button (min = 001.00s, max = 999.99s).
 - Enter beep signal before end of fox cycle time (menu "EndSig", 0s = off, 1..30s).
@@ -202,7 +202,10 @@ If memory mode is active on the current VFO, frequency and memory number are are
 Number keys change the memory number (enter 3 digits)  and not the frequency. You can switch between memory mode and 
 frequency mode by long pressing "3 VFO/MR" key.
 * If you modify settings in memory mode don´t forget to save them before switching off (menu "ChSave").
-
+* You can long press F/# to lock the keypad. If keypad is locked a small lock symbol in the top status bar is shown.
+As result in ARDF mode only manual gain control (with up/down keys) and "Switch VFO" and "ARDF Medium Gain"
+on the function keys is possible (if configured, see #function-keys). So ARDF function is possible but no configuration
+changes can be done. This can be useful if preconfigured devices are handed to non experienced users. To unlock the keypad just hold F/# key.
 
 #### Troubleshooting ####
 * The gain index history is flickering.

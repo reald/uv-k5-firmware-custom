@@ -1651,6 +1651,15 @@ static void ProcessKey(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 				return;
 			}
 		}
+#ifdef ENABLE_ARDF
+		else if ( gSetting_ARDFEnable
+		          && gEeprom.KEY_LOCK
+		          && (Key == KEY_UP || Key == KEY_DOWN)
+		        )
+		{
+			// ARDF on and keyboard locked: pass key up and down for manual gain change
+		}
+#endif
 		// KEY_MENU has a special treatment here, because we want to pass hold event to ACTION_Handle
 		// but we don't want it to complain when initial press happens
 		// we want to react on realese instead
@@ -1661,11 +1670,19 @@ static void ProcessKey(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 				!(Key == KEY_MENU && !bKeyPressed))  // pass KEY_MENU released
 				return;
 
-			// keypad is locked, tell the user
-			AUDIO_PlayBeep(BEEP_500HZ_60MS_DOUBLE_BEEP_OPTIONAL);
-			gKeypadLocked  = 4;          // 2 seconds
-			gUpdateDisplay = true;
-			return;
+#ifdef ENABLE_ARDF
+			if ( !gSetting_ARDFEnable ) // do not tell user keypad is locked in ARDF mode
+			{
+#endif			
+				// keypad is locked, tell the user
+				AUDIO_PlayBeep(BEEP_500HZ_60MS_DOUBLE_BEEP_OPTIONAL);
+				gKeypadLocked  = 4;          // 2 seconds
+				gUpdateDisplay = true;
+				return;
+#ifdef ENABLE_ARDF
+			}
+#endif			
+			
 		}
 	}
 
