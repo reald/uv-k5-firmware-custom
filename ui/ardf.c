@@ -174,28 +174,30 @@ void UI_DisplayARDF(void)
 
    UI_PrintStringSmallBold(gModulationStr[mod], 12, 36, 2); // modulation
 
+   char *bw = "";
    switch ( vfoInfo->CHANNEL_BANDWIDTH )
    {
       case BANDWIDTH_NARROW:
    
-         UI_PrintStringSmallBold("N", 42, 58, 2);
+         bw="N";
          break;
          
       case BANDWIDTH_U2K5:
 
-         UI_PrintStringSmallBold("N-", 42, 58, 2);
+         bw="N-";
          break;
 
       case BANDWIDTH_U1K7:
       
-         UI_PrintStringSmallBold("U-", 42, 58, 2);
+         bw="U-";
          break;
 
       default:
 
-         UI_PrintStringSmallBold("W", 42, 58, 2);
+         bw="W";
          break;
    }
+   UI_PrintStringSmallBold(bw, 42, 58, 2);
 
    UI_DisplayARDF_FreqCh();
 

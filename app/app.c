@@ -1653,7 +1653,7 @@ static void ProcessKey(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 		}
 #ifdef ENABLE_ARDF
 		else if ( gSetting_ARDFEnable
-		          && gEeprom.KEY_LOCK
+// save flash	          && gEeprom.KEY_LOCK
 		          && (Key == KEY_UP || Key == KEY_DOWN)
 		        )
 		{
