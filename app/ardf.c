@@ -247,7 +247,7 @@ void ARDF_500ms(void)
 
 void ARDF_init(void)
 {
-   for ( uint8_t i; i<ARDF_NUM_FOX_MAX; i++ )
+   for ( uint8_t i=0; i<ARDF_NUM_FOX_MAX; i++ )
    {
       ardf_gain_index[0][i] = ARDF_GAIN_INDEX_DEFAULT;
       ardf_gain_index[1][i] = ARDF_GAIN_INDEX_DEFAULT;
