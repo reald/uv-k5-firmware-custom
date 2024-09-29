@@ -14,6 +14,8 @@ Despite all the limitations this is one of the quickest and cheapest ways to get
 > Use this firmware at your own risk (entirely). There is absolutely no guarantee that it will work in any way shape or form on your radio(s), it may even brick your radio(s), in which case, you'd need to buy another radio.
 Anyway, have fun.
 
+<img src="/images/ardf_setup.jpg" width=800 />
+
 
 ## Table of Contents
 
