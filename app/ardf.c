@@ -216,7 +216,8 @@ void ARDF_500ms(void)
       {
          gARDFMemModeFreqToggleCnt_s = 0;
          // screen update only really necessary in memory mode
-         UI_DisplayARDF_FreqCh();
+         // UI_DisplayARDF_FreqCh(); // frequency update would be sufficient but problems deleting pixels
+         UI_DisplayARDF();
       }
 
 
@@ -352,7 +353,7 @@ int32_t ARDF_GetRestTime_s(void)
 
 int8_t ARDF_Get_GainDiff(void)
 {
-        return ARDF_ORIG_GAIN_DB - ardf_gain_table[ ARDF_Get_GainIndex(gEeprom.RX_VFO) ].gain_dB;
+   return ARDF_ORIG_GAIN_DB - ardf_gain_table[ ARDF_Get_GainIndex(gEeprom.RX_VFO) ].gain_dB;
 }
 
 

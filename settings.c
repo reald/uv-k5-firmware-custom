@@ -529,10 +529,6 @@ void SETTINGS_SaveARDF(void)
 
 	static_assert(sizeof(ARDFCfg) == 8, "ARDFCfg size assumption violated");
 
-#ifdef ARDF_ENABLE_SHOW_DEBUG_DATA
-        gARDFdebug = gARDFCycleEndBeep_s;
-#endif
-
 	memset(ARDFCfg.__raw, 0xFF, sizeof(ARDFCfg.__raw));
 	
 	ARDFCfg.FoxDuration = gARDFFoxDuration10ms;

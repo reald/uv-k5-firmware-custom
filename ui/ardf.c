@@ -36,7 +36,7 @@ void UI_DisplayARDF_Timer(void)
 {
    char buffer[4];
 
-  if ( gLowBattery && !gLowBatteryConfirmed )
+   if ( gLowBattery && !gLowBatteryConfirmed )
       return;
 
    int32_t resttime = ARDF_GetRestTime_s();
@@ -61,7 +61,7 @@ void UI_DisplayARDF_RSSI(void)
 {
    char buffer[4];
 
-  if ( gLowBattery && !gLowBatteryConfirmed )
+   if ( gLowBattery && !gLowBatteryConfirmed )
       return;
 
    sprintf(buffer, "%03d", gARDFRssiMax);
@@ -78,7 +78,7 @@ void UI_DisplayARDF_Debug(void)
 {
    char buffer[17];
 
-   sprintf(buffer, "> %d %d", gEnableSpeaker, (uint16_t)gARDFdebug);
+   sprintf(buffer, "> %d", (uint16_t)gARDFdebug);
    UI_PrintStringSmallNormal(buffer, 2, 0, 3);
    ST7565_BlitLine(3);
 }
@@ -91,13 +91,13 @@ void UI_DisplayARDF_FreqCh(void)
    char buffer[16];
    uint8_t vfo = gEeprom.RX_VFO;
 
-  if ( gLowBattery && !gLowBatteryConfirmed )
+   if ( gLowBattery && !gLowBatteryConfirmed )
       return;
 
    if ( IS_FREQ_CHANNEL(gEeprom.ScreenChannel[vfo]) 
         || ( (gARDFMemModeFreqToggleCnt_s >= ARDF_MEM_MODE_FREQ_TOGGLE_S) && (gInputBoxIndex == 0) ) )
    {
-      // frequency mode
+      // frequency mode or (frequency is shown in memory mode and no input)
       
       if ( gInputBoxIndex == 0 )
       {
@@ -118,17 +118,17 @@ void UI_DisplayARDF_FreqCh(void)
 
       if ( gInputBoxIndex == 0 )
       {
-         sprintf(buffer, "M%u", gEeprom.ScreenChannel[vfo] + 1);
+         sprintf(buffer, "M %03u", gEeprom.ScreenChannel[vfo] + 1);
       }
       else
       {
          sprintf(buffer, "M%.3s", INPUTBOX_GetAscii() );  // show the input text
       }
-
-      UI_PrintStringSmallBold(buffer, 64, 128, 2);
+      UI_PrintStringSmallBold(buffer, 64, 0, 2); // 0->128: text centered, but pixel deletion problem
    
    }
 
+   ST7565_BlitLine(2);
 }
 
 
@@ -279,12 +279,21 @@ void UI_DisplayARDF(void)
 
    }
 
-   if (gInputBoxIndex == 0) 
+   uint32_t frequency = vfoInfo->freq_config_RX.Frequency;
+
+   if ( IS_MR_CHANNEL(gEeprom.ScreenChannel[vfo]) )
    {
-      uint32_t frequency = vfoInfo->freq_config_RX.Frequency;
-      sprintf(buffer, "%3u.%05u", frequency / 100000, frequency % 100000);
-      UI_PrintStringSmallNormal(buffer, 64, 0, 6);
+      // memory mode
+      sprintf(buffer, "M%3u.%04u", frequency / 100000, frequency % 100000);
+
    }
+   else
+   {
+      // frequency mode
+      sprintf(buffer, "%3u.%05u", frequency / 100000, frequency % 100000);
+   }
+
+   UI_PrintStringSmallNormal(buffer, 64, 0, 6);
 
    
    ST7565_BlitFullScreen();
