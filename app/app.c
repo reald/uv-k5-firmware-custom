@@ -1678,10 +1678,10 @@ static void ProcessKey(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 				AUDIO_PlayBeep(BEEP_500HZ_60MS_DOUBLE_BEEP_OPTIONAL);
 				gKeypadLocked  = 4;          // 2 seconds
 				gUpdateDisplay = true;
-				return;
 #ifdef ENABLE_ARDF
 			}
 #endif			
+			return;
 			
 		}
 	}
