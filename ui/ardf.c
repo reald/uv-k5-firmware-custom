@@ -247,7 +247,7 @@ void UI_DisplayARDF(void)
 
 
    /* 5. small line: inactive vfo */
-   vfoInfo = &gEeprom.VfoInfo[1-vfo];
+   vfoInfo = &gEeprom.VfoInfo[1-vfo]; // the inactive vfo
    mod = vfoInfo->Modulation;
 
    sprintf(buffer, "%c", 'B' - vfo );
@@ -281,7 +281,7 @@ void UI_DisplayARDF(void)
 
    uint32_t frequency = vfoInfo->freq_config_RX.Frequency;
 
-   if ( IS_MR_CHANNEL(gEeprom.ScreenChannel[vfo]) )
+   if ( IS_MR_CHANNEL(gEeprom.ScreenChannel[1-vfo]) ) // the inactive vfo
    {
       // memory mode
       sprintf(buffer, "M%3u.%04u", frequency / 100000, (frequency % 100000)/10 );

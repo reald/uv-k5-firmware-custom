@@ -75,6 +75,8 @@ void toggle_chan_scanlist(void)
 	gFlagResetVfos    = true;
 }
 
+
+
 static void processFKeyFunction(const KEY_Code_t Key, const bool beep)
 {
 	uint8_t Vfo = gEeprom.TX_VFO;
@@ -289,6 +291,9 @@ static void processFKeyFunction(const KEY_Code_t Key, const bool beep)
 			gEeprom.MrChannel[gEeprom.TX_VFO] = Next;
 			gEeprom.ScreenChannel[gEeprom.TX_VFO] = Next;
 
+	                gRequestSaveVFO   = true;
+        	        gVfoConfigureMode = VFO_CONFIGURE_RELOAD;
+
 			break;
 
 #endif
@@ -302,6 +307,8 @@ static void processFKeyFunction(const KEY_Code_t Key, const bool beep)
 			break;
 	}
 }
+
+
 
 static void MAIN_Key_DIGITS(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 {
@@ -486,6 +493,8 @@ static void MAIN_Key_DIGITS(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 	processFKeyFunction(Key, true);
 }
 
+
+
 static void MAIN_Key_EXIT(bool bKeyPressed, bool bKeyHeld)
 {
 	if (!bKeyHeld && bKeyPressed) { // exit key pressed
@@ -548,6 +557,8 @@ static void MAIN_Key_EXIT(bool bKeyPressed, bool bKeyHeld)
 	}
 }
 
+
+
 static void MAIN_Key_MENU(const bool bKeyPressed, const bool bKeyHeld)
 {
 	if (bKeyPressed && !bKeyHeld) // menu key pressed
@@ -595,6 +606,8 @@ static void MAIN_Key_MENU(const bool bKeyPressed, const bool bKeyHeld)
 		}
 	}
 }
+
+
 
 static void MAIN_Key_STAR(bool bKeyPressed, bool bKeyHeld)
 {
@@ -666,6 +679,8 @@ static void MAIN_Key_STAR(bool bKeyPressed, bool bKeyHeld)
 	gPttWasReleased = true;
 	gUpdateStatus   = true;
 }
+
+
 
 static void MAIN_Key_UP_DOWN(bool bKeyPressed, bool bKeyHeld, int8_t Direction)
 {
@@ -791,6 +806,8 @@ static void MAIN_Key_UP_DOWN(bool bKeyPressed, bool bKeyHeld, int8_t Direction)
 
 	gPttWasReleased = true;
 }
+
+
 
 void MAIN_ProcessKeys(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 {

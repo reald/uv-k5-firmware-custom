@@ -79,40 +79,6 @@ int16_t           gARDFdebug2 = 0;
 
 
 
-/* void ARDF_ProcessKeys(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
-{
-   bool a = bKeyPressed;
-   bool b = bKeyHeld;
-   a = a;
-   b = b;
-   
-   switch (Key) 
-   {
-      case KEY_0:
-      case KEY_1:
-      case KEY_2:
-      case KEY_3:
-      case KEY_4:
-      case KEY_5:
-      case KEY_6:
-      case KEY_7:
-      case KEY_8:
-      case KEY_9:
-         //AIRCOPY_Key_DIGITS(Key, bKeyPressed, bKeyHeld);
-         break;
-      case KEY_MENU:
-         //AIRCOPY_Key_MENU(bKeyPressed, bKeyHeld);
-         break;
-      case KEY_EXIT:
-         //AIRCOPY_Key_EXIT(bKeyPressed, bKeyHeld);
-         break;
-      default:
-         break;
-   }
-} */
-
-
-
 void ARDF_10ms(void)
 {
 

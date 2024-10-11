@@ -73,7 +73,6 @@ extern unsigned int          gARDFRssiMax;
 
 
 
-/* extern void ARDF_ProcessKeys(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld);*/
 extern void ARDF_10ms(void);
 extern void ARDF_500ms(void);
 extern void ARDF_init(void);
