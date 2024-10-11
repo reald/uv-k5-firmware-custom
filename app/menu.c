@@ -501,7 +501,7 @@ void MENU_AcceptSetting(void)
 
 		#ifdef ENABLE_ARDF
 		
-		case MENU_ARDF: ;
+		case MENU_ARDF:
 
 			if ( gSetting_ARDFEnable != gSubMenuSelection )
 			{
@@ -511,11 +511,11 @@ void MENU_AcceptSetting(void)
 
 				gARDFRequestSaveEEPROM = true;
 			}
-			
+
 			return;
-		
+
 		case MENU_ARDF_NUMFOXES:
-			
+
 			if ( gARDFNumFoxes != gSubMenuSelection )
 			{
 				// value updated
@@ -524,9 +524,9 @@ void MENU_AcceptSetting(void)
 				gARDFRequestSaveEEPROM = true;
 			}
 			return;
-			
+
 		case MENU_ARDF_FOXDURATION:
-			
+
 			if ( gARDFFoxDuration10ms != (uint32_t)gSubMenuSelection )
 			{
 				// value updated
@@ -536,19 +536,19 @@ void MENU_AcceptSetting(void)
 				gARDFRequestSaveEEPROM = true;
 			}
 			return;
-		
+
 		case MENU_ARDF_SETFOX:
-		
+
 			gARDFActiveFox = gSubMenuSelection - 1;
 
 			return;
-		
+
 		case MENU_ARDF_TIME_RESET:
-		
+
 			gARDFTime10ms = 0;
-			
+
 			return;
-		
+
 		case MENU_ARDF_GAIN_REMEMBER:
 
 			if ( gARDFGainRemember != gSubMenuSelection )
@@ -573,7 +573,7 @@ void MENU_AcceptSetting(void)
 			return;
 
 		case MENU_ARDF_CLOCK_CORR:
-			
+
 			if ( gARDFClockCorrAddTicksPerMin != gSubMenuSelection )
 			{
 				// value updated
@@ -584,7 +584,7 @@ void MENU_AcceptSetting(void)
 			}
 			return;
 
-		
+
 		#endif
 
 		case MENU_SCR:

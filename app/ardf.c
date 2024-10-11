@@ -74,6 +74,7 @@ bool              gARDFRequestSaveEEPROM = true;
 int16_t           gARDFClockCorrAddTicksPerMin = ARDF_CLOCK_CORR_TICKS_PER_MIN;
 #ifdef ARDF_ENABLE_SHOW_DEBUG_DATA
 int16_t           gARDFdebug = 0;
+int16_t           gARDFdebug2 = 0;
 #endif
 
 

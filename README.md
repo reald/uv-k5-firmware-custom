@@ -179,7 +179,7 @@ Enter this value in menu "ClkCor" using UP/DOWN keys (allowed range: -500 ... 50
 
 #### Function keys ####
 Two different ARDF actions can be mapped to function keys: 
-* Set manual gain to a medium index value (10). It is recommended to configure "ARDF Set Med.Gain" to short press on F2 key, menu: F2Shrt) 
+* Set manual gain to a medium index value (7). It is recommended to configure "ARDF Set Med.Gain" to short press on F2 key, menu: F2Shrt) 
 * Enable/Disable ARDF function (e.g. for long press on F1 key / menu: F1Long = "ARDF off/on").
 
 It is recommended to configure "Switch VFO" to F1 short (menu F1Shrt).

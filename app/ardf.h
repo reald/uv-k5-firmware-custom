@@ -25,7 +25,7 @@
 
 #define ARDF_NUM_FOX_MAX 10
 #define ARDF_GAIN_INDEX_DEFAULT 15
-#define ARDF_GAIN_INDEX_MIDDLE 10
+#define ARDF_GAIN_INDEX_MIDDLE 7
 #define ARDF_CYCLE_END_BEEP_S_DEFAULT 12 // warn with beep 12s before end of fox cycle
 #define ARDF_CYCLE_END_BEEP_S_MAX 30
 
@@ -67,6 +67,7 @@ extern bool                  gARDFRequestSaveEEPROM;
 extern int16_t               gARDFClockCorrAddTicksPerMin;
 #ifdef ARDF_ENABLE_SHOW_DEBUG_DATA
 extern int16_t               gARDFdebug;
+extern int16_t               gARDFdebug2;
 #endif
 extern unsigned int          gARDFRssiMax;
 

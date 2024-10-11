@@ -481,39 +481,39 @@ void ACTION_BlminTmpOff(void)
 
 void ACTION_ARDFOnOff(void)
 {
-	if ( gSetting_ARDFEnable )
-	{
-		gSetting_ARDFEnable = false;
-	}
-	else
-	{
-		gSetting_ARDFEnable = true;
-	}
-	RADIO_SetupAGC(gRxVfo->Modulation == MODULATION_AM, false); // if gSetting_ARDFEnable is set, AGC will be switched off
-	
-	gARDFRequestSaveEEPROM = true;
+   if ( gSetting_ARDFEnable )
+   {
+      gSetting_ARDFEnable = false;
+   }
+   else
+   {
+      gSetting_ARDFEnable = true;
+   }
+   RADIO_SetupAGC(gRxVfo->Modulation == MODULATION_AM, false); // if gSetting_ARDFEnable is set, AGC will be switched off
+
+   gARDFRequestSaveEEPROM = true;
 
 }
 
 
 void ACTION_ARDFGainMiddle(void)
 {
-	if ( gSetting_ARDFEnable )
-	{
-	        uint8_t vfo = gEeprom.RX_VFO;
-        	uint8_t activefox = gARDFActiveFox;
+   if ( gSetting_ARDFEnable )
+   {
+      uint8_t vfo = gEeprom.RX_VFO;
+      uint8_t activefox = gARDFActiveFox;
 
-	        if ( ARDF_ActVfoHasGainRemember(vfo) == false )
-        	{
-	                // do not remember fox gains on this vfo
-                	activefox = 0;
-                }
+      if ( ARDF_ActVfoHasGainRemember(vfo) == false )
+      {
+         // do not remember fox gains on this vfo
+         activefox = 0;
+      }
 
-	        ardf_gain_index[vfo][activefox] = ARDF_GAIN_INDEX_MIDDLE;
-	         
-	        ARDF_ActivateGainIndex();
+      ardf_gain_index[vfo][activefox] = ARDF_GAIN_INDEX_MIDDLE;
 
-	}
+      ARDF_ActivateGainIndex();
+
+   }
 }
 
 #endif
