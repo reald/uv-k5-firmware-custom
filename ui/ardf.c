@@ -78,7 +78,7 @@ void UI_DisplayARDF_Debug(void)
 {
    char buffer[17];
 
-   sprintf(buffer, "> %d", (uint16_t)gARDFdebug);
+   sprintf(buffer, "> %d - %d", gARDFdebug, gARDFdebug2);
    UI_PrintStringSmallNormal(buffer, 2, 0, 3);
    ST7565_BlitLine(3);
 }
@@ -284,7 +284,7 @@ void UI_DisplayARDF(void)
    if ( IS_MR_CHANNEL(gEeprom.ScreenChannel[vfo]) )
    {
       // memory mode
-      sprintf(buffer, "M%3u.%04u", frequency / 100000, frequency % 100000);
+      sprintf(buffer, "M%3u.%04u", frequency / 100000, (frequency % 100000)/10 );
 
    }
    else
