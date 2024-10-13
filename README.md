@@ -216,6 +216,8 @@ changes can be done. This can be useful if preconfigured devices are handed to n
   * Decrease frequency step in menu "Step" to desired channel raster.
 * Chirp does read different channel settings than in my radio.
   * If you changed channel settings on the radio you have to store them first (menu "ChSave").
+* Signals are all very low, antenna does not respond to rotation movement.
+  * Increase volume knob to 90 degree position or more.
 
 ## Headphones
 
