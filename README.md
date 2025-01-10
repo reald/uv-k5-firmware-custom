@@ -237,12 +237,12 @@ I use this circuit for removing the DC voltage from the audio signal:
 The idea is to use a high pass to get rid of the DC voltage. The 10k resistor is for capacitor charging if no headphone is connected and can be left out.
 
 My headphone channels are connected in a row, this leads to a resistance of around 32 ohm. By experiment capacitor values of around 1uF fit for this
-configuration. The edge frequency is 
+configuration. The edge frequency for a 1uF capacitor is 
 
-$$ f_{cut} = \frac {1} {2 \cdot \pi \cdot R \cdot C} = \frac {1} {2 \cdot \pi \cdot 32 \cdot 1\mu } = 4.97 ~kHz $$
+$$ f_{cut} = \frac {1} {2 \cdot \pi \cdot R \cdot C} = \frac {1} {2 \cdot \pi \cdot 32 \cdot 1\mu } = 4.97 ~kHz. $$
 
-and seems much too high. However the output amplifier of the radio is very powerful so some attenuation is desired. 
-Try inline capacitor values of 0.1uF .. 10uF as start and adapt it to your headphones.
+The output amplifier of the radio is very powerful. If some more attenuation is desired try 10uF or more.
+This all depends on your headphones. Try inline capacitor values of 0.1uF .. 10uF as a start.
 
 This might not be the best solution so don´t blame me for any damages. Better solutions are welcome!
 
