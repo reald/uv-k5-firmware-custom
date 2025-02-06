@@ -225,7 +225,7 @@ Headphones can be connected to the 2.5mm jack. The audio signal is between the t
 there are some limitations:
 
 > [!WARNING]
-> **There is a DC voltage of around 4V between tip and sleeve**. Use a DC blocker before connecting your headphones to the device!
+> **There is a DC voltage of around 4V (half battery voltage) between tip and sleeve**. Use a DC blocker before connecting your headphones to the device!
 > Your **headphones might be destroyed** otherwise!
 
 To make it even worse the DC voltage is switched off and on when playing signal tones (fox cycle end warning beep). This leads to
@@ -234,12 +234,8 @@ voltage peaks and crackling noises in your headphones.
 I use this circuit for removing the DC voltage from the audio signal:
 <img src="/images/headphone_adapter.png" width=800 />
 
-The idea is to use a high pass to get rid of the DC voltage. The 10k resistor is for capacitor charging if no headphone is connected and can be left out.
-
-My headphone channels are connected in a row, this leads to a resistance of around 32 ohm. By experiment capacitor values of around 1uF fit for this
-configuration. The edge frequency for a 1uF capacitor is 
-
-$$ f_{cut} = \frac {1} {2 \cdot \pi \cdot R \cdot C} = \frac {1} {2 \cdot \pi \cdot 32 \cdot 1\mu } = 4.97 ~kHz. $$
+My headphone channels are connected in parallel, this leads to a resistance of around 8 ohms. By experiment capacitor values of around 1uF fit for this
+configuration.
 
 The output amplifier of the radio is very powerful. If some more attenuation is desired try 10uF or more.
 This all depends on your headphones. Try inline capacitor values of 0.1uF .. 10uF as a start.
@@ -248,6 +244,12 @@ This might not be the best solution so don´t blame me for any damages. Better s
 
 > [!Warning]
 > Use cheap headphones or some you can go without only!!!
+
+> [!TIP]
+> A kenwood connector with a combined 2.5 and 3.5mm plug is mechanically more stable than a single 2.5mm stereo plug.
+
+> [!TIP]
+> Kenwood connectors with spiral cable can be taken from cheap external baofeng microphones.
 
 
 ## Radio performance
