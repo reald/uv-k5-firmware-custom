@@ -231,16 +231,12 @@ there are some limitations:
 To make it even worse the DC voltage is switched off and on when playing signal tones (fox cycle end warning beep). This leads to
 voltage peaks and crackling noises in your headphones.
 
-I use this circuit for removing the DC voltage from the audio signal:
+Use a DC blocking capacitor for removing the DC voltage from the audio signal:
 <img src="/images/headphone_adapter.png" width=800 />
 
-My headphone channels are connected in parallel, this leads to a resistance of around 8 ohms. By experiment capacitor values of around 1uF fit for this
-configuration.
-
-The output amplifier of the radio is very powerful. If some more attenuation is desired try 10uF or more.
-This all depends on your headphones. Try inline capacitor values of 0.1uF .. 10uF as a start.
-
-This might not be the best solution so don´t blame me for any damages. Better solutions are welcome!
+Both headphone channels are connected in parallel. The needed capacity depends on your headphones.
+Try inline capacitor values of 0.1uF .. 10uF as a start. For my 8 ohms (2x 16 ohms parallel) headphones
+1 uF works quite well.
 
 > [!Warning]
 > Use cheap headphones or some you can go without only!!!
@@ -250,6 +246,10 @@ This might not be the best solution so don´t blame me for any damages. Better s
 
 > [!TIP]
 > Kenwood connectors with spiral cable can be taken from cheap external baofeng microphones.
+
+> [!TIP]
+> Experienced people in SMD soldering can add the capacitor [inside the device](https://github.com/ludwich66/Quansheng_UV-K5_Wiki/wiki/Hardware_Mods#5-fix-power-failure-with-external-handset-warming-speaker-with-dc-on-output-or-unwanted-busy-channel-lockout-effect-on-external-ptt).
+> With this modification a normal 2.5mm stereo plug to 3.5mm stereo jack adapter cable is sufficient.
 
 
 ## Radio performance
