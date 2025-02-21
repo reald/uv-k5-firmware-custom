@@ -251,6 +251,61 @@ Try inline capacitor values of 0.1uF .. 10uF as a start. For my 8 ohms (2x 16 oh
 > Experienced people in SMD soldering can add the capacitor [inside the device](https://github.com/ludwich66/Quansheng_UV-K5_Wiki/wiki/Hardware_Mods#5-fix-power-failure-with-external-handset-warming-speaker-with-dc-on-output-or-unwanted-busy-channel-lockout-effect-on-external-ptt).
 > With this modification a normal 2.5mm stereo plug to 3.5mm stereo jack adapter cable is sufficient.
 
+## Antenna proposals
+
+### 3 Element Yagi by DK7ZB
+
+<img src="/images/dk7zb_el_2m_yagi.jpg" width=600 />
+
+Pro: Very easy and fast to build, tolerant, very good SWR, light weight, cheap.
+
+Cons: Front to back ratio not optimal, radials move on boom if not secured.
+
+| Element | Length | Position | 
+| --- | --- | --- |
+| Reflector | 103.9cm | 0 cm |
+| Radiator | 102 cm | 30 cm |
+| Director | 92,6 cm | 47 cm |
+
+[Build instructions by DK7ZB](https://www.qsl.net/dk7zb/PVC-Yagis/3-Ele-2m.htm)
+
+### 3 Element Tape measurement Antenna for ARDF
+
+<img src="/images/ardf_setup.jpg" width=600 />
+
+Pro: Better front to back ratio, flexible elements better when running in the fields. Standard ARDF antenna.
+
+Cons: More complex to build, not suitable for TX because of missing adaption.
+
+Tip: Use 2 layers of tape. Outer 25cm can be single layer.
+
+| Element | Length | Position | 
+| --- | --- | --- |
+| Reflector | 106.5cm | 0 cm |
+| Radiator | 2*47cm | 20 cm |
+| Director | 90,5 cm | 52 cm |
+
+### Combined 2m / 70cm Antenna by PA0JBG
+
+<img src="/images/combined_2m_70cm_antenna_PA0JBG_ARDF_social.darc.de.jpg" width=600 />
+
+Notes: This prototype has a switchable attenuator (approx 25dB). This is optional. Boom is made of electrical conducting material.
+
+2 m:
+| Element | Length | Position | 
+| --- | --- | --- |
+| Reflector | 106 cm | 0 cm |
+| Radiator | 94 cm | 20 cm |
+| Director | 90 cm | 51.5 cm |
+
+70 cm:
+| Element | Length | Position | 
+| --- | --- | --- |
+| Reflector | 34,8 cm | 0 cm |
+| Radiator | 31 cm | 14,5 cm |
+| Director 1 | 30,2 cm | 19 cm |
+| Director 2 | 29,8 cm | 31,5 cm |
+| Director 3 | 29,2 cm | 46 cm |
 
 ## Radio performance
 
