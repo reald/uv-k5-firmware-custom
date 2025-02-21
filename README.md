@@ -273,11 +273,11 @@ Cons: Front to back ratio not optimal, radials move on boom if not secured.
 
 <img src="/images/ardf_setup.jpg" width=600 />
 
-Pro: Better front to back ratio, flexible elements better when running in the fields. Standard ARDF antenna.
+Pro: Better front to back ratio, flexible elements better when running in the fields. Standard ARDF antenna!
 
 Cons: More complex to build, not suitable for TX because of missing adaption.
 
-Tip: Use 2 layers of tape. Outer 25cm can be single layer.
+Tip: Use 2 layers of tape measure. Outer 25cm can be single layer.
 
 | Element | Length | Position | 
 | --- | --- | --- |
@@ -289,7 +289,7 @@ Tip: Use 2 layers of tape. Outer 25cm can be single layer.
 
 <img src="/images/combined_2m_70cm_antenna_PA0JBG_ARDF_social.darc.de.jpg" width=600 />
 
-Notes: This prototype has a switchable attenuator (approx 25dB). This is optional. Boom is made of electrical conducting material.
+Notes: This prototype has a switchable attenuator (approx. 25dB), this is optional. Boom is made of electrical conducting material.
 
 2 m:
 | Element | Length | Position | 
