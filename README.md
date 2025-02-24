@@ -14,7 +14,7 @@ Despite all the limitations this is one of the quickest and cheapest ways to get
 > Use this firmware at your own risk (entirely). There is absolutely no guarantee that it will work in any way shape or form on your radio(s), it may even brick your radio(s), in which case, you'd need to buy another radio.
 Anyway, have fun.
 
-<img src="/images/ardf_setup.jpg" width=800 />
+<img src="images/ardf_setup.jpg" width=800 />
 
 
 ## Table of Contents
@@ -123,7 +123,7 @@ Modify with UP/DOWN key in 0.1s steps or enter value as *5 digit number* in 1/10
 
 #### Main Screen ####
 
-<img src="/images/ardf_mainscreen.jpg" width=800 />
+<img src="images/ardf_mainscreen.jpg" width=800 />
 
 This pictures shows the radio screen if ARDF mode is enabled. The manual gain index value can be chosen with UP/DOWN keys from 0 (silent) to 19 (max gain).
 RSSI_max is the highest RSSI in the last half second. This is an uncalibrated raw value. (The RSSI value next to the S-meter shows roughly dBm.)
@@ -232,7 +232,7 @@ To make it even worse the DC voltage is switched off and on when playing signal 
 voltage peaks and crackling noises in your headphones.
 
 Use a DC blocking capacitor for removing the DC voltage from the audio signal:
-<img src="/images/headphone_adapter.png" width=800 />
+<img src="images/headphone_adapter.png" width=800 />
 
 Both headphone channels are connected in parallel. The needed capacity depends on your headphones.
 Try inline capacitor values of 0.1uF .. 10uF as a start. For my 8 ohms (2x 16 ohms parallel) headphones
@@ -255,7 +255,7 @@ Try inline capacitor values of 0.1uF .. 10uF as a start. For my 8 ohms (2x 16 oh
 
 ### 3 Element Yagi by DK7ZB
 
-<img src="/images/dk7zb_el_2m_yagi.jpg" width=600 />
+<img src="images/dk7zb_el_2m_yagi.jpg" width=600 />
 
 Pro: Very easy and fast to build, tolerant, very good SWR, light weight, cheap.
 
@@ -271,7 +271,7 @@ Cons: Front to back ratio not optimal, radials move on boom if not secured.
 
 ### 3 Element Tape measurement Antenna for ARDF
 
-<img src="/images/ardf_setup.jpg" width=600 />
+<img src="images/ardf_setup.jpg" width=600 />
 
 Pro: Better front to back ratio, flexible elements better when running in the fields. Standard ARDF antenna!
 
@@ -287,7 +287,7 @@ Tip: Use 2 layers of tape measure. Outer 25cm can be single layer.
 
 ### Combined 2m / 70cm Antenna by PA0JBG
 
-<img src="/images/combined_2m_70cm_antenna_PA0JBG_ARDF_social.darc.de.jpg" width=600 />
+<img src="images/combined_2m_70cm_antenna_PA0JBG_ARDF_social.darc.de.jpg" width=600 />
 
 Notes: This prototype has a switchable attenuator (approx. 25dB), this is optional. Boom is made of electrical conducting material.
 
@@ -479,12 +479,12 @@ You may obtain a copy of the License at
 ## Example of ARDF changes/updates
 
 <p float="left">
-  <img src="/images/ardf2.jpg" width=300 />
-  <img src="/images/ardf3.jpg" width=300 />
-  <img src="/images/ardf6.jpg" width=300 />
-  <img src="/images/ardf5.jpg" width=300 />
-  <img src="/images/ardf4.jpg" width=300 />
-  <img src="/images/ardf_sticker.jpg" width=300 />
+  <img src="images/ardf2.jpg" width=300 />
+  <img src="images/ardf3.jpg" width=300 />
+  <img src="images/ardf6.jpg" width=300 />
+  <img src="images/ardf5.jpg" width=300 />
+  <img src="images/ardf4.jpg" width=300 />
+  <img src="images/ardf_sticker.jpg" width=300 />
 
 </p>
 
