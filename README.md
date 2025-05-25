@@ -20,6 +20,7 @@ Anyway, have fun.
 ## Table of Contents
 
 * [Main Features](#main-features)
+* [Compatible Devices](#compatible-devices)
 * [Manual](#manual)
 * [Manual for ARDF](#specific-ardf-features)
 * [Headphones](#headphones)
