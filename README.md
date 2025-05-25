@@ -89,17 +89,25 @@ Up to date manual is available in the [Wiki section](https://github.com/egzumer/
 Download a [precompiled release](https://github.com/reald/uv-k5-firmware-custom/releases) or compile with ENABLE_ARDF=1 and preferable with ENABLE_PREVENT_TX=1. 
 To get enough free flash space disable some unneeded TX features (e.g. ENABLE_DTMF_CALLING=0). 
 
-### Flashing
+### Firmware Flashing
 
-For flashing [k5prog](https://github.com/nica-f/k5prog) can be used:
+#### Preparation
+You need a quansheng programming cable with an integrated USB to serial converter. Most baofeng cables are working fine, too.
 
-1. Backup your device!
-1. Press PTT while turning the radio on. It will not work if cable is already plugged. White LED must be on.
-1. Connect the programming cable
-1. Run `k5prog -b firmware.bin -F -YYY`
+1. Backup your settings!
+1. Charge battery if almost empty!
+1. Press PTT key while turning the radio on. This will NOT work if cable is already plugged. White LED on top MUST be on.
+1. Connect the programming cable NOW
+1. Run a flash program (see next section)
 
-The `firmware.packed.bin` file can be flashed with the official flash tool. If device does not boot after flashing something was wrong. Try flashing
-another firmware or a different flash tool.
+#### Flash programs
+- [Webflasher for chrome based browsers](https://egzumer.github.io/uvtools/) (Choose `firmware.packed.bin`)
+- On linux [k5prog](https://github.com/nica-f/k5prog) can be used: Run `k5prog -b firmware.bin -F -YYY`
+- Official quansheng flash tool (Windows only. Choose `firmware.packed.bin`)
+
+#### Trouble Shooting
+- If device does not boot after flashing something went wrong. Try flashing another firmware file or a different flash tool.
+- If serial port is not found on linux add your username to the `dialout` group (`sudo usermod -aG dialout your_username`) and reboot.
 
 ### Usage
 
