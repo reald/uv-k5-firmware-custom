@@ -68,7 +68,7 @@ Anyway, have fun.
    * LCD interference crash fix
    * many others...
 
-## Compatibel Devices
+## Compatible Devices
 
 All devices with FCC ID "XBPUV-K5":
 
