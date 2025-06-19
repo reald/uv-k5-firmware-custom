@@ -25,6 +25,7 @@ Anyway, have fun.
 * [Manual for ARDF](#specific-ardf-features)
 * [Headphones](#headphones)
 * [Radio Performance](#radio-performance)
+* [Antenna Proposals](#antenna-proposals)
 * [User Customization](#user-customization)
 * [Compiler](#compiler)
 * [Building](#building)
