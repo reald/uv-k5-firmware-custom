@@ -2,12 +2,12 @@
 
 This is all based on [egzumer custom firmware](https://github.com/egzumer/uv-k5-firmware-custom)!
 
-Some features have been added to make it possible to use the radio as an amateur radio direction finding (ARDF) receiver on the 2m band.
+Some features have been added to make it possible to use the radio as an amateur radio direction finding (ARDF) receiver on the 2m and 70cm band.
 
 Understand this as a *proof of concept*! This is experimental software, there is absolutely no warranty! Use it at your OWN RISK as a 
 base for own experiments.
 
-Despite all the limitations this is one of the quickest and cheapest ways to get a usable ARDF receiver for the 2m band!
+Despite all the limitations this is one of the quickest and cheapest ways to get a usable ARDF receiver for the 2m and 70cm band!
 
 
 > [!WARNING]  
