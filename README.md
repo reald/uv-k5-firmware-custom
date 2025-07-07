@@ -79,7 +79,10 @@ All devices with FCC ID "XBPUV-K5":
 * Quansheng UV-K5(8) :white_check_mark: / Quansheng UV-K6 :white_check_mark:
 * Quansheng UV-K5(99) :white_check_mark:
 
-:x: Similar looking baofeng radios are NOT compatible! 
+NOT COMPATIBLE:
+
+* Quansheng TK-11 / TK-11(8) :x:
+* Similar looking baofeng radios :x:
 
 ## Manual
 
