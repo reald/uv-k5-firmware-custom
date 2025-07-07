@@ -1,4 +1,4 @@
-# Open re-implementation of the Quansheng UV-K5/K6/5R v2.1.27 firmware with 2m ARDF support
+# Open re-implementation of the Quansheng UV-K5/K6/5R v2.1.27 firmware with 2m and 70cm ARDF support
 
 This is all based on [egzumer custom firmware](https://github.com/egzumer/uv-k5-firmware-custom)!
 
