@@ -298,7 +298,7 @@ Cons: Front to back ratio not optimal, radials move on boom if not secured.
 ### 3 Element Tape measurement Antenna for 2m ARDF
 
 <img src="images/ardf_setup.jpg" width=600 />
-<img src="20250619_112008_2m_ma_band_horizontal_diagr.png" />
+<img src="images/20250619_112008_2m_ma_band_horizontal_diagr.png" width=600 />
 
 Pro: Better front to back ratio, flexible elements better when running in the fields. Standard ARDF antenna!
 
@@ -315,7 +315,7 @@ Tip: Use 2 layers of tape measure. Outer 25cm can be single layer.
 
 ### 3 Element Yagi for 70 cm
 <img src="images/70cm_3el_optim.jpg" width=600 />
-<img src="images/20250705_103756_3el_yagi_optim_horizontal_standort3_diagr.png" />
+<img src="images/20250705_103756_3el_yagi_optim_horizontal_standort3_diagr.png" width=600 />
 
 Made out of 3.2mm welding rods.
 
