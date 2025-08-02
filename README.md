@@ -277,9 +277,10 @@ Try inline capacitor values of 0.1uF .. 10uF as a start. For my 8 ohms (2x 16 oh
 
 ## Antenna proposals
 
-### 3 Element Yagi by DK7ZB
+### 3 Element Yagi for 2m by DK7ZB
 
 <img src="images/dk7zb_el_2m_yagi.jpg" width=600 />
+<img src="images/20250619_115524_2m_3el_dk7zb_50ohm_horizontal_standort2_diagr.png" />
 
 Pro: Very easy and fast to build, tolerant, very good SWR, light weight, cheap.
 
@@ -293,9 +294,11 @@ Cons: Front to back ratio not optimal, radials move on boom if not secured.
 
 [Build instructions by DK7ZB](https://www.qsl.net/dk7zb/PVC-Yagis/3-Ele-2m.htm)
 
-### 3 Element Tape measurement Antenna for ARDF
+
+### 3 Element Tape measurement Antenna for 2m ARDF
 
 <img src="images/ardf_setup.jpg" width=600 />
+<img src="20250619_112008_2m_ma_band_horizontal_diagr.png" />
 
 Pro: Better front to back ratio, flexible elements better when running in the fields. Standard ARDF antenna!
 
@@ -308,6 +311,22 @@ Tip: Use 2 layers of tape measure. Outer 25cm can be single layer.
 | Reflector | 106.5cm | 0 cm |
 | Radiator | 2*47cm | 20 cm |
 | Director | 90,5 cm | 52 cm |
+
+
+### 3 Element Yagi for 70 cm
+<img src="images/70cm_3el_optim.jpg" width=600 />
+<img src="images/20250705_103756_3el_yagi_optim_horizontal_standort3_diagr.png" />
+
+Made out of 3.2mm welding rods.
+
+Pro: Quite nice F/B ratio, light weight.
+
+| Element | Length | Position | 
+| --- | --- | --- |
+| Reflector | 35 cm | 0 cm |
+| Radiator | 32,6 cm | 12 cm |
+| Director | 30 cm | 23 cm |
+
 
 ### Combined 2m / 70cm Antenna by PA0JBG
 
@@ -330,6 +349,9 @@ Notes: This prototype has a switchable attenuator (approx. 25dB), this is option
 | Director 1 | 30,2 cm | 19 cm |
 | Director 2 | 29,8 cm | 31,5 cm |
 | Director 3 | 29,2 cm | 46 cm |
+
+
+
 
 ## Radio performance
 
