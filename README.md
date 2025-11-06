@@ -1,4 +1,4 @@
-# Open re-implementation of the Quansheng UV-K5/K6/5R v2.1.27 firmware with 2m and 70cm ARDF support
+# Open Quansheng UV-K5/K6/5R version 1 firmware with 2m and 70cm ARDF support
 
 This is all based on [egzumer custom firmware](https://github.com/egzumer/uv-k5-firmware-custom)!
 
@@ -76,8 +76,8 @@ All version 1 devices (with FCC ID "XBPUV-K5"):
 
 * Quansheng UV-K5 version 1 :white_check_mark:
 * Quansheng UV-K5+ ("UV-5R PLUS") version1 :white_check_mark:
-* Quansheng UV-K5(8) :white_check_mark: / Quansheng UV-K6 version 1:white_check_mark:
-* Quansheng UV-K5(99) version 1:white_check_mark:
+* Quansheng UV-K5(8) version 1 :white_check_mark: / Quansheng UV-K6 version 1:white_check_mark:
+* Quansheng UV-K5(99) version 1 :white_check_mark:
 
 NOT COMPATIBLE:
 
