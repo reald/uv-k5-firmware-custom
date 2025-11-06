@@ -72,17 +72,25 @@ Anyway, have fun.
 
 ## Compatible Devices
 
-All devices with FCC ID "XBPUV-K5":
+All version 1 devices (with FCC ID "XBPUV-K5"):
 
-* Quansheng UV-K5 :white_check_mark:
-* Quansheng UV-K5+ ("UV-5R PLUS") :white_check_mark:
-* Quansheng UV-K5(8) :white_check_mark: / Quansheng UV-K6 :white_check_mark:
-* Quansheng UV-K5(99) :white_check_mark:
+* Quansheng UV-K5 version 1 :white_check_mark:
+* Quansheng UV-K5+ ("UV-5R PLUS") version1 :white_check_mark:
+* Quansheng UV-K5(8) :white_check_mark: / Quansheng UV-K6 version 1:white_check_mark:
+* Quansheng UV-K5(99) version 1:white_check_mark:
 
 NOT COMPATIBLE:
 
+* Quansheng UV-K5(8)/UV-K5(99) (with FCC ID "XBPUV-K5") version 2 :x:
 * Quansheng TK-11 / TK-11(8) :x:
 * Similar looking baofeng radios :x:
+
+> [!WARNING]
+> There is a new hardware version 2 out now. It is not compatible with this firmware (yet).
+> How to check if a device is version 1 or version 2:
+> <img src="images/version2.jpg" width=800 />
+
+
 
 ## Manual
 
@@ -120,7 +128,7 @@ You need a quansheng programming cable with an integrated USB to serial converte
 Turn the power knob to switch the device on. 
 
 ARDF Mode can be disabled/enabled in the menu (ARDF = OFF/ON). This enables **manual gain control** 
-by pressing **UP/DOWN keys**. The index reaches from 0 to 19, default is 15.
+by pressing **UP/DOWN keys**. The index reaches from 0 to 19, default is 7.
 
 Gain steps should be roughly 5dB but they are uncalibrated. Expect surprises.
 
@@ -132,6 +140,8 @@ Gain steps should be roughly 5dB but they are uncalibrated. Expect surprises.
 - Choose duration time of one fox transmission in menu "FoxDur". Default is 60s. 
 Modify with UP/DOWN key in 0.1s steps or enter value as *5 digit number* in 1/100s resolution. Confirm with menu button (min = 001.00s, max = 999.99s).
 - Enter beep signal before end of fox cycle time (menu "EndSig", 0s = off, 1..30s).
+- For more dynamic range the rx frequency can be mistuned by MstFrq Hz (shown as negative gain index). The gain can be automatically increased by MstStp additional steps. The effects of MstFrq 
+and MstStp must fit together. Highly experimental. Set MstFrq = 0 and MstStp = 0 if you do not know what you are doing.
 - Activate VFO A (long pressing key "2 A/B" toggles between both VFOs.
 - Enter the frequency of the foxes using the number keys. If memory mode is active long press "3 VFO MR" to change to frequency mode.
 - Choose the modulation type of the foxes in menu "Demod" (e.g. AM).
@@ -203,7 +213,7 @@ Enter this value in menu "ClkCor" using UP/DOWN keys (allowed range: -500 ... 50
 
 #### Function keys ####
 Two different ARDF actions can be mapped to function keys: 
-* Set manual gain to a medium index value (7). It is recommended to configure "ARDF Set Med.Gain" to short press on F2 key, menu: F2Shrt) 
+* Set manual gain to a medium index value (4). It is recommended to configure "ARDF Set Med.Gain" to short press on F2 key, menu: F2Shrt) 
 * Enable/Disable ARDF function (e.g. for long press on F1 key / menu: F1Long = "ARDF off/on").
 
 It is recommended to configure "Switch VFO" to F1 short (menu F1Shrt).
@@ -284,7 +294,7 @@ Try inline capacitor values of 0.1uF .. 10uF as a start. For my 8 ohms (2x 16 oh
 
 Pro: Very easy and fast to build, tolerant, very good SWR, light weight, cheap.
 
-Cons: Front to back ratio not optimal, radials move on boom if not secured.
+Cons: Front to back ratio not optimal (but not bad!), radials move on boom if not secured.
 
 | Element | Length | Position | 
 | --- | --- | --- |
@@ -320,6 +330,8 @@ Tip: Use 2 layers of tape measure. Outer 25cm can be single layer.
 Made out of 3.2mm welding rods.
 
 Pro: Quite nice F/B ratio, light weight.
+
+Cons: Thin rods not so suitable for younger children.
 
 | Element | Length | Position | 
 | --- | --- | --- |
