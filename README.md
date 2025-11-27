@@ -73,8 +73,8 @@ Anyway, have fun.
 ## Compatible Devices
 
 > [!WARNING]
-> There is a new hardware version 2 out now. Check carefully which hardware version do you have before flashing any new firmware:heavy_exclamation_mark:
-> Both version have a different processor and need the right firmware to run:heavy_exclamation_mark:
+> There is a new hardware version 2 out now. Check carefully which hardware version do you have before flashing any new firmware! 
+> :heavy_exclamation_mark: Both version have a different processor and need the right firmware to run. :heavy_exclamation_mark:
 
 > How to check if a device is version 1 or version 2:
 > <img src="images/version2.jpg" width=800 />
