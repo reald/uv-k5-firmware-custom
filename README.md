@@ -74,7 +74,8 @@ Anyway, have fun.
 
 > [!WARNING]
 > There is a new hardware version 2 out now. Check carefully which hardware version do you have before flashing any new firmware! 
-> :heavy_exclamation_mark: Both version have a different processor and need the right firmware to run. :heavy_exclamation_mark:
+
+:exclamation: Both version have a different processor and need the right firmware to run. :exclamation:
 
 > How to check if a device is version 1 or version 2:
 > <img src="images/version2.jpg" width=800 />
@@ -83,7 +84,7 @@ All version 1 devices (with FCC ID "XBPUV-K5"):
 
 * Quansheng UV-K5 version 1 :white_check_mark:
 * Quansheng UV-K5+ ("UV-5R PLUS") version1 :white_check_mark:
-* Quansheng UV-K5(8) version 1 :white_check_mark: / Quansheng UV-K6 version 1:white_check_mark:
+* Quansheng UV-K5(8) version 1 :white_check_mark: / Quansheng UV-K6 version 1 :white_check_mark:
 * Quansheng UV-K5(99) version 1 :white_check_mark:
 
 NOT COMPATIBLE with this project **but alternative firmware** available:
