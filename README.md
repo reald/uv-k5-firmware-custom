@@ -348,7 +348,7 @@ Cons: Thin rods not so suitable for younger children.
 ### 3 Element Tape measure Yagi for 70 cm (DF9NX)
 <img src="images/df9nx_yagi_3dprint.jpg" width=600 />
 
-[3d printed mounts](images/df9nx_70cm_3dfiles.zip) for tape measure elements (19mm) on 10mm aluminium u-profile.
+[3d printed mounts](https://github.com/reald/uv-k5-firmware-custom/raw/refs/heads/main/images/df9nx_70cm_3dfiles.zip) for tape measure elements (19mm) on 10mm aluminium u-profile.
 Driven simply in center of radiator. RG174 cable and M3x12mm screws.
 
 Pro: Radio and antenna combined.
