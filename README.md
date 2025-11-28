@@ -352,6 +352,7 @@ Cons: Thin rods not so suitable for younger children.
 Driven simply in center of radiator. RG174 cable and M3x12mm screws.
 
 Pro: Radio and antenna combined.
+
 Cons: Not for TX.
 
 | Element | Length | Position |
@@ -367,8 +368,9 @@ Cons: Not for TX.
 3d printed mounts for electric cable elements on 10mm aluminium u-profile.
 Driven simply in center of radiator.
 
-Pro: Radio and antenna combined, light weight.
-Cons: Not for TX.
+Pro: Radio and antenna combined, very light weight.
+
+Cons: Not for TX, not very stable.
 
 | Element | Length | Position |
 | --- | --- | --- |
