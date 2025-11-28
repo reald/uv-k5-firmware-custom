@@ -301,7 +301,7 @@ Pro: Very easy and fast to build, tolerant, very good SWR, light weight, cheap.
 
 Cons: Front to back ratio not optimal (but not bad!), radials move on boom if not secured.
 
-| Element | Length | Position | 
+| Element | Length | Position |
 | --- | --- | --- |
 | Reflector | 103.9cm | 0 cm |
 | Radiator | 102 cm | 30 cm |
@@ -310,7 +310,7 @@ Cons: Front to back ratio not optimal (but not bad!), radials move on boom if no
 [Build instructions by DK7ZB](https://www.qsl.net/dk7zb/PVC-Yagis/3-Ele-2m.htm)
 
 
-### 3 Element Tape measurement Antenna for 2m ARDF
+### 3 Element Tape Measure Antenna for 2m ARDF
 
 <img src="images/ardf_setup.jpg" width=600 />
 <img src="images/20250619_112008_2m_ma_band_horizontal_diagr.png" width=600 />
@@ -321,7 +321,7 @@ Cons: More complex to build, not suitable for TX because of missing adaption.
 
 Tip: Use 2 layers of tape measure. Outer 25cm can be single layer.
 
-| Element | Length | Position | 
+| Element | Length | Position |
 | --- | --- | --- |
 | Reflector | 106.5cm | 0 cm |
 | Radiator | 2*47cm | 20 cm |
@@ -338,11 +338,43 @@ Pro: Quite nice F/B ratio, light weight.
 
 Cons: Thin rods not so suitable for younger children.
 
-| Element | Length | Position | 
+| Element | Length | Position |
 | --- | --- | --- |
 | Reflector | 35 cm | 0 cm |
 | Radiator | 32,6 cm | 12 cm |
 | Director | 30 cm | 23 cm |
+
+
+### 3 Element Tape measure Yagi for 70 cm (DF9NX)
+<img src="images/df9nx_yagi_3dprint.jpg" width=600 />
+
+[3d printed mounts](images/df9nx_70cm_3dfiles.zip) for tape measure elements (19mm) on 10mm aluminium u-profile.
+Driven simply in center of radiator. RG174 cable and M3x12mm screws.
+
+Pro: Radio and antenna combined.
+Cons: Not for TX.
+
+| Element | Length | Position |
+| --- | --- | --- |
+| Reflector | 34 cm | 0 cm |
+| Radiator | 32,5 cm | 12.6 cm |
+| Director | 29.5 cm | 18 cm |
+
+
+### 3 Element cable Yagi for 70 cm (DF9NX)
+<img src="images/df9nx_yagi_cable.jpg" width=600 />
+
+3d printed mounts for electric cable elements on 10mm aluminium u-profile.
+Driven simply in center of radiator.
+
+Pro: Radio and antenna combined, light weight.
+Cons: Not for TX.
+
+| Element | Length | Position |
+| --- | --- | --- |
+| Reflector | 38 cm | 0 cm |
+| Radiator | 30 cm | 8.5 cm |
+| Director | 27 cm | 14 cm |
 
 
 ### Combined 2m / 70cm Antenna by PA0JBG
@@ -352,7 +384,7 @@ Cons: Thin rods not so suitable for younger children.
 Notes: This prototype has a switchable attenuator (approx. 25dB), this is optional. Boom is made of electrical conducting material.
 
 2 m:
-| Element | Length | Position | 
+| Element | Length | Position |
 | --- | --- | --- |
 | Reflector | 106 cm | 0 cm |
 | Radiator | 94 cm | 20 cm |
