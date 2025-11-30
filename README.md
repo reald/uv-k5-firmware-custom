@@ -365,12 +365,12 @@ Cons: Not for TX.
 ### 3 Element cable Yagi for 70 cm (DF9NX)
 <img src="images/df9nx_yagi_cable.jpg" width=600 />
 
-3d printed mounts for electric cable elements on 10mm aluminium u-profile.
+[3d printed mounts](https://github.com/reald/uv-k5-firmware-custom/raw/refs/heads/main/images/df9nx_yagi_cable_3dfiles.zip) for electric cable elements on 10mm aluminium u-profile.
 Driven simply in center of radiator.
 
 Pro: Radio and antenna combined, very light weight.
 
-Cons: Not for TX, not very stable.
+Cons: Not for TX, elements might bend.
 
 | Element | Length | Position |
 | --- | --- | --- |
