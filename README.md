@@ -93,6 +93,7 @@ NOT COMPATIBLE with this project but **alternative firmware available**:
 
 NOT COMPATIBLE with this project but alternative firmware **planned**:
 * Quansheng UV-K5(8)/UV-K5(99) version 3 :hourglass_flowing_sand:
+* Quansheng UV-K1/UV-K1(8) :hourglass_flowing_sand:
 
 NOT COMPATIBLE:
 * Quansheng TK-11 / TK-11(8) :x:
