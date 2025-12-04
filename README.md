@@ -73,27 +73,29 @@ Anyway, have fun.
 ## Compatible Devices
 
 > [!WARNING]
-> There is a new hardware version 2 out now. Check carefully which hardware version do you have before flashing any new firmware! 
+> There is are **new hardware versions out**. **Check carefully** which hardware version do you have **before flashing** any new firmware! 
 
-:exclamation: Both version have a different processor and need the right firmware to run. :exclamation:
+:exclamation: All versions have different processors and need the right firmware and flash tool to run. :exclamation:
 
-> How to check if a device is version 1 or version 2:
+> The hardware version of a device usually can be found on the label under the battery:
 > <img src="images/version2.jpg" width=800 />
+
+Version 1 devices have no version label, version 2 has "V2", version 3 has "V3".
 
 All version 1 devices (with FCC ID "XBPUV-K5"):
 
 * Quansheng UV-K5 version 1 :white_check_mark:
-* Quansheng UV-K5+ ("UV-5R PLUS") version1 :white_check_mark:
+* Quansheng UV-K5+ ("UV-5R PLUS") version 1 :white_check_mark:
 * Quansheng UV-K5(8) version 1 :white_check_mark: / Quansheng UV-K6 version 1 :white_check_mark:
 * Quansheng UV-K5(99) version 1 :white_check_mark:
 
 NOT COMPATIBLE with this project but **alternative firmware available**:
-* Quansheng UV-K5(8)/UV-K5(99) (with FCC ID "XBPUV-K5") version 2 :heavy_check_mark:
+* Quansheng UV-K5(8) / UV-K5(99) (with FCC ID "XBPUV-K5") version 2 :heavy_check_mark:
   * Check this project: [Quansheng UV-Kx firmware with ARDF support for hardware version 2](https://codeberg.org/DL9CAT/uv-k5-firmware-custom_v2/releases) :white_check_mark:
 
 NOT COMPATIBLE with this project but alternative firmware **planned**:
-* Quansheng UV-K5(8)/UV-K5(99) version 3 :hourglass_flowing_sand:
-* Quansheng UV-K1/UV-K1(8) :hourglass_flowing_sand:
+* Quansheng UV-K5(8) / UV-K5(99) version 3 :hourglass_flowing_sand:
+* Quansheng UV-K1 / UV-K1(8) :hourglass_flowing_sand:
 
 NOT COMPATIBLE:
 * Quansheng TK-11 / TK-11(8) :x:
