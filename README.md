@@ -1,4 +1,4 @@
-# Open Quansheng UV-K5/K6/5R version 1 firmware with 2m and 70cm ARDF support
+S# Open Quansheng UV-K5/K6/5R version 1 firmware with 2m and 70cm ARDF support
 
 This is all based on [egzumer custom firmware](https://github.com/egzumer/uv-k5-firmware-custom)!
 
@@ -129,13 +129,13 @@ You need a quansheng programming cable with an integrated USB to serial converte
 - [HW Version 1 Webflasher for chrome based browsers](https://egzumer.github.io/uvtools/) (Choose `firmware.packed.bin`)
   - :warning: Do NOT flash V2 or V3 hardware devices with this flasher!
 - On linux [k5prog](https://github.com/nica-f/k5prog) can be used: Run `k5prog -b firmware.bin -F -YYY`
-- On windows [k5prog_win](https://github.com/OneOfEleven/k5prog-win/raw/refs/heads/main/k5prog_win.exe) can be used: `k5prog_win.exe -b firmware.packed.bin -F -YYY`
+- On windows [k5prog_win](https://github.com/OneOfEleven/k5prog-win/raw/refs/heads/main/k5prog_win.exe) can be used. (Choose `firmware.packed.bin`)
 - Official quansheng flash tool (Windows only. Choose `firmware.packed.bin`)
 
 #### Flash programs for UV-K5/6 hardware version 2
 - There is no working webflasher for this hardware version.
 - On linux [k5prog](https://github.com/nica-f/k5prog) can be used: Run `k5prog -b firmware.bin -F -YYY`
-- On windows [k5prog_win](https://github.com/OneOfEleven/k5prog-win/raw/refs/heads/main/k5prog_win.exe) can be used: `k5prog_win.exe -b firmware.packed.bin -F -YYY`
+- On windows [k5prog_win](https://github.com/OneOfEleven/k5prog-win/raw/refs/heads/main/k5prog_win.exe) can be used. (Choose `firmware.packed.bin`)
  
 #### Flash programs for UV-K5/6 hardware version 3 and K1
 - Either programming cable or USB-C cable can be used.
