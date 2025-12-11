@@ -23,6 +23,7 @@ Anyway, have fun.
 * [Compatible Devices](#compatible-devices)
 * [Manual](#manual)
 * [Manual for ARDF](#specific-ardf-features)
+* [Firmware Flashing](#firmware-flashing)
 * [Headphones](#headphones)
 * [Radio Performance](#radio-performance)
 * [Antenna Proposals](#antenna-proposals)
@@ -32,7 +33,7 @@ Anyway, have fun.
 * [Credits](#credits)
 * [Other sources of information](#other-sources-of-information)
 * [License](#license)
-* [Example changes/updates](#example-changesupdates)
+* [Example changes/updates](#example-of-ardf-changesupdates)
 
 ## Main features:
 * ARDF features
@@ -112,29 +113,43 @@ Up to date manual is available in the [Wiki section](https://github.com/egzumer/
 Download a [precompiled release](https://github.com/reald/uv-k5-firmware-custom/releases) or compile with ENABLE_ARDF=1 and preferable with ENABLE_PREVENT_TX=1. 
 To get enough free flash space disable some unneeded TX features (e.g. ENABLE_DTMF_CALLING=0). 
 
-### Firmware Flashing
+## Firmware Flashing
 
-#### Preparation
+### Preparation
 You need a quansheng programming cable with an integrated USB to serial converter. Most baofeng cables are working fine, too.
 
+1. Find out which hardware version do you have and which firmware do you need for it. See [compatible Devices](#compatible-devices).
 1. Backup your settings!
 1. Charge battery if almost empty!
 1. Press PTT key while turning the radio on. This will NOT work if cable is already plugged. White LED on top MUST be on.
 1. Connect the programming cable NOW
-1. Run a flash program (see next section)
+1. Run flash program which fits to your hardware version (see next sections)
 
-#### Flash programs
-- [Webflasher for chrome based browsers](https://egzumer.github.io/uvtools/) (Choose `firmware.packed.bin`)
+#### Flash programs for UV-K5/6 hardware version 1
+- [HW Version 1 Webflasher for chrome based browsers](https://egzumer.github.io/uvtools/) (Choose `firmware.packed.bin`)
+  - :warning: Do NOT flash V2 or V3 hardware devices with this flasher!
 - On linux [k5prog](https://github.com/nica-f/k5prog) can be used: Run `k5prog -b firmware.bin -F -YYY`
+- On windows [k5prog_win](https://github.com/OneOfEleven/k5prog-win/raw/refs/heads/main/k5prog_win.exe) can be used: `k5prog_win.exe -b firmware.packed.bin -F -YYY`
 - Official quansheng flash tool (Windows only. Choose `firmware.packed.bin`)
+
+#### Flash programs for UV-K5/6 hardware version 2
+- There is no working webflasher for this hardware version.
+- On linux [k5prog](https://github.com/nica-f/k5prog) can be used: Run `k5prog -b firmware.bin -F -YYY`
+- On windows [k5prog_win](https://github.com/OneOfEleven/k5prog-win/raw/refs/heads/main/k5prog_win.exe) can be used: `k5prog_win.exe -b firmware.packed.bin -F -YYY`
+ 
+#### Flash programs for UV-K5/6 hardware version 3 and K1
+- Either programming cable or USB-C cable can be used.
+- :warning: k5prog and k5prog_win are NOT compatible.
+- [UVTOOLS2 for chrome based browsers](https://armel.github.io/uvtools2/)
+  - :warning: Do NOT flash V1 or V2 hardware devices with this flasher!
 
 #### Trouble Shooting
 - If device does not boot after flashing something went wrong. Try flashing another firmware file or a different flash tool.
 - If serial port is not found on linux add your username to the `dialout` group (`sudo usermod -aG dialout your_username`) and reboot.
 
-### Usage
+## Usage
 
-#### Quick Setup ####
+### Quick Setup ###
 
 Turn the power knob to switch the device on. 
 
