@@ -118,7 +118,7 @@ To get enough free flash space disable some unneeded TX features (e.g. ENABLE_DT
 ### Preparation
 You need a quansheng programming cable with an integrated USB to serial converter. Most baofeng cables are working fine, too.
 
-1. Find out which hardware version do you have and which firmware do you need for it. See [compatible Devices](#compatible-devices).
+1. Find out which hardware version do you have and which firmware do you need for it. See [compatible devices](#compatible-devices).
 1. Backup your settings!
 1. Charge battery if almost empty!
 1. Press PTT key while turning the radio on. This will NOT work if cable is already plugged. White LED on top MUST be on.
@@ -134,8 +134,8 @@ You need a quansheng programming cable with an integrated USB to serial converte
 
 #### Flash programs for UV-K5/6 hardware version 2
 - There is no working webflasher for this hardware version.
-- On linux [k5prog](https://github.com/nica-f/k5prog) can be used: Run `k5prog -b firmware.bin -F -YYY`
-- On windows [k5prog_win](https://github.com/OneOfEleven/k5prog-win/raw/refs/heads/main/k5prog_win.exe) can be used. (Choose `firmware.packed.bin`)
+- On linux [k5prog](https://github.com/nica-f/k5prog) can be used: Run `k5prog -b UVK5-V2.ARDF.bin -F -YYY`
+- On windows [k5prog_win](https://github.com/OneOfEleven/k5prog-win/raw/refs/heads/main/k5prog_win.exe) can be used. (Choose `UVK5-V2.ARDF.packed.bin`)
  
 #### Flash programs for UV-K5/6 hardware version 3 and K1
 - Either programming cable or USB-C cable can be used.
