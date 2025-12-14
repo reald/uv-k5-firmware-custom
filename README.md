@@ -94,7 +94,7 @@ NOT COMPATIBLE with this project but **alternative firmware available**:
 * Quansheng UV-K5(8) / UV-K5(99) (with FCC ID "XBPUV-K5") version 2 :heavy_check_mark:
   * Check this project: [Quansheng UV-Kx firmware with ARDF support for hardware version 2](https://codeberg.org/DL9CAT/uv-k5-firmware-custom_v2/releases) :white_check_mark:
 
-NOT COMPATIBLE with this project but alternative firmware **planned**:
+NOT COMPATIBLE with this project but alternative firmware **in work**:
 * Quansheng UV-K5(8) / UV-K5(99) version 3 :hourglass_flowing_sand:
 * Quansheng UV-K1 / UV-K1(8) :hourglass_flowing_sand:
   * Check this project: [Quansheng UV-K5 version 3 and UV-K1 firmware with ARDF support](https://github.com/reald/uv-k1-k5v3-firmware-custom/releases/) :hourglass_flowing_sand:
