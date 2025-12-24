@@ -81,7 +81,11 @@ Anyway, have fun.
 > The hardware version of a device usually can be found on the label under the battery:
 > <img src="images/version2.jpg" width=800 />
 
-Version 1 devices have no version label, version 2 has "V2", version 3 has "V3".
+Version 1 devices have no version label, version 2 has "V2", version 3 has "V3" and Software Version 7.x (Menu 53 "VER").
+
+> [!WARNING]
+> There are falsely labeled devices out! (Internally V2 but V3 on the label.)
+> Please check [this discussion first.](https://github.com/armel/uv-k1-k5v3-firmware-custom/discussions/54)
 
 All version 1 devices (with FCC ID "XBPUV-K5"):
 
