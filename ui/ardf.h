@@ -18,13 +18,14 @@
 #define UI_ARDF_H
 
 #ifdef ENABLE_ARDF
-void UI_DisplayARDF_Timer(void);
-void UI_DisplayARDF_RSSI(void);
-void UI_DisplayARDF_FreqCh(void);
-void UI_DisplayARDF(void);
+extern void Ui_DisplayARDF_RSSIBar_Simple(void);
+extern void UI_DisplayARDF_Timer(void);
+extern void UI_DisplayARDF_RSSI(void);
+extern void UI_DisplayARDF_FreqCh(void);
+extern void UI_DisplayARDF(void);
 
 #ifdef ARDF_ENABLE_SHOW_DEBUG_DATA
-void UI_DisplayARDF_Debug(void);
+extern void UI_DisplayARDF_Debug(void);
 #endif
 
 #endif

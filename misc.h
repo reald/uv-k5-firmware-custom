@@ -151,11 +151,7 @@ extern uint8_t               gSetting_F_LOCK;
 extern bool                  gSetting_ScrambleEnable;
 
 #ifdef ENABLE_ARDF
-
-#define ARDF_DEFAULT_ENABLE true
-
 extern bool                  gSetting_ARDFEnable;
-
 #endif
 
 extern enum BacklightOnRxTx_t gSetting_backlight_on_tx_rx;

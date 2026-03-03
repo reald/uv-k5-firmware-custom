@@ -869,9 +869,9 @@ void RADIO_SetupAGC(bool listeningAM, bool disable)
 {
 	static uint8_t lastSettings;
 #ifdef ENABLE_ARDF
-	uint8_t newSettings = (listeningAM) | (disable << 1) | (gSetting_ARDFEnable << 2);
+	uint8_t newSettings = (gSetting_ARDFEnable << 2) | (listeningAM << 1) | disable;
 #else
-	uint8_t newSettings = (listeningAM << 1) | (disable << 1);
+	uint8_t newSettings = (listeningAM << 1) | disable;
 #endif
 
 	if(lastSettings == newSettings)

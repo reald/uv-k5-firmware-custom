@@ -24,18 +24,23 @@
 
 
 #define ARDF_NUM_FOX_MAX 10
-#define ARDF_GAIN_INDEX_DEFAULT 15
-#define ARDF_GAIN_INDEX_MIDDLE 7
+#define ARDF_GAIN_INDEX_DEFAULT 7
+#define ARDF_GAIN_INDEX_DF_SIMPLE 5
+#define ARDF_GAIN_INDEX_MIDDLE 4
 #define ARDF_CYCLE_END_BEEP_S_DEFAULT 12 // warn with beep 12s before end of fox cycle
 #define ARDF_CYCLE_END_BEEP_S_MAX 30
+
+#define ARDF_GAIN_INDEX_ADD_STEPS_MISTUNE_DEFAULT 0 // additional gain index steps for mistuning
+#define ARDF_GAIN_MISTUNE_HZ_DEFAULT (0)
+#define ARDF_MISTUNE_RES_HZ 200
 
 #define ARDF_MEM_MODE_FREQ_TOGGLE_S 3 // in frequency mode: toggle memory number and frequency every 3 s
 
 #define ARDF_DEFAULT_ENABLE true
 #define ARDF_DEFAULT_NUM_FOXES 5
-#define ARDF_DEFAULT_FOX_DURATION 6000
+#define ARDF_DEFAULT_FOX_DURATION 6000 // *10ms
 #define ARDF_DEFAULT_GAIN_REMEMBER 1
-
+#define ARDF_DEFAULT_DF_SIMPLE false
 #define ARDF_CLOCK_CORR_TICKS_PER_MIN (+00) // default clock correction
 
 //#define ARDF_ENABLE_SHOW_DEBUG_DATA
@@ -52,6 +57,8 @@ typedef struct
 
 extern t_ardf_gain_table     ardf_gain_table[];
 extern uint8_t               ardf_gain_index[2][ARDF_NUM_FOX_MAX];
+extern uint8_t               ardf_gain_index_steps_mistune[2][ARDF_NUM_FOX_MAX];
+extern bool                  ardf_mistune_active[2][ARDF_NUM_FOX_MAX];
 
 extern uint32_t              gARDFTime10ms;
 extern uint32_t              gARDFFoxDuration10ms;
@@ -60,16 +67,18 @@ extern uint8_t               gARDFNumFoxes;
 extern uint8_t               gARDFActiveFox;
 extern uint8_t               gARDFGainRemember;
 extern uint8_t               gARDFCycleEndBeep_s;
+extern bool                  gARDFDFSimpleMode;
 extern bool                  gARDFPlayEndBeep;
 extern unsigned int          gARDFRssiMax;
 extern uint8_t               gARDFMemModeFreqToggleCnt_s;
 extern bool                  gARDFRequestSaveEEPROM;
 extern int16_t               gARDFClockCorrAddTicksPerMin;
+extern int8_t                gARDFMistuneFreqRaw;
+extern uint8_t               gARDFMistuneAddGainIdxSteps;
 #ifdef ARDF_ENABLE_SHOW_DEBUG_DATA
 extern int16_t               gARDFdebug;
 extern int16_t               gARDFdebug2;
 #endif
-extern unsigned int          gARDFRssiMax;
 
 
 
@@ -83,7 +92,9 @@ extern bool ARDF_ActVfoHasGainRemember(uint8_t vfo);
 extern void ARDF_ActivateGainIndex(void);
 extern int32_t ARDF_GetRestTime_s(void);
 extern int8_t ARDF_Get_GainDiff(void);
-
+extern void ARDF_DoMistuneFreq(void);
+extern void ARDF_UndoMistuneFreq(void);
+extern void ARDF_StopFreqMistune(void);
 
 #endif
 

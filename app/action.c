@@ -477,6 +477,8 @@ void ACTION_BlminTmpOff(void)
 }
 #endif
 
+
+
 #ifdef ENABLE_ARDF
 
 void ACTION_ARDFOnOff(void)
@@ -496,6 +498,7 @@ void ACTION_ARDFOnOff(void)
 }
 
 
+
 void ACTION_ARDFGainMiddle(void)
 {
    if ( gSetting_ARDFEnable )
@@ -505,12 +508,18 @@ void ACTION_ARDFGainMiddle(void)
 
       if ( ARDF_ActVfoHasGainRemember(vfo) == false )
       {
-         // do not remember fox gains on this vfo
          activefox = 0;
       }
 
-      ardf_gain_index[vfo][activefox] = ARDF_GAIN_INDEX_MIDDLE;
-
+      if ( ardf_mistune_active[vfo][activefox] != false )
+      {
+         // frequency mistuning active. disable everything and go to gain index 0
+         ARDF_StopFreqMistune();
+      }
+      else
+      {
+         ardf_gain_index[vfo][activefox] = ARDF_GAIN_INDEX_MIDDLE;
+      }
       ARDF_ActivateGainIndex();
 
    }

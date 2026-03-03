@@ -1622,11 +1622,10 @@ static void ProcessKey(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 	}
 
 	bool lowBatPopup = gLowBattery && !gLowBatteryConfirmed 
-	                   && ( (gScreenToDisplay == DISPLAY_MAIN) 
+						&& ( (gScreenToDisplay == DISPLAY_MAIN) 
 #ifdef ENABLE_ARDF
-				|| ( gScreenToDisplay == DISPLAY_ARDF )
+							 || ( (gScreenToDisplay == DISPLAY_ARDF) && (gARDFDFSimpleMode == false) )
 #endif
-	                   
 	                      );
 
 	if ((gEeprom.KEY_LOCK || lowBatPopup) && gCurrentFunction != FUNCTION_TRANSMIT && Key != KEY_PTT)

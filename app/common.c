@@ -5,6 +5,10 @@
 #include "settings.h"
 #include "ui/ui.h"
 
+#ifdef ENABLE_ARDF
+#include "app/ardf.h"
+#endif
+
 void COMMON_KeypadLockToggle() 
 {
 
@@ -27,12 +31,35 @@ void COMMON_SwitchVFOs()
 #ifdef ENABLE_SCAN_RANGES    
     gScanRangeStart = 0;
 #endif
+
+#ifdef ENABLE_ARDF
+//fixme: can be used with gain remember off
+
+    // vfo switch. undo mistune frequncy shift if active. only necessary if gain remember is active.
+    if ( (gSetting_ARDFEnable) && (ARDF_ActVfoHasGainRemember(gEeprom.RX_VFO) != false)
+        && (ardf_mistune_active[gEeprom.RX_VFO][gARDFActiveFox] != false) )
+    {
+        ARDF_UndoMistuneFreq(); // only undo the frequency shift
+    }
+#endif
+
     gEeprom.TX_VFO ^= 1;
 
     if (gEeprom.CROSS_BAND_RX_TX != CROSS_BAND_OFF)
         gEeprom.CROSS_BAND_RX_TX = gEeprom.TX_VFO + 1;
     if (gEeprom.DUAL_WATCH != DUAL_WATCH_OFF)
         gEeprom.DUAL_WATCH = gEeprom.TX_VFO + 1;
+
+#ifdef ENABLE_ARDF
+// fixme. has to be activated later
+
+    // vfo switch. restore mistune frequncy shift if active. only necessary if gain remember is active.
+/*    if ( (gSetting_ARDFEnable) && (ARDF_ActVfoHasGainRemember(gEeprom.RX_VFO) != false)
+        && (ardf_mistune_active[gEeprom.RX_VFO][gARDFActiveFox] != false) )
+    {
+        ARDF_DoMistuneFreq(); // only do the frequency shift
+    }*/
+#endif
 
     gRequestSaveSettings  = 1;
     gFlagReconfigureVfos  = true;
@@ -55,6 +82,11 @@ void COMMON_SwitchVFOMode()
     if (gEeprom.VFO_OPEN)
 #endif
     {
+
+#ifdef ENABLE_ARDF
+        ARDF_StopFreqMistune();
+#endif
+
         if (IS_MR_CHANNEL(gTxVfo->CHANNEL_SAVE))
         {	// swap to frequency mode
             gEeprom.ScreenChannel[gEeprom.TX_VFO] = gEeprom.FreqChannel[gEeprom.TX_VFO];

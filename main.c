@@ -93,15 +93,16 @@ void Main(void)
 	memset(gDTMF_String, '-', sizeof(gDTMF_String));
 	gDTMF_String[sizeof(gDTMF_String) - 1] = 0;
 
-#ifdef ENABLE_ARDF
-	ARDF_init();
-#endif
-
 	BK4819_Init();
 
 	BOARD_ADC_GetBatteryInfo(&gBatteryCurrentVoltage, &gBatteryCurrent);
 
 	SETTINGS_InitEEPROM();
+
+#ifdef ENABLE_ARDF
+	ARDF_init();
+#endif
+
 	SETTINGS_WriteBuildOptions();
 	SETTINGS_LoadCalibration();
 

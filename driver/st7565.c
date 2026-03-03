@@ -146,6 +146,11 @@ uint8_t cmds[] = {
 	ST7565_CMD_DISPLAY_ON_OFF | 1,			// Display ON/OFF: ON
 };
 
+int16_t map(int16_t x, int16_t in_min, int16_t in_max, int16_t out_min, int16_t out_max) {
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+
 void ST7565_Init(void)
 {
 	SPI0_Init();

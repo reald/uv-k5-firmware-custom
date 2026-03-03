@@ -37,6 +37,7 @@ void ST7565_FixInterfGlitch(void);
 void ST7565_HardwareReset(void);
 void ST7565_SelectColumnAndLine(uint8_t Column, uint8_t Line);
 void ST7565_WriteByte(uint8_t Value);
+int16_t map(int16_t x, int16_t in_min, int16_t in_max, int16_t out_min, int16_t out_max);
 
 #endif
 

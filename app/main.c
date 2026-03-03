@@ -270,7 +270,13 @@ static void processFKeyFunction(const KEY_Code_t Key, const bool beep)
 						
 		case KEY_UP:
 
+                        // change frequency or station
+
+                        // stop frequency mistuning if active
+                        ARDF_StopFreqMistune();
+
 			if (IS_FREQ_CHANNEL(Channel)) { // step/down in frequency
+
 				const uint32_t frequency = APP_SetFrequencyByStep(gTxVfo, Direction);
 
 				if (RX_freq_check(frequency) < 0) { // frequency not allowed
@@ -380,6 +386,10 @@ static void MAIN_Key_DIGITS(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 				return;
 			}
 
+			#ifdef ENABLE_ARDF
+				ARDF_StopFreqMistune();
+			#endif
+
 			#ifdef ENABLE_VOICE
 				gAnotherVoiceID        = (VOICE_ID_t)Key;
 			#endif
@@ -408,6 +418,10 @@ static void MAIN_Key_DIGITS(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 
 			gInputBoxIndex = 0;
 			uint32_t Frequency = StrToUL(INPUTBOX_GetAscii()) * 100;
+
+			#ifdef ENABLE_ARDF
+				ARDF_StopFreqMistune();
+			#endif
 
 			// clamp the frequency entered to some valid value
 			if (Frequency < frequencyBandTable[0].lower) {
@@ -758,6 +772,7 @@ static void MAIN_Key_UP_DOWN(bool bKeyPressed, bool bKeyHeld, int8_t Direction)
 		{
 			uint8_t Next;
 			if (IS_FREQ_CHANNEL(Channel)) { // step/down in frequency
+
 				const uint32_t frequency = APP_SetFrequencyByStep(gTxVfo, Direction);
 
 				if (RX_freq_check(frequency) < 0) { // frequency not allowed

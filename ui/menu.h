@@ -51,6 +51,8 @@ enum
 	MENU_ARDF_GAIN_REMEMBER,
 	MENU_ARDF_CYCLE_END_BEEP,
 	MENU_ARDF_CLOCK_CORR,
+	MENU_ARDF_MIST_FREQ,
+	MENU_ARDF_MIST_GAIN_ADD_STEPS,
 #endif
 	MENU_SCR,
 	MENU_BCL,
@@ -140,6 +142,7 @@ extern const uint8_t FIRST_HIDDEN_MENU_ITEM;
 extern const t_menu_item MenuList[];
 
 #ifdef ENABLE_ARDF
+extern const char gSubMenu_ARDF[3][10];
 extern const char gSubMenu_ARDF_Remember_Gain[4][6];
 #endif
 
