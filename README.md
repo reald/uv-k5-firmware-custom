@@ -154,25 +154,42 @@ You need a quansheng programming cable with an integrated USB to serial converte
 
 ## Usage
 
+### Draussenfuchs Quick Setup ###
+
+1. Turn the power knob at least 90° to switch the device on. 
+1. Draussenfuchs Mode can be enabled in the menu (ARDF = "DF Simple"). This enables **manual gain control** 
+stepping by pressing **UP/DOWN keys**. Smaller values have lower sensitivity. Use this close to loud transmitters.
+"DF Simple" mode automatically preconfigures the most important settings.
+1. Set frequency stepping to 1 kHz. (Menu: Step = 1.00kHz)
+1. Select amplitude demodulation (Menu: Demodu = AM)
+1. Enter frequency (Main Screen: 433920 for 433.92 MHz)
+
+That's it.
+
+<img src="images/df1.jpg" width=400 />
+
+Main screen in "DF Simple" mode. Gain step 5 is used, received signal strength is 118 (the higher the stronger the signal). 
+A means "VFO A" (can be A or B, does not matter), "AM" means amplitude demodulation (selected in the menu before),
+"U-" means lowest bandwidth (can be "N-", "N" or "W", too. Does not really matter.). 433.920 is the selected frequency (433.92MHz).
+
 ### Quick Setup ###
 
-Turn the power knob to switch the device on. 
+For amateur radio direction finding (ARDF) with timing some steps are needed:
 
-ARDF Mode can be disabled/enabled in the menu (ARDF = OFF/ON). This enables **manual gain control** 
-by pressing **UP/DOWN keys**. The index reaches from 0 to 19, default is 7.
+Turn the power knob at least 90° to switch the device on. 
 
-Gain steps should be roughly 5dB but they are uncalibrated. Expect surprises.
+ARDF Mode can be disabled/enabled in the menu (ARDF = OFF / ARDF / DF Simple). "ARDF" or "DF Simple" enable **manual gain control** 
+stepping by pressing **UP/DOWN keys**. On step changes the attenuation by approximately 5dB. Index 0
+has the smallest sensitivity.
+"DF Simple" has a simplified display especially created for [Draussenfuchs](https://draussenfuchs.de) or when no timing is needed.
 
 - Disable squelch (Menu: Sql = 0)
 - Disable dual watch (Menu: RxMode = MAIN ONLY).
-- Adjust clock correction if necessary (menu "ClkCor", details below).
-
 - Select number of foxes in menu "NumFox" (default = 5, min = 1, max = 10; 0 disables fox timing).
 - Choose duration time of one fox transmission in menu "FoxDur". Default is 60s. 
 Modify with UP/DOWN key in 0.1s steps or enter value as *5 digit number* in 1/100s resolution. Confirm with menu button (min = 001.00s, max = 999.99s).
 - Enter beep signal before end of fox cycle time (menu "EndSig", 0s = off, 1..30s).
-- For more dynamic range the rx frequency can be mistuned by MstFrq Hz (shown as negative gain index). The gain can be automatically increased by MstStp additional steps. The effects of MstFrq 
-and MstStp must fit together. Highly experimental. Set MstFrq = 0 and MstStp = 0 if you do not know what you are doing.
+- Adjust clock correction if necessary (menu "ClkCor", details below).
 - Activate VFO A (long pressing key "2 A/B" toggles between both VFOs.
 - Enter the frequency of the foxes using the number keys. If memory mode is active long press "3 VFO MR" to change to frequency mode.
 - Choose the modulation type of the foxes in menu "Demod" (e.g. AM).
@@ -229,7 +246,12 @@ If gain remember is not activated on the actual VFO, no gain index history is sh
 
 #### Clock Correction ####
 The microcontroller of the radio has no crystal oscillator and runs on an internal 48 MHz resonator only.
-So all timers in the CPU are not very precise. This leads to a heavily drifting clock. The firmware provides a correction
+So all timers in the CPU are not very precise. This leads to a heavily drifting clock. 
+
+> [!Note]
+> If no timing is used (e.g. in ARDF="DF Simple" mode) clock correction is **not** necessary.
+
+The firmware provides a correction
 mechanism to reach acceptable ranges. Start ARDF mode and stop **how many seconds really pass** until **the radio tells 1 hour is up**. 
 (Useful settings: NumFox = 10, FoxDur = 60.00s, sync to reference clock.) The formula for the correction value is:
 
@@ -277,6 +299,8 @@ changes can be done. This can be useful if preconfigured devices are handed to n
 #### Troubleshooting ####
 * The gain index history is flickering.
   * Disable dual watch (RxMode = MAIN ONLY).
+* Only 3 digits are accepted when entering a frequency.
+  * The active channel is in memory mode. Long press "3 VFO MR" to change to frequency mode.
 * The entered frequency is modified.
   * Decrease frequency step in menu "Step" to desired channel raster.
 * Chirp does read different channel settings than in my radio.
