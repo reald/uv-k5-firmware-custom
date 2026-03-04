@@ -98,10 +98,10 @@ NOT COMPATIBLE with this project but **alternative firmware available**:
 * Quansheng UV-K5(8) / UV-K5(99) (with FCC ID "XBPUV-K5") version 2 :heavy_check_mark:
   * Check this project: [Quansheng UV-Kx firmware with ARDF support for hardware version 2](https://codeberg.org/DL9CAT/uv-k5-firmware-custom_v2/releases) :white_check_mark:
 
-NOT COMPATIBLE with this project but alternative firmware **in work**:
-* Quansheng UV-K5(8) / UV-K5(99) version 3 :hourglass_flowing_sand:
-* Quansheng UV-K1 / UV-K1(8) :hourglass_flowing_sand:
-  * Check this project: [Quansheng UV-K5 version 3 and UV-K1 firmware with ARDF support](https://github.com/reald/uv-k1-k5v3-firmware-custom/releases/) :hourglass_flowing_sand:
+NOT COMPATIBLE with this project but **alternative firmware available**:
+* Quansheng UV-K5(8) / UV-K5(99) version 3 :heavy_check_mark:
+* Quansheng UV-K1 / UV-K1(8) :heavy_check_mark:
+  * Check this project: [Quansheng UV-K5 version 3 and UV-K1 firmware with ARDF support](https://github.com/reald/uv-k1-k5v3-firmware-custom/releases/) :white_check_mark:
 
 NOT COMPATIBLE:
 * Quansheng TK-11 / TK-11(8) :x:
@@ -170,7 +170,7 @@ That's it.
 
 Main screen in "DF Simple" mode. Gain step 5 is used, received signal strength is 118 (the higher the stronger the signal). 
 A means "VFO A" (can be A or B, does not matter), "AM" means amplitude demodulation (selected in the menu before),
-"U-" means lowest bandwidth (can be "N-", "N" or "W", too. Does not really matter.). 433.920 is the selected frequency (433.92MHz).
+"U-" means lowest bandwidth (can be "N-", "N" or "W", too. Does not really matter.). 433.920 is the selected frequency (433.92 MHz).
 
 ### Quick Setup ###
 
