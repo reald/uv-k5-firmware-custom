@@ -377,6 +377,17 @@ Tip: Use 2 layers of tape measure. Outer 25cm can be single layer.
 | Radiator | 2*47cm | 20 cm |
 | Director | 90,5 cm | 52 cm |
 
+#### 3D printed Mechanical solution by DL7CR ####
+<img src="images/ant_2m_dl7cr.jpg" width=600 />
+
+Pro: Comfortable 3D printed solution with 16mm PCV pipe.
+
+Cons: Pressing buttons needs 2 hands
+
+Uses [pawsay stub](https://www.dg7ybn.de/Symmetrising/Symmetrising.htm#Pawsey_Stub_Symmetrising_Device) as balun.
+
+Download [Freecad model here](images/ARDF2_Ant.FCStd).
+
 
 ### 3 Element Yagi for 70 cm
 <img src="images/70cm_3el_optim.jpg" width=600 />
