@@ -27,7 +27,6 @@ Anyway, have fun.
 * [Headphones](#headphones)
 * [Antenna Proposals](#antenna-proposals)
 * [Radio Performance](#radio-performance)
-* [User Customization](#user-customization)
 * [Compiler](#compiler)
 * [Building](#building)
 * [Credits](#credits)
@@ -307,6 +306,8 @@ changes can be done. This can be useful if preconfigured devices are handed to n
   * If you changed channel settings on the radio you have to store them first (menu "ChSave").
 * Signals are all very low, antenna does not respond to rotation movement.
   * Increase volume knob to 90 degree position or more.
+* UP and Down Keys are swapped on UV-K5 V3. 
+  * K1 settings are selected. Change this in the hidden menu: Hold PTT and SIDE BUTTON 1️⃣ and switch the device on. Release both keys. Change menu point "SetNav" (80) from „LEFT RIGHT UV-K1“ to „UP DOWN UV-K5(8)“. Restart radio.
 
 ## Headphones
 
@@ -480,64 +481,6 @@ non-existent (just like Quansheng's firmware).
 On the other hand, FM RX audio will/should be fine.
 
 But, they are nice toys for the price, fun to play with.
-
-## User customization
-
-You can customize the firmware by enabling/disabling various compile options, this allows
-us to remove certain firmware features in order to make room in the flash for others.
-You'll find the options at the top of "Makefile" ('0' = disable, '1' = enable) ..
-
-
-|Build option | Description |
-| --- | ---- |
-|🧰 **STOCK QUANSHENG FEATURES**||
-| ENABLE_UART | without this you can't configure radio via PC ! |
-| ENABLE_AIRCOPY | easier to just enter frequency with butts |
-| ENABLE_FMRADIO | WBFM VHF broadcast band receiver |
-| ENABLE_NOAA | everything NOAA (only of any use in the USA) |
-| ENABLE_VOICE | want to hear voices ? |
-| ENABLE_VOX | |
-| ENABLE_ALARM | TX alarms |
-| ENABLE_TX1750 | side key 1750Hz TX tone (older style repeater access)|
-| ENABLE_PWRON_PASSWORD | power-on password stuff |
-| ENABLE_DTMF_CALLING | DTMF calling fuctionality, sending calls, receiving calls, group calls, contacts list etc. |
-| ENABLE_FLASHLIGHT | enable top flashlight LED (on, blink, SOS) |
-|🧰 **CUSTOM MODS**||
-| ENABLE_BIG_FREQ | big font frequencies (like original QS firmware) |
-| ENABLE_SMALL_BOLD | bold channel name/no. (when name + freq channel display mode) |
-| ENABLE_CUSTOM_MENU_LAYOUT | changes how the menu looks like |
-| ENABLE_KEEP_MEM_NAME | maintain channel name when (re)saving memory channel|
-| ENABLE_WIDE_RX | full 18MHz to 1300MHz RX (though front-end/PA not designed for full range)|
-| ENABLE_TX_WHEN_AM | allow TX (always FM) when RX is set to AM|
-| ENABLE_F_CAL_MENU | enable the radios hidden frequency calibration menu |
-| ENABLE_CTCSS_TAIL_PHASE_SHIFT | standard CTCSS tail phase shift rather than QS's own 55Hz tone method|
-| ENABLE_BOOT_BEEPS | gives user audio feedback on volume knob position at boot-up |
-| ENABLE_SHOW_CHARGE_LEVEL | show the charge level when the radio is on charge |
-| ENABLE_REVERSE_BAT_SYMBOL | mirror the battery symbol on the status bar (+ pole on the right) |
-| ENABLE_NO_CODE_SCAN_TIMEOUT | disable 32-sec CTCSS/DCS scan timeout (press exit butt instead of time-out to end scan) |
-| ENABLE_AM_FIX | dynamically adjust the front end gains when in AM mode to help prevent AM demodulator saturation, ignore the on-screen RSSI level (for now) |
-| ENABLE_AM_FIX_SHOW_DATA | show debug data for the AM fix |
-| ENABLE_SQUELCH_MORE_SENSITIVE | make squelch levels a little bit more sensitive - I plan to let user adjust the values themselves |
-| ENABLE_FASTER_CHANNEL_SCAN | increases the channel scan speed, but the squelch is also made more twitchy |
-| ENABLE_RSSI_BAR | enable a dBm/Sn RSSI bar graph level in place of the little antenna symbols |
-| ENABLE_AUDIO_BAR | experimental, display an audio bar level when TX'ing |
-| ENABLE_COPY_CHAN_TO_VFO | copy current channel settings into frequency mode. Long press `1 BAND` when in channel mode |
-| ENABLE_SPECTRUM | fagci spectrum analyzer, activated with `F` + `5 NOAA`|
-| ENABLE_REDUCE_LOW_MID_TX_POWER | makes medium and low power settings even lower |
-| ENABLE_BYP_RAW_DEMODULATORS | additional BYP (bypass?) and RAW demodulation options, proved not to be very useful, but it is there if you want to experiment |
-| ENABLE_BLMIN_TMP_OFF | additional function for configurable buttons that toggles `BLMin` on and off wihout saving it to the EEPROM |
-| ENABLE_SCAN_RANGES | scan range mode for frequency scanning, see wiki for instructions (radio operation -> frequency scanning) |
-| ENABLE_PREVENT_TX | prevent TX in any case |
-| ENABLE_ARDF | enable ARDF features |
-|🧰 **DEBUGGING** ||
-| ENABLE_AM_FIX_SHOW_DATA| displays settings used by  AM-fix when AM transmission is received |
-| ENABLE_AGC_SHOW_DATA | displays AGC settings |
-| ENABLE_UART_RW_BK_REGS | adds 2 extra commands that allow to read and write BK4819 registers |
-|🧰 **COMPILER/LINKER OPTIONS**||
-| ENABLE_CLANG | **experimental, builds with clang instead of gcc (LTO will be disabled if you enable this) |
-| ENABLE_SWD | only needed if using CPU's SWD port (debugging/programming) |
-| ENABLE_OVERLAY | cpu FLASH stuff, not needed |
-| ENABLE_LTO | reduces size of compiled firmware but might break EEPROM reads (OVERLAY will be disabled if you enable this) |
 
 ## Compiler
 
