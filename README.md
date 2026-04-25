@@ -463,7 +463,9 @@ Notes: This prototype has a switchable attenuator (approx. 25dB), this is option
 | Director 2 | 29,8 cm | 31,5 cm |
 | Director 3 | 29,2 cm | 46 cm |
 
+### Other
 
+- [3D printed 3 element draussenfuchs yagi by DG1JAN](https://www.printables.com/model/1698556-draussenfuchs-yagi)
 
 
 ## Radio performance
