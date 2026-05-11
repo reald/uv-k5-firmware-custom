@@ -102,6 +102,10 @@ NOT COMPATIBLE with this project but **alternative firmware available**:
 * Quansheng UV-K1 / UV-K1(8) :heavy_check_mark:
   * Check this project: [Quansheng UV-K5 version 3 and UV-K1 firmware with ARDF support](https://github.com/reald/uv-k1-k5v3-firmware-custom/releases/) :white_check_mark:
 
+> [!TIP]
+> The gain attenuator of the hardware version 3 has less control range than V1 or V2 devices. When searching strong transmitters the strongest direction is not that easy to hear.
+> Use a (switchable) attenuator of aprox. 30dB in the antenna cable to handle strong signals. Due to the low power transmitters used this is NOT relevant for draussenfuchs.
+
 NOT COMPATIBLE:
 * Quansheng TK-11 / TK-11(8) :x:
 * Similar looking baofeng radios :x:
@@ -240,7 +244,7 @@ different gains in different time slots.)
 
 You can quickly switch between both VFOs by long pressing "2 (A/B)" or a configured function key (see below).
 
-If gain remember is not activated on the actual VFO, no gain index history is shown in the lower part of the screen.
+If gain remember is not activated on the actual VFO or "no timing" is selected (NumFox=0), no gain index history is shown in the lower part of the screen.
 
 
 #### Clock Correction ####
@@ -301,12 +305,14 @@ changes can be done. This can be useful if preconfigured devices are handed to n
 * Only 3 digits are accepted when entering a frequency.
   * The active channel is in memory mode. Long press "3 VFO MR" to change to frequency mode.
 * The entered frequency is modified.
-  * Decrease frequency step in menu "Step" to desired channel raster.
+  * Decrease frequency step in menu "Step" to desired channel raster (e.g. 1.00 kHz).
 * Chirp does read different channel settings than in my radio.
   * If you changed channel settings on the radio you have to store them first (menu "ChSave").
 * Signals are all very low, antenna does not respond to rotation movement.
   * Increase volume knob to 90 degree position or more.
-* UP and Down Keys are swapped on UV-K5 V3. 
+* After activating "DF Simple" and switching back to "ARDF" mode the gain remeber table is not shown.
+  * Reactivate Fox Timing (NumFox > 1) and Gain Remember (GainRe) for the desired VFO
+* UP and Down Keys are swapped on UV-K5 V3.
   * K1 settings are selected. Change this in the hidden menu: Hold PTT and SIDE BUTTON 1️⃣ and switch the device on. Release both keys. Change menu point "SetNav" (80) from „LEFT RIGHT UV-K1“ to „UP DOWN UV-K5(8)“. Restart radio.
 
 ## Headphones
