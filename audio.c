@@ -43,6 +43,7 @@ void AUDIO_PlayBeep(BEEP_Type_t Beep)
 
 	if (Beep != BEEP_880HZ_60MS_TRIPLE_BEEP &&
 	    Beep != BEEP_500HZ_60MS_DOUBLE_BEEP &&
+	    Beep != BEEP_500HZ_60MS_DOUBLE_BEEP_OPTIONAL &&
 	    Beep != BEEP_440HZ_500MS &&
 	    Beep != BEEP_880HZ_200MS &&
 	    Beep != BEEP_880HZ_500MS &&

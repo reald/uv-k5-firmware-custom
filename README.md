@@ -36,10 +36,12 @@ Anyway, have fun.
 
 ## Main features:
 * ARDF features
-   * manual gain control
+   * AM demodulation 
+   * Manual gain control
+   * Transmission function completely disabled (safe for non hamradio licenced operators!)
+   * Active fox and remaining cycle time display
+   * Beep signal before end of fox cycle
    * small bandwidth modes
-   * active fox and remaining cycle time display
-   * beep signal before end of fox cycle
 * many of OneOfEleven mods:
    * AM fix, huge improvement in reception quality
    * long press buttons functions replicating F+ action
@@ -165,7 +167,7 @@ stepping by pressing **UP/DOWN keys**. Smaller values have lower sensitivity. Us
 "DF Simple" mode automatically preconfigures the most important settings.
 1. Set frequency stepping to 1 kHz. (Menu: Step = 1.00kHz)
 1. Select amplitude demodulation (Menu: Demodu = AM)
-1. Enter frequency (Main Screen: 433920 for 433.92 MHz)
+1. Enter frequency (Main Screen: 433920 for 433.920 MHz)
 
 That's it.
 
@@ -175,7 +177,7 @@ Main screen in "DF Simple" mode. Gain step 5 is used, received signal strength i
 A means "VFO A" (can be A or B, does not matter), "AM" means amplitude demodulation (selected in the menu before),
 "U-" means lowest bandwidth (can be "N-", "N" or "W", too. Does not really matter.). 433.920 is the selected frequency (433.92 MHz).
 
-### Quick Setup ###
+### ARDF Quick Setup ###
 
 For amateur radio direction finding (ARDF) with timing some steps are needed:
 
@@ -210,7 +212,16 @@ Modify with UP/DOWN key in 0.1s steps or enter value as *5 digit number* in 1/10
 
 <img src="images/ardf_mainscreen.jpg" width=800 />
 
-This pictures shows the radio screen if ARDF mode is enabled. The manual gain index value can be chosen with UP/DOWN keys from 0 (silent) to 19 (max gain).
+This pictures shows the radio screen if ARDF mode is enabled.
+The manual gain index value can be chosen with UP/DOWN keys. Smaller values mean more attenuation. Use smaller values if you get closer to a transmitter.
+
+To get even more attenuation negative gain indexes were introduced:
+
+* -1 disables the input LNA
+* -2 and -3 tune to the second/third harmonic frequency (if the radio can receive this range)
+
+All methods give you a huge additional attenuation to prevent overdriving the receiver. Be aware that the radiation pattern of your antenna might be different when receiving harmonics.
+
 RSSI_max is the highest RSSI in the last half second. This is an uncalibrated raw value. (The RSSI value next to the S-meter shows roughly dBm.)
 The **bold line** below show the settings for the **active VFO**:
 VFO "A", demodulation "USB", smallest bandwidth mode "U-" (1.7kHz) and

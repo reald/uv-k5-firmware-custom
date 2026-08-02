@@ -597,7 +597,18 @@ void RADIO_SetupRegisters(bool switchToForeground)
 		gRxVfo->SquelchOpenNoiseThresh,   gRxVfo->SquelchCloseNoiseThresh,
 		gRxVfo->SquelchCloseGlitchThresh, gRxVfo->SquelchOpenGlitchThresh);
 
-	BK4819_PickRXFilterPathBasedOnFrequency(Frequency);
+	#ifdef ENABLE_ARDF
+        if ( (gSetting_ARDFEnable) && (ARDF_ActiveGainCheatType(gEeprom.RX_VFO) == ARDF_INT_LNA_OFF) )
+        {
+        	// if ARDF is on and rx path is switched off keep this setting
+        }
+        else
+		{
+			BK4819_PickRXFilterPathBasedOnFrequency(Frequency);
+		}
+	#else
+		BK4819_PickRXFilterPathBasedOnFrequency(Frequency);
+	#endif
 
 	// what does this in do ?
 	BK4819_ToggleGpioOut(BK4819_GPIO0_PIN28_RX_ENABLE, true);

@@ -239,23 +239,6 @@ void SETTINGS_InitEEPROM(void)
         // read first part
 	EEPROM_ReadBuffer(0x0F20, Data, 8);
 
-	gARDFMistuneFreqRaw = Data[0]; // note: 0xff is a valid value
-
-	if ( Data[1] != 0xFF )
-	{
-		gARDFMistuneAddGainIdxSteps = Data[1];
-	}
-	else
-	{
-		// eeprom empty. use defaults
-		gARDFMistuneAddGainIdxSteps = ARDF_GAIN_INDEX_ADD_STEPS_MISTUNE_DEFAULT;
-		gARDFMistuneFreqRaw = ARDF_GAIN_MISTUNE_HZ_DEFAULT/ARDF_MISTUNE_RES_HZ;
-	}
-
-// fixme: disable Mistune
-gARDFMistuneAddGainIdxSteps = 0;
-gARDFMistuneFreqRaw = 0;
-
 	if ( (Data[4] != 0xFF) || (Data[5] != 0xFF) || (Data[6] != 0xFF) || (Data[7] != 0xFF) )
 	{
 		memcpy(&gARDFFoxDuration10ms, &Data[4], sizeof(gARDFFoxDuration10ms));
@@ -543,10 +526,10 @@ void SETTINGS_SaveARDF(void)
 {
 	union {
 		struct {
-			int8_t   MistuneFreqRaw;
-			uint8_t  MistuneAddGainIdxSteps;
-			uint8_t  free;
+			int8_t   free0;
+			uint8_t  free1;
 			uint8_t  free2;
+			uint8_t  free3;
 			uint32_t FoxDuration;
 		};
 		uint8_t __raw[8];
@@ -564,7 +547,7 @@ void SETTINGS_SaveARDF(void)
 			uint8_t  DFSimpleMode:1;
 
 			uint8_t  CycleEndBeep_s;
-			uint32_t free;
+			uint32_t free4;
 		};
 		uint8_t __raw[8];
 	} __attribute__((packed)) ARDFCfg2;
@@ -575,10 +558,8 @@ void SETTINGS_SaveARDF(void)
 	memset(ARDFCfg.__raw, 0xFF, sizeof(ARDFCfg.__raw));
 	memset(ARDFCfg2.__raw, 0xFF, sizeof(ARDFCfg2.__raw));
 
-	ARDFCfg.MistuneFreqRaw = gARDFMistuneFreqRaw;
-	ARDFCfg.MistuneAddGainIdxSteps = gARDFMistuneAddGainIdxSteps;
-	ARDFCfg.free = 0x23;
-	ARDFCfg.free2 = 0x42;
+	ARDFCfg.free2 = 0x23;
+	ARDFCfg.free3 = 0x42;
 	ARDFCfg.FoxDuration = gARDFFoxDuration10ms;
 
 	ARDFCfg2.ARDFClockCorrTicksMin = gARDFClockCorrAddTicksPerMin;

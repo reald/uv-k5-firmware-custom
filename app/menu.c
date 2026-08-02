@@ -209,7 +209,7 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
 			*pMax = ARRAY_SIZE(gSubMenu_W_N) - 1;
 			break;
 
-                #ifdef ENABLE_ARDF
+#ifdef ENABLE_ARDF
                 
 		case MENU_ARDF:
 			*pMin = 0;
@@ -236,18 +236,7 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
 			*pMax = ARDF_CYCLE_END_BEEP_S_MAX;
 			break;
 
-		case MENU_ARDF_MIST_FREQ:
-			*pMin = -128;
-			*pMax = 127;
-			break;
-
-		case MENU_ARDF_MIST_GAIN_ADD_STEPS:
-			//*pMin = 0;
-			*pMax = 8;
-			break;
-
-		
-                #endif
+#endif
 
 		#ifdef ENABLE_ALARM
 			case MENU_AL_MOD:
@@ -516,13 +505,14 @@ void MENU_AcceptSetting(void)
 
 			if ( gSubMenuSelection == 2 )
 			{
-				// DF simple mode implies ARDF on
+				// DF simple mode implies ARDF on. set normal ARDF bit to on, too
 				gSubMenuSelection = 3;
 
 				// DF simple settings
 				gARDFNumFoxes = 0;
 				gARDFGainRemember = 0;
 				gEeprom.SQUELCH_LEVEL = 0;
+				ARDF_DisableGainCheat();
 			}
 
 			if ( (gSubMenuSelection & 0x01) != 0 )
@@ -539,6 +529,8 @@ void MENU_AcceptSetting(void)
 			if ( ((gSetting_ARDFEnable & 0x01) + (gARDFDFSimpleMode << 1)) != gSubMenuSelection )
 			{
 				// value changed
+				ARDF_DisableGainCheat(); // always disable gain cheat if ardf mode is changed
+
 				gSetting_ARDFEnable = gSubMenuSelection & 0x01;
 				gARDFDFSimpleMode = (gSubMenuSelection >> 1) & 0x01;
 
@@ -591,32 +583,8 @@ void MENU_AcceptSetting(void)
 				// value updated
 				gARDFGainRemember = gSubMenuSelection;
 
-				uint8_t vfo = gEeprom.RX_VFO;
-
-				if ( gSetting_ARDFEnable && (gARDFGainRemember != false) )
-				{
-				   // gain remember switched from off to on
-				   if ( (ardf_mistune_active[vfo][0] == false) && (ardf_mistune_active[vfo][gARDFActiveFox] != false) )
-				   {
-				      // reenable mistuning
-				      ARDF_DoMistuneFreq();
-				   }
-				   else if ( (ardf_mistune_active[vfo][0] != false) && (ardf_mistune_active[vfo][gARDFActiveFox] == false) )
-				   {
-				      // end mistuning
-				      ARDF_UndoMistuneFreq();
-				   }
-
-				   ARDF_ActivateGainIndex();
-				}
-				else
-				{
-					// gain remember switched from on to off
-					// just keep current mistune and gain index settings
-					ardf_mistune_active[vfo][0] = ardf_mistune_active[vfo][gARDFActiveFox];
-					ardf_gain_index[vfo][0] = ardf_gain_index[vfo][gARDFActiveFox];
-					ardf_gain_index_steps_mistune[vfo][0] = ardf_gain_index_steps_mistune[vfo][gARDFActiveFox];
-				}
+				// disable gain cheat if gain remember is switched. could be more precise but (too) many cases to be covered.
+				ARDF_DisableGainCheat();
 
 				gARDFRequestSaveEEPROM = true;
 			}
@@ -641,83 +609,6 @@ void MENU_AcceptSetting(void)
 				// value updated
 				gARDFClockCorrAddTicksPerMin = gSubMenuSelection;
 				gARDFFoxDuration10ms_corr = (uint32_t)( (int32_t)gARDFFoxDuration10ms + ( (int32_t)gARDFFoxDuration10ms * (int32_t)gARDFClockCorrAddTicksPerMin)/6000 ); // fixme: limit to 1s
-
-				gARDFRequestSaveEEPROM = true;
-			}
-			return;
-
-		case MENU_ARDF_MIST_FREQ:
-
-			if ( gARDFMistuneFreqRaw != gSubMenuSelection )
-			{
-				// value updated
-
-				// disable old mistuning value if it is active // fixme move to if unten
-				uint8_t vfo = gEeprom.RX_VFO;
-				uint8_t activefox = gARDFActiveFox;
-
-				if ( ARDF_ActVfoHasGainRemember(vfo) == false )
-				{
-					// do not remember fox gains on this vfo
-					activefox = 0;
-				}
-
-				if ( (gSetting_ARDFEnable) && (ardf_mistune_active[vfo][activefox] != false) )
-				{
-					// frequency mistuning active. change to new mistune frequency
-					uint32_t frequency = gTxVfo->freq_config_RX.Frequency - (gARDFMistuneFreqRaw*ARDF_MISTUNE_RES_HZ/10) + (gSubMenuSelection*ARDF_MISTUNE_RES_HZ/10);
-
-					if ( RX_freq_check(frequency) < 0 )
-					{
-						// frequency not allowed
-						gBeepToPlay = BEEP_500HZ_60MS_DOUBLE_BEEP_OPTIONAL;
-						return;
-					}
-					gTxVfo->freq_config_RX.Frequency = frequency;
-					BK4819_SetFrequency(frequency);
-					// not gRequestSaveChannel = 1 because mistuning must not be saved!
-
-					uint16_t reg = BK4819_ReadRegister(BK4819_REG_30);
-					BK4819_WriteRegister(BK4819_REG_30, reg & ~BK4819_REG_30_ENABLE_VCO_CALIB);
-					BK4819_WriteRegister(BK4819_REG_30, reg);
-				}
-
-				gARDFMistuneFreqRaw = gSubMenuSelection; // take over new value
-
-				gARDFRequestSaveEEPROM = true;
-			}
-			return;
-
-		case MENU_ARDF_MIST_GAIN_ADD_STEPS:
-
-			if ( gARDFMistuneAddGainIdxSteps != gSubMenuSelection )
-			{
-				// value updated
-
-				// disable old mistuning value if it is active
-				ARDF_StopFreqMistune();
-
-				// other timeslots might be out of range now. reset mistuning.
-				for ( uint8_t i=0; i<ARDF_NUM_FOX_MAX; i++ )
-				{
-					if ( ardf_mistune_active[0][i] != false )
-					{
-						ardf_mistune_active[0][i] = false;
-						ardf_gain_index_steps_mistune[0][i] = 0;
-						ardf_gain_index[0][i] = 0;
-
-					}
-
-					if ( ardf_mistune_active[1][i] != false )
-					{
-						ardf_mistune_active[1][i] = false;
-						ardf_gain_index_steps_mistune[1][i] = 0;
-						ardf_gain_index[1][i] = 0;
-					}
-				}
-
-				// take over new value
-				gARDFMistuneAddGainIdxSteps = gSubMenuSelection; // take over new value
 
 				gARDFRequestSaveEEPROM = true;
 			}
@@ -1207,15 +1098,6 @@ void MENU_ShowCurrentSetting(void)
 		case MENU_ARDF_CLOCK_CORR:
 			gSubMenuSelection = gARDFClockCorrAddTicksPerMin;
 			break;
-
-		case MENU_ARDF_MIST_FREQ:
-			gSubMenuSelection = gARDFMistuneFreqRaw;
-			break;
-
-		case MENU_ARDF_MIST_GAIN_ADD_STEPS:
-			gSubMenuSelection = gARDFMistuneAddGainIdxSteps;
-			break;
-
 #endif
 
 		case MENU_SCR:

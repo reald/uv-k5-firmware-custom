@@ -58,14 +58,10 @@ const t_menu_item MenuList[] =
 	{"NumFox", VOICE_ID_INVALID,                       MENU_ARDF_NUMFOXES },
 	{"FoxDur", VOICE_ID_INVALID,                       MENU_ARDF_FOXDURATION},
 	{"ActFox", VOICE_ID_INVALID,                       MENU_ARDF_SETFOX   },
-        {"TiRst",  VOICE_ID_INVALID,                       MENU_ARDF_TIME_RESET },
-        {"GainRe", VOICE_ID_INVALID,                       MENU_ARDF_GAIN_REMEMBER },
-        {"EndSig", VOICE_ID_INVALID,                       MENU_ARDF_CYCLE_END_BEEP },
-        {"ClkCor", VOICE_ID_INVALID,                       MENU_ARDF_CLOCK_CORR },
-        // fixme: disable mistuning
-        //{"MstFrq", VOICE_ID_INVALID,                       MENU_ARDF_MIST_FREQ },
-        //{"MstStp", VOICE_ID_INVALID,                       MENU_ARDF_MIST_GAIN_ADD_STEPS },
-
+	{"TiRst",  VOICE_ID_INVALID,                       MENU_ARDF_TIME_RESET },
+	{"GainRe", VOICE_ID_INVALID,                       MENU_ARDF_GAIN_REMEMBER },
+	{"EndSig", VOICE_ID_INVALID,                       MENU_ARDF_CYCLE_END_BEEP },
+	{"ClkCor", VOICE_ID_INVALID,                       MENU_ARDF_CLOCK_CORR },
 #endif
 	{"Scramb", VOICE_ID_SCRAMBLER_ON,                  MENU_SCR           }, // was "SCR"
 	{"BusyCL", VOICE_ID_BUSY_LOCKOUT,                  MENU_BCL           }, // was "BCL"
@@ -657,14 +653,6 @@ void UI_DisplayMenu(void)
 			break;
 
 		case MENU_ARDF_CLOCK_CORR:
-			sprintf(String, "%d", gSubMenuSelection);
-			break;
-
-		case MENU_ARDF_MIST_FREQ:
-			sprintf(String, "%d Hz", gSubMenuSelection*ARDF_MISTUNE_RES_HZ);
-			break;
-
-		case MENU_ARDF_MIST_GAIN_ADD_STEPS:
 			sprintf(String, "%d", gSubMenuSelection);
 			break;
 

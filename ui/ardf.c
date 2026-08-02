@@ -170,18 +170,18 @@ void UI_DisplayARDF_Timer(void)
       return;
 
    int32_t resttime = ARDF_GetRestTime_s();
-   
+
    if ( resttime <= 99 )
-   { 
+   {
       sprintf(buffer, "-%02u", resttime );
    }
    else
    {
       sprintf(buffer, "%3u", resttime );
    }
-   
+
    UI_DisplayFrequency(buffer, 12, 0, false);
-   
+
    // note: ST7565_BlitLine(0/1) for this screen update is called in UI_DisplayARDF_RSSI()
 }
 
@@ -198,7 +198,7 @@ void UI_DisplayARDF_RSSI(void)
    UI_DisplayFrequency(buffer, 89, 0, false);
 
    ST7565_BlitLine(0);
-   ST7565_BlitLine(1); 
+   ST7565_BlitLine(1);
 }
 
 
@@ -220,24 +220,17 @@ void UI_DisplayARDF_FreqCh(void)
 {
    char buffer[16];
    uint8_t vfo = gEeprom.RX_VFO;
-   uint8_t activefox = gARDFActiveFox;
    uint8_t line = (2 + 4*gARDFDFSimpleMode);
 
    if ( gLowBattery && !gLowBatteryConfirmed && (gARDFDFSimpleMode==0) )
       return;
 
-   if ( ARDF_ActVfoHasGainRemember(vfo) == false )
-   {
-      // do not remember fox gains/mistuning on this vfo
-      activefox = 0;
-   }
-
-   if ( ( IS_FREQ_CHANNEL(gEeprom.ScreenChannel[vfo]) && (ardf_mistune_active[vfo][activefox] == false) ) 
+   if ( ( IS_FREQ_CHANNEL(gEeprom.ScreenChannel[vfo]) && (ARDF_ActiveGainCheatType(vfo) == ARDF_NO_GAIN_CHEAT) )
           || ( (gARDFMemModeFreqToggleCnt_s >= ARDF_MEM_MODE_FREQ_TOGGLE_S) && (gInputBoxIndex == 0) ) )
    {
-      // frequency mode without mistuning
-      // or (frequency is shown anyway (memory mode or mistuning mode) and no input)
-      
+      // frequency mode without gain cheat
+      // or (frequency is shown anyway (memory mode or gain cheat mode) and no input)
+
       if ( gInputBoxIndex == 0 )
       {
          uint32_t frequency = gRxVfo->freq_config_RX.Frequency;
@@ -259,12 +252,20 @@ void UI_DisplayARDF_FreqCh(void)
       }
 
    }
-   else if ( ardf_mistune_active[vfo][activefox] != false )
+   else if ( ARDF_ActiveGainCheatType(vfo) != ARDF_NO_GAIN_CHEAT )
    {
-      // frequency mistuning active
-      if ( gInputBoxIndex == 0 )
+      // gain cheat active
+      if ( (gInputBoxIndex == 0) && (ARDF_ActiveGainCheatType(vfo) == ARDF_INT_LNA_OFF) )
       {
-         sprintf(buffer, "%+d Hz", gARDFMistuneFreqRaw*ARDF_MISTUNE_RES_HZ);
+         sprintf(buffer, "LNA OFF" );
+      }
+      else if ( (gInputBoxIndex == 0) && (ARDF_ActiveGainCheatType(vfo) == ARDF_HARMONIC_2) )
+      {
+         sprintf(buffer, "2. HARM" );
+      }
+      else if ( (gInputBoxIndex == 0) && (ARDF_ActiveGainCheatType(vfo) == ARDF_HARMONIC_3) )
+      {
+         sprintf(buffer, "3. HARM" );
       }
       else
       {
@@ -301,7 +302,7 @@ void UI_DisplayARDF_FreqCh(void)
       {
          sprintf(buffer, "M%.3s", INPUTBOX_GetAscii() );  // show the input text
       }
-   
+
       if ( gARDFDFSimpleMode==0 )
       {
          UI_PrintStringSmallBold(buffer, 64, 0, line); // 0->128: text centered, but pixel deletion problem
@@ -323,7 +324,7 @@ void UI_DisplayARDF(void)
    char buffer[16];
    uint8_t vfo = gEeprom.RX_VFO;
    uint8_t xpos = 0;
-   
+
    UI_DisplayClear();
 
    if ( gLowBattery && !gLowBatteryConfirmed && (gARDFDFSimpleMode==0) )
@@ -341,21 +342,21 @@ void UI_DisplayARDF(void)
          activefox = 0;
       sprintf(buffer, "%d", activefox);
       UI_DisplayFrequency(buffer, 0, 0, false);
-   
+
       UI_DisplayARDF_Timer();
 
       xpos = 57;
    }
 
-   if ( (ARDF_ActVfoHasGainRemember(vfo) != false) && ardf_mistune_active[vfo][gARDFActiveFox] != false )
+   if ( (ARDF_ActVfoHasGainRemember(vfo) != false) && (ARDF_ActiveGainCheatType(vfo) != ARDF_NO_GAIN_CHEAT) )
    {
-      // mistuning and gain remember active
-      sprintf(buffer, "%d", ARDF_Get_GainIndex(vfo) - ardf_gain_index_steps_mistune[vfo][gARDFActiveFox] - 1 );
+      // gain cheat and gain remember active
+      sprintf(buffer, "%d", -(int8_t)ardf_type_gain_cheat[vfo][gARDFActiveFox] );
    }
-   else if ( (ARDF_ActVfoHasGainRemember(vfo) == false) && ardf_mistune_active[vfo][0] != false )
+   else if ( (ARDF_ActVfoHasGainRemember(vfo) == false) && (ARDF_ActiveGainCheatType(vfo) != ARDF_NO_GAIN_CHEAT) )
    {
-      // mistuning active and gain remember not active
-      sprintf(buffer, "%d", ARDF_Get_GainIndex(vfo) - ardf_gain_index_steps_mistune[vfo][0] - 1 );
+      // gain cheat active and gain remember not active
+      sprintf(buffer, "%d", -(int8_t)ardf_type_gain_cheat[vfo][0] );
    }
    else
    {
@@ -397,7 +398,7 @@ void UI_DisplayARDF(void)
    if ( (ARDF_ActVfoHasGainRemember(vfo) != false) && (gARDFDFSimpleMode == 0) )
    {
       int foxliststart = 0;
-   
+
       if ( gARDFNumFoxes > 5 )
       {
          foxliststart = (gARDFNumFoxes - 2 + gARDFActiveFox) % gARDFNumFoxes;
@@ -409,7 +410,7 @@ void UI_DisplayARDF(void)
          sprintf(buffer, "%d", idx + 1 );
 
          const int lineofs = 16;
-         
+
          if ( idx == gARDFActiveFox )
          {
             UI_PrintStringSmallBold(buffer, lineofs + i*16 + i*4, lineofs + (i+1)*16 + i*4, 4);
@@ -420,10 +421,10 @@ void UI_DisplayARDF(void)
          }
 
 
-         if ( ardf_mistune_active[vfo][idx] != false )
+         if ( ardf_type_gain_cheat[vfo][idx] != ARDF_NO_GAIN_CHEAT )
          {
-            // mistuning active
-            sprintf(buffer, "%d", ardf_gain_index[vfo][idx] - ardf_gain_index_steps_mistune[vfo][idx] - 1 );
+            // gain cheat active
+            sprintf(buffer, "%d", -(int8_t)ardf_type_gain_cheat[vfo][idx] );
          }
          else
          {
@@ -441,27 +442,39 @@ void UI_DisplayARDF(void)
    /* 5. small line: inactive vfo (but not in DF simple) */
    if ( gARDFDFSimpleMode == 0 )
    {
+      uint32_t frequency = 0;
+
       Ui_DisplayARDF_Mod(&gEeprom.VfoInfo[1-vfo], 1-vfo, 6, false);
-   
+
       VFO_Info_t *vfoInfo = &gEeprom.VfoInfo[1-vfo]; // the inactive vfo
-   uint32_t frequency = vfoInfo->freq_config_RX.Frequency;
 
-   if ( IS_MR_CHANNEL(gEeprom.ScreenChannel[1-vfo]) ) // the inactive vfo
-   {
-      // memory mode
-      sprintf(buffer, "M%3u.%04u", frequency / 100000, (frequency % 100000)/10 );
+      if ( ARDF_ActiveGainCheatType(1-vfo) == ARDF_NO_GAIN_CHEAT )
+      {
+         frequency = vfoInfo->freq_config_RX.Frequency;
+      }
+      else
+      {
+         // gain cheat active but show base frequency
+         frequency = gARDFGainCheatBaseFrequency[1-vfo]/10;
+      }
 
-   }
-   else
-   {
-      // frequency mode
-      sprintf(buffer, "%3u.%05u", frequency / 100000, frequency % 100000);
+      if ( IS_MR_CHANNEL(gEeprom.ScreenChannel[1-vfo]) ) // the inactive vfo
+      {
+         // memory mode
+         sprintf(buffer, "M%3u.%04u", frequency / 100000, (frequency % 100000)/10 );
+
+      }
+      else
+      {
+         // frequency mode
+         sprintf(buffer, "%3u.%05u", frequency / 100000, frequency % 100000);
+      }
+
+      UI_PrintStringSmallNormal(buffer, 64, 0, 6);
    }
 
-   UI_PrintStringSmallNormal(buffer, 64, 0, 6);
-   }
-   
    ST7565_BlitFullScreen();
+
 }
 
 #endif

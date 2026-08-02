@@ -175,10 +175,10 @@ u8 sl2PriorCh1;
 u8 sl2PriorCh2;
 
 #seekto 0xf20;
-i8 ARDFMistuneFreqRaw;
-u8 ARDFMistuneAddGainIdxSteps;
-u8 free;
+i8 free0;
+u8 free1;
 u8 free2;
+u8 free3;
 ul32 ARDFFoxDuration;
 il16 ARDFClockCorrTicksMin;
 u8 ARDFDFSimpleMode:1,
@@ -186,7 +186,7 @@ u8 ARDFDFSimpleMode:1,
    ARDFNumFoxes:4,
    ARDFEnable:1;
 u8 ARDFCycleEndBeep_s;
-ul32 free3;
+ul32 free4;
 
 #seekto 0xf40;
 u8 int_flock;
@@ -955,12 +955,6 @@ class UVK5RadioEgzumer(uvk5.UVK5RadioBase):
             elif elname == "ARDFCycleEndBeep_s":
                 _mem.ARDFCycleEndBeep_s = element.value
 
-            elif elname == "ARDFMistuneFreqRaw":
-                _mem.ARDFMistuneFreqRaw = element.value
-
-            elif elname == "ARDFMistuneAddGainIdxSteps":
-                _mem.ARDFMistuneAddGainIdxSteps = element.value
-
 
     def get_settings(self):
         _mem = self._memobj
@@ -1462,14 +1456,6 @@ class UVK5RadioEgzumer(uvk5.UVK5RadioBase):
         val = RadioSettingValueInteger(0, 30, tmp_ARDFCycleEndBeep_s)
         ARDFCycleEndBeep_s_setting = RadioSetting("ARDFCycleEndBeep_s", "ARDF End of Fox Cycle Tone Signal Time Position [s, 0=off] (EndSig)", val)
 
-        tmp_ARDFMistuneFreqRaw = _mem.ARDFMistuneFreqRaw
-        val = RadioSettingValueInteger(-128, 127, tmp_ARDFMistuneFreqRaw)
-        ARDFMistuneFreqRaw_setting = RadioSetting("ARDFMistuneFreqRaw", "ARDF Mistune Offset Frequency [200 Hz] (MstFrq)", val)
-
-        tmp_ARDFMistuneAddGainIdxSteps = _mem.ARDFMistuneAddGainIdxSteps
-        val = RadioSettingValueInteger(0, 8, tmp_ARDFMistuneAddGainIdxSteps)
-        ARDFMistuneAddGainIdxSteps_setting = RadioSetting("ARDFMistuneAddGainIdxSteps", "ARDF Mistune Additional Gain Index Steps (MstStp)", val)
-
         # ----------------- Extra settings
 
         # S-meter
@@ -1806,8 +1792,6 @@ class UVK5RadioEgzumer(uvk5.UVK5RadioBase):
         ardf.append(ARDFNumFoxes_setting)
         ardf.append(ARDFGainRemember_setting)
         ardf.append(ARDFCycleEndBeep_s_setting)
-        #ardf.append(ARDFMistuneFreqRaw_setting)
-        #ardf.append(ARDFMistuneAddGainIdxSteps_setting)
 
         if _mem.BUILD_OPTIONS.ENABLE_DTMF_CALLING:
             dtmf.append(sep_code_setting)

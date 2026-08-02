@@ -1672,14 +1672,14 @@ static void ProcessKey(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 #ifdef ENABLE_ARDF
 			if ( !gSetting_ARDFEnable ) // do not tell user keypad is locked in ARDF mode
 			{
-#endif			
+#endif
 				// keypad is locked, tell the user
 				AUDIO_PlayBeep(BEEP_500HZ_60MS_DOUBLE_BEEP_OPTIONAL);
 				gKeypadLocked  = 4;          // 2 seconds
 				gUpdateDisplay = true;
 #ifdef ENABLE_ARDF
 			}
-#endif			
+#endif
 			return;
 			
 		}

@@ -33,13 +33,12 @@ void COMMON_SwitchVFOs()
 #endif
 
 #ifdef ENABLE_ARDF
-//fixme: can be used with gain remember off
 
-    // vfo switch. undo mistune frequncy shift if active. only necessary if gain remember is active.
-    if ( (gSetting_ARDFEnable) && (ARDF_ActVfoHasGainRemember(gEeprom.RX_VFO) != false)
-        && (ardf_mistune_active[gEeprom.RX_VFO][gARDFActiveFox] != false) )
+    // vfo switch. undo gain cheat before if active
+    if ( (gSetting_ARDFEnable)
+         && (ARDF_ActiveGainCheatType(gEeprom.RX_VFO) != ARDF_NO_GAIN_CHEAT) )
     {
-        ARDF_UndoMistuneFreq(); // only undo the frequency shift
+        ARDF_UndoGainCheat(); // undo gain cheat if necessary. if gain cheat has to be done for the new vfo a waiting time has to be ensured. this is all done in ARDF_10ms()
     }
 #endif
 
@@ -50,19 +49,8 @@ void COMMON_SwitchVFOs()
     if (gEeprom.DUAL_WATCH != DUAL_WATCH_OFF)
         gEeprom.DUAL_WATCH = gEeprom.TX_VFO + 1;
 
-#ifdef ENABLE_ARDF
-// fixme. has to be activated later
-
-    // vfo switch. restore mistune frequncy shift if active. only necessary if gain remember is active.
-/*    if ( (gSetting_ARDFEnable) && (ARDF_ActVfoHasGainRemember(gEeprom.RX_VFO) != false)
-        && (ardf_mistune_active[gEeprom.RX_VFO][gARDFActiveFox] != false) )
-    {
-        ARDF_DoMistuneFreq(); // only do the frequency shift
-    }*/
-#endif
-
-    gRequestSaveSettings  = 1;
-    gFlagReconfigureVfos  = true;
+    gRequestSaveSettings = 1;
+    gFlagReconfigureVfos = true;
     gScheduleDualWatch = true;
 
     gRequestDisplayScreen = DISPLAY_MAIN;
@@ -84,7 +72,7 @@ void COMMON_SwitchVFOMode()
     {
 
 #ifdef ENABLE_ARDF
-        ARDF_StopFreqMistune();
+        ARDF_StopGainCheatVfo(); // new frequency/memory on this VFO: disable gain cheat on this vfo
 #endif
 
         if (IS_MR_CHANNEL(gTxVfo->CHANNEL_SAVE))

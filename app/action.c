@@ -485,6 +485,7 @@ void ACTION_ARDFOnOff(void)
 {
    if ( gSetting_ARDFEnable )
    {
+      ARDF_DisableGainCheat();
       gSetting_ARDFEnable = false;
    }
    else
@@ -508,21 +509,24 @@ void ACTION_ARDFGainMiddle(void)
 
       if ( ARDF_ActVfoHasGainRemember(vfo) == false )
       {
+         // do not remember fox gains on this vfo
          activefox = 0;
       }
 
-      if ( ardf_mistune_active[vfo][activefox] != false )
+      if ( ARDF_ActiveGainCheatType(vfo) != ARDF_NO_GAIN_CHEAT )
       {
-         // frequency mistuning active. disable everything and go to gain index 0
-         ARDF_StopFreqMistune();
+         // gain cheat active. disable it and go to gain index 0
+         ARDF_StopGainCheatFox();
       }
       else
       {
          ardf_gain_index[vfo][activefox] = ARDF_GAIN_INDEX_MIDDLE;
       }
+
       ARDF_ActivateGainIndex();
 
    }
 }
 
 #endif
+

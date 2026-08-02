@@ -270,10 +270,10 @@ static void processFKeyFunction(const KEY_Code_t Key, const bool beep)
 						
 		case KEY_UP:
 
-                        // change frequency or station
+			// change frequency or station
 
-                        // stop frequency mistuning if active
-                        ARDF_StopFreqMistune();
+			// stop gain cheat if active
+			ARDF_StopGainCheatVfo(); // new frequency on this vfo, disable gain cheat on this vfo
 
 			if (IS_FREQ_CHANNEL(Channel)) { // step/down in frequency
 
@@ -331,7 +331,9 @@ static void MAIN_Key_DIGITS(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 					gRequestDisplayScreen = DISPLAY_MAIN;
 #ifdef ENABLE_ARDF
 					if ( gScreenToDisplay == DISPLAY_ARDF )
+					{
 						gRequestDisplayScreen = DISPLAY_ARDF;
+					}
 #endif
 				}
 
@@ -387,7 +389,7 @@ static void MAIN_Key_DIGITS(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 			}
 
 			#ifdef ENABLE_ARDF
-				ARDF_StopFreqMistune();
+				ARDF_StopGainCheatVfo(); // new channel on this vfo. disable gain cheat on this vfo
 			#endif
 
 			#ifdef ENABLE_VOICE
@@ -420,7 +422,7 @@ static void MAIN_Key_DIGITS(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 			uint32_t Frequency = StrToUL(INPUTBOX_GetAscii()) * 100;
 
 			#ifdef ENABLE_ARDF
-				ARDF_StopFreqMistune();
+				ARDF_StopGainCheatVfo(); // new frequency on this vfo. disable gain cheat on this vfo
 			#endif
 
 			// clamp the frequency entered to some valid value
