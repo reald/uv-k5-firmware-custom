@@ -238,7 +238,7 @@ You can quickly switch between both VFOs by long pressing "2 (A/B)" or a configu
 If gain remember is not activated on the actual VFO or "no timing" is selected (NumFox=0), no gain index history is shown in the lower part of the screen.
 
 
-#### Distance prediction and calibration ####
+#### Fox distance prediction and calibration ####
 The distance to the fox is calculated out of a simple model: A change of 30dB in signal strength in a forest is a factor of 10 in distance. This is only
 a rough model. The real signal strength highly depends on the topology of the area and can vary a lot especially in hilly areas. So don´t overestimate
 the predicted value.
