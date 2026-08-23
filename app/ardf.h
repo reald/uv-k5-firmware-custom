@@ -21,6 +21,7 @@
 
 #include "driver/keyboard.h"
 
+#define LIMIT_TO_RANGE(x, low, high) ( (x > high) ? (high) : ((x < low) ? (low) : (x)) )
 
 
 #define ARDF_NUM_FOX_MAX 10
@@ -37,6 +38,9 @@
 #define ARDF_DEFAULT_FOX_DURATION 6000 // *10ms
 #define ARDF_DEFAULT_GAIN_REMEMBER 1
 #define ARDF_DEFAULT_DF_SIMPLE false
+#define ARDF_DEFAULT_RSSI0AT100M 115
+#define ARDF_RSSI0_MAX 226
+#define ARDF_RSSI0_GAINCHEAT_IDX_STEP 9 // signal with gain cheat on is very roughly about 45 dB = 9 * 5 dB/step lower
 #define ARDF_CLOCK_CORR_TICKS_PER_MIN (+00) // default clock correction
 
 //#define ARDF_ENABLE_SHOW_DEBUG_DATA
@@ -61,7 +65,9 @@ typedef enum
 
 
 
-extern t_ardf_gain_table     ardf_gain_table[];
+extern const t_ardf_gain_table ardf_gain_table[];
+extern const char *ardf_rssi2distance[];
+
 extern uint8_t               ardf_gain_index[2][ARDF_NUM_FOX_MAX];
 extern t_ardf_gain_cheat_type ardf_type_gain_cheat[2][ARDF_NUM_FOX_MAX];
 
@@ -79,6 +85,9 @@ extern uint8_t               gARDFMemModeFreqToggleCnt_s;
 extern bool                  gARDFRequestSaveEEPROM;
 extern int16_t               gARDFClockCorrAddTicksPerMin;
 extern uint32_t              gARDFGainCheatBaseFrequency[2];
+extern uint16_t              gARDFRssi0At100m;
+extern int16_t               gRssi0Max;
+extern int16_t               gARDFDistanceIdx;
 
 #ifdef ARDF_ENABLE_SHOW_DEBUG_DATA
 extern int16_t               gARDFdebug;

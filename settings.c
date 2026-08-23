@@ -236,8 +236,23 @@ void SETTINGS_InitEEPROM(void)
 #ifdef ENABLE_ARDF
 	// 0F20..0F2F
 
-        // read first part
+	// read first part
 	EEPROM_ReadBuffer(0x0F20, Data, 8);
+
+	if ( (Data[2] != 0xFF) || (Data[3] !=0xFF) )
+	{
+		memcpy(&gARDFRssi0At100m, &Data[2], sizeof(gARDFRssi0At100m));
+
+		if ( gARDFRssi0At100m > ARDF_RSSI0_MAX )
+		{
+			gARDFRssi0At100m = ARDF_DEFAULT_RSSI0AT100M;
+		}
+	}
+	else
+	{
+		// eeprom empty. use defaults
+		gARDFRssi0At100m = ARDF_DEFAULT_RSSI0AT100M;
+	}
 
 	if ( (Data[4] != 0xFF) || (Data[5] != 0xFF) || (Data[6] != 0xFF) || (Data[7] != 0xFF) )
 	{
@@ -249,10 +264,11 @@ void SETTINGS_InitEEPROM(void)
 	}
 
 	if ( gARDFFoxDuration10ms < 100 )
+	{
 		gARDFFoxDuration10ms = ARDF_DEFAULT_FOX_DURATION;
+	}
 
-
-        // read second part
+	// read second part
 	EEPROM_ReadBuffer(0x0F28, Data, 8);
 
 	if ( (Data[0] == 0xFF) && (Data[1] == 0xFF) )
@@ -265,11 +281,11 @@ void SETTINGS_InitEEPROM(void)
 		memcpy(&gARDFClockCorrAddTicksPerMin, &Data[0], sizeof(gARDFClockCorrAddTicksPerMin));
 
 		if ( (gARDFClockCorrAddTicksPerMin < -500) || (gARDFClockCorrAddTicksPerMin > 500) )
+		{
 			gARDFClockCorrAddTicksPerMin = ARDF_CLOCK_CORR_TICKS_PER_MIN;
-
+		}
 	}
-
-	gARDFFoxDuration10ms_corr = (uint32_t)( (int32_t)gARDFFoxDuration10ms + ( (int32_t)gARDFFoxDuration10ms * (int32_t)gARDFClockCorrAddTicksPerMin)/6000 ); // fixme: limit to 1s
+	gARDFFoxDuration10ms_corr = (uint32_t)( (int32_t)gARDFFoxDuration10ms + ( (int32_t)gARDFFoxDuration10ms * (int32_t)gARDFClockCorrAddTicksPerMin)/6000 );
 
 	if ( Data[2] != 0xFF )
 	{
@@ -296,7 +312,6 @@ void SETTINGS_InitEEPROM(void)
 		// eeprom empty. use defaults
 		gARDFCycleEndBeep_s = ARDF_CYCLE_END_BEEP_S_DEFAULT;
 	}
-
 
 
         
@@ -526,10 +541,8 @@ void SETTINGS_SaveARDF(void)
 {
 	union {
 		struct {
-			int8_t   free0;
-			uint8_t  free1;
-			uint8_t  free2;
-			uint8_t  free3;
+			uint16_t free0;
+			uint16_t ARDFRSSI0At100m;
 			uint32_t FoxDuration;
 		};
 		uint8_t __raw[8];
@@ -547,7 +560,7 @@ void SETTINGS_SaveARDF(void)
 			uint8_t  DFSimpleMode:1;
 
 			uint8_t  CycleEndBeep_s;
-			uint32_t free4;
+			uint32_t free1;
 		};
 		uint8_t __raw[8];
 	} __attribute__((packed)) ARDFCfg2;
@@ -558,8 +571,7 @@ void SETTINGS_SaveARDF(void)
 	memset(ARDFCfg.__raw, 0xFF, sizeof(ARDFCfg.__raw));
 	memset(ARDFCfg2.__raw, 0xFF, sizeof(ARDFCfg2.__raw));
 
-	ARDFCfg.free2 = 0x23;
-	ARDFCfg.free3 = 0x42;
+	ARDFCfg.ARDFRSSI0At100m = gARDFRssi0At100m;
 	ARDFCfg.FoxDuration = gARDFFoxDuration10ms;
 
 	ARDFCfg2.ARDFClockCorrTicksMin = gARDFClockCorrAddTicksPerMin;

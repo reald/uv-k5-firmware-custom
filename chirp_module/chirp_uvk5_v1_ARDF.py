@@ -175,10 +175,8 @@ u8 sl2PriorCh1;
 u8 sl2PriorCh2;
 
 #seekto 0xf20;
-i8 free0;
-u8 free1;
-u8 free2;
-u8 free3;
+ul16 ARDFfree0;
+ul16 ARDFRSSI0At100m;
 ul32 ARDFFoxDuration;
 il16 ARDFClockCorrTicksMin;
 u8 ARDFDFSimpleMode:1,
@@ -186,7 +184,7 @@ u8 ARDFDFSimpleMode:1,
    ARDFNumFoxes:4,
    ARDFEnable:1;
 u8 ARDFCycleEndBeep_s;
-ul32 free4;
+ul32 ARDFfree1;
 
 #seekto 0xf40;
 u8 int_flock;
@@ -940,6 +938,9 @@ class UVK5RadioEgzumer(uvk5.UVK5RadioBase):
             elif elname == "ARDFClockCorrTicksMin":
                 _mem.ARDFClockCorrTicksMin = element.value
 
+            elif elname == "ARDFRSSI0At100m":
+                _mem.ARDFRSSI0At100m = element.value
+
             elif elname == "ARDFFoxDuration":
                 _mem.ARDFFoxDuration = element.value
             
@@ -1430,6 +1431,11 @@ class UVK5RadioEgzumer(uvk5.UVK5RadioBase):
 
         # ----------------- ARDF settings
 
+
+        tmp_ARDFRSSI0At100m = _mem.ARDFRSSI0At100m
+        val = RadioSettingValueInteger(0, 226, tmp_ARDFRSSI0At100m)
+        ARDFRSSI0At100m_setting = RadioSetting("ARDFRSSI0At100m", "ARDF RSSI0 at 100m distance (RssI00)", val)
+
         tmp_ARDFFoxDuration = _mem.ARDFFoxDuration
         val = RadioSettingValueInteger(100, 99999, tmp_ARDFFoxDuration)
         ARDFFoxDuration_setting = RadioSetting("ARDFFoxDuration", "ARDF Fox Transmitting Duration [1/100 s] (FoxDur)", val)
@@ -1787,6 +1793,7 @@ class UVK5RadioEgzumer(uvk5.UVK5RadioBase):
         # ARDF 
         ardf.append(ARDFEnable_setting)
         ardf.append(ARDFDFSimpleMode_setting)
+        ardf.append(ARDFRSSI0At100m_setting)
         ardf.append(ARDFFoxDuration_setting)
         ardf.append(ARDFClockCorrTicksMin_setting)
         ardf.append(ARDFNumFoxes_setting)

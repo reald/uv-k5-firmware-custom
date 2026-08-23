@@ -28,36 +28,16 @@
 
 
 
+#define ARDF_ORIG_GAIN_DB -7 // taken over from AM_FIX
+
+
+
 uint8_t ardf_gain_index[2][ARDF_NUM_FOX_MAX];
 t_ardf_gain_cheat_type ardf_type_gain_cheat[2][ARDF_NUM_FOX_MAX];
 
 // {0x03BE, -7},   //  0 .. 3 5 3 6 ..   0dB  -4dB  0dB  -3dB ..  -7dB original
-#define ARDF_ORIG_GAIN_DB -7
-
-t_ardf_gain_table ardf_gain_table[] =
+const t_ardf_gain_table ardf_gain_table[] =
 {
-/* old measurement
-   {0x0000, -90},         //   0 .. 0 0 0 0 .. -27dB -25dB -6dB -32dB .. -90dB
-   {0x0020, -85},         //   1 .. 0 1 0 0 .. -27dB -20dB -6dB -32dB .. -85dB
-   {0x0128, -80},         //   2 .. 1 1 1 0 .. -24dB -20dB -4dB -32dB .. -80dB
-   {0x0060, -75},         //   3 .. 0 3 0 0 .. -27dB -10dB -6dB -32dB .. -75dB
-   {0x0202, -70},         //   4 .. 2 0 0 2 .. -19dB -25dB -6dB -20dB .. -70dB
-   {0x0081, -65},         //   5 .. 0 4 0 1 .. -27dB  -6dB -6dB -26dB .. -65dB
-   {0x0053, -60},         //   6 .. 0 2 2 3 .. -27dB -16dB -2dB -15dB .. -60dB
-   {0x00AA, -55},         //   7 .. 0 5 1 2 .. -27dB  -4dB -4dB -20dB .. -55dB
-   {0x004E, -50},         //   8 .. 0 2 1 6 .. -27dB -16dB -4dB  -3dB .. -50dB
-   {0x02E2, -45},         //   9 .. 2 7 0 2 .. -19dB   0dB -6dB -20dB .. -45dB
-   {0x02B3, -40},         //  10 .. 2 5 2 3 .. -19dB  -4dB -2dB -15dB .. -40dB
-   {0x0097, -35},         //  11 .. 0 4 2 7 .. -27dB  -6dB -2dB   0dB .. -35dB
-   {0x01B7, -30},         //  12 .. 1 5 2 7 .. -24dB  -4dB -2dB   0dB .. -30dB
-   {0x0392, -28},         //  13 .. 3 4 2 2 ..   0dB  -6dB -2dB -20dB .. -28dB
-   {0x0336, -25},         //  14 .. 3 1 2 6 ..   0dB -20dB -2dB  -3dB .. -25dB
-   {0x034F, -20},         //  15 .. 3 2 1 7 ..   0dB -16dB -4dB   0dB .. -20dB
-   {0x039C, -15},         //  16 .. 3 4 3 4 ..   0dB  -6dB  0dB  -9dB .. -15dB
-   {0x03A7, -10},         //  17 .. 3 5 0 7 ..   0dB  -4dB -6dB   0dB .. -10dB
-   {0x03DE, -5},          //  18 .. 3 6 3 6 ..   0dB  -2dB  0dB  -3dB ..  -5dB
-   {0x03FF, 0},           //  19 .. 3 7 3 7 ..   0dB   0dB  0dB   0dB ..   0dB */
-
    /* new measurement uv-k5+ 251215 */
    {0x0000, -79.0}, // 0: 0, -79dB
    {0x0109, -74.0}, // 1: 265, -74dB
@@ -79,6 +59,14 @@ t_ardf_gain_table ardf_gain_table[] =
 };
 
 
+// attenuation model (forest): 30 dB signal difference is factor 10 in distance
+// 30 dB => 6 gain steps (of 5 dB)
+// distance factor would be: nthroot(10, 6) = 1.4678
+const char *ardf_rssi2distance [] = {"10m", "15m", "20m", "30m", "50m", "70m", "100m", "150m", "200m", "300m", "500m", "700m", "1km", "1k5", "2km", "3km", "xxx"}; // simplified distances!
+
+#define RSSI2DISTANCE_100M_IDX 6
+
+
 
 uint32_t          gARDFTime10ms = 0;
 uint32_t          gARDFFoxDuration10ms = ARDF_DEFAULT_FOX_DURATION;  /* 60s * 100 ticks per second */
@@ -94,6 +82,9 @@ uint8_t           gARDFMemModeFreqToggleCnt_s = 0; /* toggle memory bank/frequen
 bool              gARDFRequestSaveEEPROM = false;
 int16_t           gARDFClockCorrAddTicksPerMin = ARDF_CLOCK_CORR_TICKS_PER_MIN;
 uint32_t          gARDFGainCheatBaseFrequency[2] = {0, 0};
+uint16_t          gARDFRssi0At100m = 0;
+int16_t           gRssi0Max = 0;
+int16_t           gARDFDistanceIdx = -1;
 
 #ifdef ARDF_ENABLE_SHOW_DEBUG_DATA
 int16_t           gARDFdebug = 0;
@@ -124,7 +115,7 @@ static void ARDF_ChangeGainCheat(t_ardf_gain_cheat_type oldtype, t_ardf_gain_che
 
    if ( newtype == ARDF_INT_LNA_OFF )
    {
-      frequency = gARDFGainCheatBaseFrequency[vfo]/10;
+      frequency = gARDFGainCheatBaseFrequency[vfo] / 10;
    }
    else if ( newtype == ARDF_HARMONIC_2 )
    {
@@ -138,8 +129,8 @@ static void ARDF_ChangeGainCheat(t_ardf_gain_cheat_type oldtype, t_ardf_gain_che
    }
    else if ( newtype == ARDF_NO_GAIN_CHEAT )
    {
-      // lback to normal. aktivate LNA again
-      frequency = gARDFGainCheatBaseFrequency[vfo]/10;
+      // back to normal. aktivate LNA again
+      frequency = gARDFGainCheatBaseFrequency[vfo] / 10;
    }
 
    if ( RX_freq_check(frequency) < 0 )
@@ -176,6 +167,49 @@ static void ARDF_ChangeGainCheat(t_ardf_gain_cheat_type oldtype, t_ardf_gain_che
    ardf_type_gain_cheat[vfo][activefox] = newtype;
 
    return;
+}
+
+
+
+static void ARDF_UpdatePredictedDistIdx(void)
+{
+   const int16_t invalid_idx = -1;
+   static int16_t last_rssi2distance_idx = ARRAY_SIZE(ardf_rssi2distance) - 1;
+   int16_t rssi2distance_idx = RSSI2DISTANCE_100M_IDX;
+
+   // index relative to 100m reference
+   rssi2distance_idx += ( ((int16_t)gARDFRssi0At100m) - gRssi0Max ) / 10; // 10 = 5dB/step * 2 bit/dB
+
+   // if gain cheat is active just guess
+   if ( ARDF_ActiveGainCheatType(gEeprom.RX_VFO) != ARDF_NO_GAIN_CHEAT )
+   {
+      rssi2distance_idx -= ARDF_RSSI0_GAINCHEAT_IDX_STEP; // signal appears to be approx. >40 dB lower. compensate by decreasing index
+   }
+
+   rssi2distance_idx = LIMIT_TO_RANGE( rssi2distance_idx, 0, (int16_t)(ARRAY_SIZE(ardf_rssi2distance)) - 1 );
+
+   if ( (gRssi0Max == 0)
+        || (rssi2distance_idx == (ARRAY_SIZE(ardf_rssi2distance) - 1)) )
+   {
+      // signal was too weak for a distance prediction
+
+      rssi2distance_idx = invalid_idx;
+   }
+
+   if ( (last_rssi2distance_idx == invalid_idx) // was invalid before? then pass new (even invalid)
+        || ( (rssi2distance_idx != invalid_idx) && (rssi2distance_idx < last_rssi2distance_idx) ) // stronger signals shall pass immediately
+        || ( (rssi2distance_idx != invalid_idx) && (last_rssi2distance_idx != invalid_idx) && ((rssi2distance_idx - last_rssi2distance_idx) <= 2) ) // only 2 steps at once are allowed for weaker signals
+      )
+   {
+      // stronger signal or not much weaker
+      gARDFDistanceIdx = rssi2distance_idx;
+   }
+   else
+   {
+      // delay weaker signal (might be just the gap between morse code beeps)
+   }
+
+   last_rssi2distance_idx = rssi2distance_idx;
 }
 
 
@@ -274,6 +308,18 @@ void ARDF_10ms(void)
       if ( rssimaxhold_cnt >= 80 )
       {
          // reset max level after 0.8s
+
+         gRssi0Max = ((int16_t)gARDFRssiMax) - 2 * ( ardf_gain_table[ ARDF_Get_GainIndex(gEeprom.RX_VFO) ].gain_dB - ardf_gain_table[0].gain_dB ) ; // 0.5 dB/bit
+
+         if ( gRssi0Max < 0 )
+         {
+            gRssi0Max = 0;
+         }
+         ARDF_UpdatePredictedDistIdx();
+
+         UI_DisplayARDF_Distance(true);
+
+         // reset max level
          gARDFRssiMax = BK4819_GetRSSI();
       }
       UI_DisplayARDF_RSSI();
@@ -287,11 +333,11 @@ void ARDF_10ms(void)
 
       if ( gARDFDFSimpleMode != false )
       {
-         Ui_DisplayARDF_RSSIBar_Simple();
+         UI_DisplayARDF_RSSIBar_Simple(3);
       }
       else if( !(gLowBattery && !gLowBatteryConfirmed) )
       {
-         DisplayRSSIBar(true);
+         UI_DisplayARDF_RSSIBar(true);
       }
 
 #endif
@@ -299,7 +345,7 @@ void ARDF_10ms(void)
    }
    else if ( (gScreenToDisplay == DISPLAY_ARDF) && ( (gARDFTime10ms % 5) == 0) )
    {
-      // reduce call rate if i2c traffic is too high
+      // update every 50 ms
       unsigned int rssi = BK4819_GetRSSI();
       if ( rssi > gARDFRssiMax )
       {
@@ -351,8 +397,7 @@ void ARDF_500ms(void)
       {
          gARDFMemModeFreqToggleCnt_s = 0;
          // screen update only really necessary in memory mode
-         // UI_DisplayARDF_FreqCh(); // frequency update would be sufficient but problems deleting pixels
-         UI_DisplayARDF();
+         UI_DisplayARDF_FreqCh();
       }
 
 
@@ -717,3 +762,4 @@ t_ardf_gain_cheat_type ARDF_ActiveGainCheatType(uint8_t vfo)
 
 
 #endif
+

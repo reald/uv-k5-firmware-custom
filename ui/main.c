@@ -37,9 +37,7 @@
 #include "ui/main.h"
 #include "ui/ui.h"
 
-#ifdef ENABLE_ARDF
-#include "app/ardf.h"
-#endif
+
 
 center_line_t center_line = CENTER_LINE_NONE;
 
@@ -189,11 +187,7 @@ void DisplayRSSIBar(const bool now)
 		return;     // display is in use
 
 	if (gCurrentFunction == FUNCTION_TRANSMIT ||
-		( (gScreenToDisplay != DISPLAY_MAIN)
-#ifdef	ENABLE_ARDF
-                  && (gScreenToDisplay != DISPLAY_ARDF)
-#endif
-                )
+		gScreenToDisplay != DISPLAY_MAIN
 #ifdef ENABLE_DTMF_CALLING
 		|| gDTMF_CallState != DTMF_CALL_STATE_NONE
 #endif
@@ -208,18 +202,9 @@ void DisplayRSSIBar(const bool now)
 	const int16_t rssi_dBm =
 		BK4819_GetRSSI_dBm()
 #ifdef ENABLE_AM_FIX
-		+ ((gSetting_AM_fix && gRxVfo->Modulation == MODULATION_AM) 
-	#ifdef ENABLE_ARDF
-			&& ( gSetting_ARDFEnable == false )
-	#endif
-		? AM_fix_get_gain_diff() : 0)
+		+ ((gSetting_AM_fix && gRxVfo->Modulation == MODULATION_AM) ? AM_fix_get_gain_diff() : 0)
 #endif
-#ifdef ENABLE_ARDF
-		+ ( (gSetting_ARDFEnable != false) ? ARDF_Get_GainDiff() : 0 )
-#endif
-
 		+ dBmCorrTable[gRxVfo->Band];
-
 
 	int s0_9 = gEeprom.S0_LEVEL - gEeprom.S9_LEVEL;
 	const uint8_t s_level = MIN(MAX((int32_t)(rssi_dBm - s0_dBm)*100 / (s0_9*100/9), 0), 9); // S0 - S9
@@ -305,11 +290,7 @@ void UI_MAIN_PrintAGC(bool now)
 
 void UI_MAIN_TimeSlice500ms(void)
 {
-	if( (gScreenToDisplay==DISPLAY_MAIN)
-#ifdef ENABLE_ARDF
-            || (gScreenToDisplay==DISPLAY_MAIN)
-#endif
-          )	
+	if(gScreenToDisplay==DISPLAY_MAIN)
 	{
 #ifdef ENABLE_AGC_SHOW_DATA
 		UI_MAIN_PrintAGC(true);

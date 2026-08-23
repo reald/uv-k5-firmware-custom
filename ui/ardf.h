@@ -18,9 +18,21 @@
 #define UI_ARDF_H
 
 #ifdef ENABLE_ARDF
-extern void Ui_DisplayARDF_RSSIBar_Simple(void);
+
+
+// -141 dBm = S1 (IARU)
+#define ARDF_S0_dBm (-141)
+
+// // -93 dBm = S9
+#define ARDF_S9_dBm (-93)
+
+
+
+extern void UI_DisplayARDF_RSSIBar_Simple(uint8_t line);
+extern void UI_DisplayARDF_RSSIBar(bool updatenow);
 extern void UI_DisplayARDF_Timer(void);
 extern void UI_DisplayARDF_RSSI(void);
+extern void UI_DisplayARDF_Distance(bool updatenow);
 extern void UI_DisplayARDF_FreqCh(void);
 extern void UI_DisplayARDF(void);
 

@@ -30,13 +30,10 @@
 #include "ui/inputbox.h"
 #include "ui/main.h"
 #include "ui/ui.h"
-#ifdef ENABLE_AM_FIX
-   #include "am_fix.h"
-#endif
 
 
 
-static void Ui_DisplayARDF_Mod(VFO_Info_t *vfoInfo, uint8_t vfo, uint8_t line, bool bold)
+static void UI_DisplayARDF_Mod(VFO_Info_t *vfoInfo, uint8_t vfo, uint8_t line, bool bold)
 {
    char buffer[16];
 
@@ -86,42 +83,21 @@ static void Ui_DisplayARDF_Mod(VFO_Info_t *vfoInfo, uint8_t vfo, uint8_t line, b
 
 
 
-static uint16_t Ui_DisplayARDF_dBm2level(int16_t dBm)
+static uint16_t UI_ARDF_dBm2level(int16_t rssi_dBm)
 {
-    int16_t rssi_dBm =
-        dBm
-    //    + ( (gSetting_ARDFEnable != false) ? ARDF_Get_GainDiff() : 0 )
-        + dBmCorrTable[gRxVfo->Band];
+   uint8_t s_level = 0;
 
-    rssi_dBm = -rssi_dBm;
+   if ( rssi_dBm < ARDF_S0_dBm ) // -141 dBm = S1 (IARU)
+   {
+      return 0;
+   }
 
-    if(rssi_dBm > 141) rssi_dBm = 141;
-    if(rssi_dBm < 53) rssi_dBm = 53;
+   if( rssi_dBm >= ARDF_S9_dBm ) // -93 dBm = S9
+   {
+      return 9;
+   }
 
-    uint8_t s_level = 0;
-    //uint8_t overS9dBm = 0;
-    //uint8_t overS9Bars = 0;
-
-    if(rssi_dBm >= 93)
-    {
-        s_level = map(rssi_dBm, 141, 93, 1, 9);
-    }
-    else
-    {
-        s_level = 9;
-        //overS9dBm = map(rssi_dBm, 93, 53, 0, 40);
-        //overS9Bars = map(overS9dBm, 0, 40, 0, 4);
-    }
-
-//#else
-//    const int16_t s0_dBm   = -gEeprom.S0_LEVEL;                  // S0 .. base level
-//
-//    int s0_9 = gEeprom.S0_LEVEL - gEeprom.S9_LEVEL;
-//    const uint8_t s_level = MIN(MAX((int32_t)(rssi_dBm - s0_dBm)*100 / (s0_9*100/9), 0), 9); // S0 - S9
-//    //uint8_t overS9dBm = MIN(MAX(rssi_dBm + gEeprom.S9_LEVEL, 0), 99);
-//    //uint8_t overS9Bars = MIN(overS9dBm/10, 4);
-//#endif
-
+   s_level = map(rssi_dBm, ARDF_S0_dBm, ARDF_S9_dBm, 1, 9);
 
    return MIN(s_level, 9);
 
@@ -129,15 +105,13 @@ static uint16_t Ui_DisplayARDF_dBm2level(int16_t dBm)
 
 
 
-void Ui_DisplayARDF_RSSIBar_Simple(void)
+void UI_DisplayARDF_RSSIBar_Simple(uint8_t line)
 {
-   const uint8_t line = 3;
-
    uint8_t level, level_max;
    uint8_t *p_line = gFrameBuffer[line];
 
-   level = Ui_DisplayARDF_dBm2level( BK4819_GetRSSI_dBm() );
-   level_max = Ui_DisplayARDF_dBm2level( (gARDFRssiMax / 2) - 160 );
+   level = UI_ARDF_dBm2level(BK4819_GetRSSI_dBm());
+   level_max = UI_ARDF_dBm2level((gARDFRssiMax / 2) - 160);
 
    uint8_t barslice = 0xFF;
 
@@ -154,10 +128,95 @@ void Ui_DisplayARDF_RSSIBar_Simple(void)
       }
    }
 
-   p_line[(level_max-1) * 14 + 11] = 0xFF;
-   p_line[(level_max-1) * 14 + 12] = 0xFF;
+   if ( level_max > 0 )
+   {
+      p_line[(level_max-1) * 14 + 11] = 0xFF;
+      p_line[(level_max-1) * 14 + 12] = 0xFF;
+   }
 
    ST7565_BlitLine(line);
+}
+
+
+
+void UI_DisplayARDF_RSSIBar(bool updatenow)
+{
+   const uint8_t line = 3;
+   const uint8_t xpos = 52;
+   const uint8_t bars = 10;
+
+   char buffer[16];
+
+   uint8_t s_level = 0;
+   uint8_t overS9dBm  = 0;
+   uint8_t overS9Bars = 0;
+
+   uint8_t *p_line = gFrameBuffer[line];
+
+   // clear complete line
+   memset(p_line, 0, LCD_WIDTH);
+
+   int16_t rssi_dBm = BK4819_GetRSSI_dBm()
+                      + ARDF_Get_GainDiff() // shows the signal strength before the attenuators/lnas, not attenuated amplitude
+                      + dBmCorrTable[gRxVfo->Band];
+
+   s_level = UI_ARDF_dBm2level(rssi_dBm);
+
+   if ( rssi_dBm > ARDF_S9_dBm )
+   {
+      // Signal > S9 : compute over-S9
+      overS9dBm  = map(rssi_dBm, ARDF_S9_dBm, ARDF_S9_dBm + 40, 0, 40);
+      overS9Bars = map(overS9dBm, 0, 40, 0, 4);
+   }
+
+   if ( overS9Bars == 0 )
+   {
+      sprintf(buffer, "%4d S%d", rssi_dBm, s_level);
+   }
+   else
+   {
+      sprintf(buffer, "%3d +%02d", rssi_dBm, overS9dBm);
+   }
+
+   UI_PrintStringSmallNormal(buffer, 0, 0, line);
+
+
+   uint8_t level = MIN(s_level + overS9Bars, bars);
+   uint8_t add_space = 0;
+
+   for ( uint8_t i = 0; i < level; i++ ) // start at S1
+   {
+      add_space = (i >= 5) ? 1 : 0;
+
+      const char hollowBar[] =
+      {
+         0b01111111,
+         0b01000001,
+         0b01000001,
+         0b01111111
+      };
+
+      if ( i < (bars-1) )
+      {
+         for ( uint8_t j = 0; j < 4; j++ )
+         {
+            p_line[xpos + i * 5 + j + add_space ] = 0x7f;
+         }
+      }
+      else
+      {
+         memcpy(p_line + (xpos + i * 5 + add_space), &hollowBar, ARRAY_SIZE(hollowBar));
+      }
+   }
+
+   sprintf(buffer, "%3d", gRssi0Max);
+   UI_PrintStringSmallNormal(buffer, 103, 127, line);
+
+
+   if ( updatenow != false )
+   {
+      ST7565_BlitLine(line);
+   }
 }
 
 
@@ -203,6 +262,54 @@ void UI_DisplayARDF_RSSI(void)
 
 
 
+void UI_DisplayARDF_Distance(bool updatenow)
+{
+   const uint8_t start_col = 89;
+   char buffer[8];
+   uint8_t *p_line = gFrameBuffer[3];
+   int16_t distance_idx = gARDFDistanceIdx;
+
+   if ( gLowBattery && !gLowBatteryConfirmed && (gARDFDFSimpleMode==0) )
+      return;
+
+   if ( gARDFDFSimpleMode == 0 )
+   {
+      // only in ARDF mode, not in DF simple
+
+      // erase screenbuffer because following string has variable length and does not overwrite everything
+      p_line = gFrameBuffer[4];
+      memset(&p_line[start_col], 0x00, LCD_WIDTH - start_col);
+
+      p_line = gFrameBuffer[5];
+      memset(&p_line[start_col], 0x00, LCD_WIDTH - start_col);
+
+      if ( (gARDFRssi0At100m != 0) && (0 <= distance_idx) )
+      {
+         // meters only if active and stable value available
+         sprintf(buffer, "%s", ardf_rssi2distance[distance_idx]);
+
+         if ( strlen(buffer) == 3 )
+         {
+            UI_PrintString(buffer, start_col+3, 127, 4, 10); // 7 pixel font, 10 pixel distance by padding 3 empty columns behind character
+      }
+         else if ( strlen(buffer) == 4 )
+         {
+            UI_PrintString(buffer, start_col+3, 127, 4, 8); // 7 pixel font, 8 pixel distance by padding 1 empty columns behind character
+   }
+
+      }
+   }
+
+   if ( updatenow != false )
+   {
+      ST7565_BlitLine(4);
+      ST7565_BlitLine(5);
+   }
+
+}
+
+
+
 #ifdef ARDF_ENABLE_SHOW_DEBUG_DATA
 void UI_DisplayARDF_Debug(void)
 {
@@ -218,14 +325,20 @@ void UI_DisplayARDF_Debug(void)
 
 void UI_DisplayARDF_FreqCh(void)
 {
+   const uint8_t start_col = 64;
    char buffer[16];
    uint8_t vfo = gEeprom.RX_VFO;
    uint8_t line = (2 + 4*gARDFDFSimpleMode);
+   uint8_t *p_line = gFrameBuffer[line];
+   t_ardf_gain_cheat_type activeGainCheatType = ARDF_ActiveGainCheatType(vfo);
 
    if ( gLowBattery && !gLowBatteryConfirmed && (gARDFDFSimpleMode==0) )
       return;
 
-   if ( ( IS_FREQ_CHANNEL(gEeprom.ScreenChannel[vfo]) && (ARDF_ActiveGainCheatType(vfo) == ARDF_NO_GAIN_CHEAT) )
+   // clear half line with frequency
+   memset(p_line + start_col, 0, LCD_WIDTH - start_col);
+
+   if ( ( IS_FREQ_CHANNEL(gEeprom.ScreenChannel[vfo]) && (activeGainCheatType == ARDF_NO_GAIN_CHEAT) )
           || ( (gARDFMemModeFreqToggleCnt_s >= ARDF_MEM_MODE_FREQ_TOGGLE_S) && (gInputBoxIndex == 0) ) )
    {
       // frequency mode without gain cheat
@@ -244,26 +357,27 @@ void UI_DisplayARDF_FreqCh(void)
 
       if ( gARDFDFSimpleMode==0 )
       {
-         UI_PrintStringSmallBold(buffer, 64, 0, line);
+         UI_PrintStringSmallBold(buffer, start_col, 0, line);
       }
       else
       {
-         UI_PrintStringSmallNormal(buffer, 64, 0, line);
+         UI_PrintStringSmallNormal(buffer, start_col, 0, line);
       }
 
    }
-   else if ( ARDF_ActiveGainCheatType(vfo) != ARDF_NO_GAIN_CHEAT )
+   else if ( activeGainCheatType != ARDF_NO_GAIN_CHEAT )
    {
       // gain cheat active
-      if ( (gInputBoxIndex == 0) && (ARDF_ActiveGainCheatType(vfo) == ARDF_INT_LNA_OFF) )
+
+      if ( (gInputBoxIndex == 0) && (activeGainCheatType == ARDF_INT_LNA_OFF) )
       {
          sprintf(buffer, "LNA OFF" );
       }
-      else if ( (gInputBoxIndex == 0) && (ARDF_ActiveGainCheatType(vfo) == ARDF_HARMONIC_2) )
+      else if ( (gInputBoxIndex == 0) && (activeGainCheatType == ARDF_HARMONIC_2) )
       {
          sprintf(buffer, "2. HARM" );
       }
-      else if ( (gInputBoxIndex == 0) && (ARDF_ActiveGainCheatType(vfo) == ARDF_HARMONIC_3) )
+      else if ( (gInputBoxIndex == 0) && (activeGainCheatType == ARDF_HARMONIC_3) )
       {
          sprintf(buffer, "3. HARM" );
       }
@@ -282,11 +396,11 @@ void UI_DisplayARDF_FreqCh(void)
 
       if ( gARDFDFSimpleMode==0 )
       {
-         UI_PrintStringSmallBold(buffer, 64, 0, line);
+         UI_PrintStringSmallBold(buffer, start_col, 0, line);
       }
       else
       {
-         UI_PrintStringSmallNormal(buffer, 64, 0, line);
+         UI_PrintStringSmallNormal(buffer, start_col, 0, line);
       }
 
    }
@@ -305,11 +419,11 @@ void UI_DisplayARDF_FreqCh(void)
 
       if ( gARDFDFSimpleMode==0 )
       {
-         UI_PrintStringSmallBold(buffer, 64, 0, line); // 0->128: text centered, but pixel deletion problem
+         UI_PrintStringSmallBold(buffer, start_col, 0, line);
       }
       else
       {
-         UI_PrintStringSmallNormal(buffer, 64, 0, line); // 0->128: text centered, but pixel deletion problem
+         UI_PrintStringSmallNormal(buffer, start_col, 0, line);
       }
 
    }
@@ -335,6 +449,7 @@ void UI_DisplayARDF(void)
    }
 
    /* 1. big line */
+
    if ( gARDFNumFoxes > 0 )
    {
       uint8_t activefox = gARDFActiveFox + 1;
@@ -370,7 +485,8 @@ void UI_DisplayARDF(void)
 
 
    /* 2. small line: active vfo */
-   Ui_DisplayARDF_Mod(&gEeprom.VfoInfo[vfo], vfo, (2 + 4*gARDFDFSimpleMode), (gARDFDFSimpleMode==0) );
+
+   UI_DisplayARDF_Mod(&gEeprom.VfoInfo[vfo], vfo, (2 + 4*gARDFDFSimpleMode), (gARDFDFSimpleMode==0) );
    UI_DisplayARDF_FreqCh();
 
    /* 3. middle line for debug or rssi bar */
@@ -384,18 +500,18 @@ void UI_DisplayARDF(void)
 
    if ( gARDFDFSimpleMode != false )
    {
-      Ui_DisplayARDF_RSSIBar_Simple();
+      UI_DisplayARDF_RSSIBar_Simple(3);
    }
    else if( !(gLowBattery && !gLowBatteryConfirmed) )
    {
-      DisplayRSSIBar(true);
+      UI_DisplayARDF_RSSIBar(false);
    }
 
 #endif
 
-   /* 4. gain index history. show max 5 foxes. */
+   /* 4a. gain index history. show max 5 foxes. */
 
-   if ( (ARDF_ActVfoHasGainRemember(vfo) != false) && (gARDFDFSimpleMode == 0) )
+   if ( (ARDF_ActVfoHasGainRemember(vfo) != false) && (gARDFDFSimpleMode == false) )
    {
       int foxliststart = 0;
 
@@ -409,15 +525,17 @@ void UI_DisplayARDF(void)
          int idx = (foxliststart + i) % gARDFNumFoxes;
          sprintf(buffer, "%d", idx + 1 );
 
-         const int lineofs = 16;
+         const int xofs = 4;
+         const int coldist = 4;
+         const int charwidth = 7; // 6 + 1 space
 
          if ( idx == gARDFActiveFox )
          {
-            UI_PrintStringSmallBold(buffer, lineofs + i*16 + i*4, lineofs + (i+1)*16 + i*4, 4);
+            UI_PrintStringSmallBold(buffer, xofs + i*(2*charwidth) + i*coldist, xofs + (i+1)*(2*charwidth) + i*coldist, 4);
          }
          else
          {
-            UI_PrintStringSmallNormal(buffer, lineofs + i*16 + i*4, lineofs + (i+1)*16 + i*4, 4);
+            UI_PrintStringSmallNormal(buffer, xofs + i*(2*charwidth) + i*coldist, xofs + (i+1)*(2*charwidth) + i*coldist, 4);
          }
 
 
@@ -431,20 +549,23 @@ void UI_DisplayARDF(void)
             // normal index
             sprintf(buffer, "%d", ardf_gain_index[vfo][idx] );
          }
-
-         UI_PrintStringSmallBold(buffer, lineofs + i*16 + i*4, lineofs + (i+1)*16 + i*4, 5);
+         UI_PrintStringSmallBold(buffer, xofs + i*(2*charwidth) + i*coldist, xofs + (i+1)*(2*charwidth) + i*coldist, 5);
 
       }
 
    }
 
+   /* 4b. distance prediction */
+
+   UI_DisplayARDF_Distance(false);
 
    /* 5. small line: inactive vfo (but not in DF simple) */
+
    if ( gARDFDFSimpleMode == 0 )
    {
       uint32_t frequency = 0;
 
-      Ui_DisplayARDF_Mod(&gEeprom.VfoInfo[1-vfo], 1-vfo, 6, false);
+      UI_DisplayARDF_Mod(&gEeprom.VfoInfo[1-vfo], 1-vfo, 6, false);
 
       VFO_Info_t *vfoInfo = &gEeprom.VfoInfo[1-vfo]; // the inactive vfo
 

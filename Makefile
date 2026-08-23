@@ -32,7 +32,7 @@ ENABLE_NO_CODE_SCAN_TIMEOUT   ?= 1
 ENABLE_AM_FIX                 ?= 1
 ENABLE_SQUELCH_MORE_SENSITIVE ?= 0
 ENABLE_FASTER_CHANNEL_SCAN    ?= 1
-ENABLE_RSSI_BAR               ?= 1
+ENABLE_RSSI_BAR               ?= 0
 ENABLE_AUDIO_BAR              ?= 0
 ENABLE_COPY_CHAN_TO_VFO       ?= 0
 ENABLE_SPECTRUM               ?= 1
@@ -212,7 +212,7 @@ AUTHOR_STRING ?= ARDF
 # the user might not have/want git installed
 # can set own version string here (max 7 chars)
 ifneq (, $(shell $(WHERE) git))
-	VERSION_STRING ?= $(shell git describe --tags --exact-match 2>$(NULL_OUTPUT))
+	VERSION_STRING ?= $(shell git describe --tags --exact-match --dirty 2>$(NULL_OUTPUT))
 	ifeq (, $(VERSION_STRING))
     	VERSION_STRING := $(shell git rev-parse --short HEAD)
 	endif
