@@ -181,7 +181,7 @@ Modify with UP/DOWN key in 0.1s steps or enter value as *5 digit number* in 1/10
 
 #### Main Screen ####
 
-<img src="images/ardf_mainscreen.jpg" width=800 />
+<img src="images/ardf_screen.png" width=800 />
 
 This pictures shows the radio screen if ARDF mode is enabled. The battery voltage is 8.54V. The second (big) line shows
 active fox (2), seconds left in this fox cycle (5), chosen gain index (0) and the raw received signal strength indicator (RSSI, 151 here).
