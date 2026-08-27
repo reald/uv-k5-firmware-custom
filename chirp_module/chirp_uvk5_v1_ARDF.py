@@ -1434,7 +1434,7 @@ class UVK5RadioEgzumer(uvk5.UVK5RadioBase):
 
         tmp_ARDFRSSI0At100m = _mem.ARDFRSSI0At100m
         val = RadioSettingValueInteger(0, 226, tmp_ARDFRSSI0At100m)
-        ARDFRSSI0At100m_setting = RadioSetting("ARDFRSSI0At100m", "ARDF RSSI0 at 100m distance (RSS100)", val)
+        ARDFRSSI0At100m_setting = RadioSetting("ARDFRSSI0At100m", "ARDF RSSI0 at 100m distance (RSS100) [0=No Distance Prediction]", val)
 
         tmp_ARDFFoxDuration = _mem.ARDFFoxDuration
         val = RadioSettingValueInteger(100, 99999, tmp_ARDFFoxDuration)
