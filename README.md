@@ -258,9 +258,15 @@ So all timers in the CPU are not very precise. This leads to a heavily drifting 
 > [!Note]
 > If no timing is used (e.g. in ARDF="DF Simple" mode) clock correction is **not** necessary.
 
-The firmware provides a correction
-mechanism to reach acceptable ranges. Start ARDF mode and stop **how many seconds really pass** until **the radio tells 1 hour is up**.
-(Useful settings: NumFox = 10, FoxDur = 60.00s, sync to reference clock.) The formula for the correction value is:
+The firmware provides a correction mechanism to reach acceptable ranges.
+
+To find the right correction value
+
+* Set the corretion value to 0 (menu "ClkCor")
+* Start ARDF mode
+* Stop **how many seconds really pass** until **the radio tells 1 hour is up** (useful settings: NumFox = 10, FoxDur = 60.00s)
+
+The formula for the correction value is:
 
 $$ CorrectionValue = 6000 - (StoppedSeconds * 100)/60 $$
 
