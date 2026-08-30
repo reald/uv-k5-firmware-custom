@@ -525,7 +525,7 @@ void UI_DisplayARDF(void)
          int idx = (foxliststart + i) % gARDFNumFoxes;
          sprintf(buffer, "%d", idx + 1 );
 
-         const int xofs = 4;
+         const int xofs = 3;
          const int coldist = 4;
          const int charwidth = 7; // 6 + 1 space
 
