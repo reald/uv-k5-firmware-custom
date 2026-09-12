@@ -502,6 +502,7 @@ Notes: This prototype has a switchable attenuator (approx. 25dB), this is option
 ### Other
 
 - [3D printed 3 element draussenfuchs yagi by DG1JAN](https://www.printables.com/model/1698556-draussenfuchs-yagi)
+- [Yet Another Shitty Draussenfuchs Antenna by DN9PSC](https://codeberg.org/casartar/YAS-Draussenfuch-Antenna)
 
 
 ## Radio performance
