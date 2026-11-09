@@ -184,7 +184,8 @@ u8 ARDFDFSimpleMode:1,
    ARDFNumFoxes:4,
    ARDFEnable:1;
 u8 ARDFCycleEndBeep_s;
-ul32 ARDFfree1;
+ul16 ARDFreserved;
+ul16 ARDFfree1;
 
 #seekto 0xf40;
 u8 int_flock;

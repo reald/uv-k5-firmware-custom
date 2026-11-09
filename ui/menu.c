@@ -661,7 +661,7 @@ void UI_DisplayMenu(void)
 			break;
 
 		case MENU_ARDF_CLOCK_CORR:
-			sprintf(String, "%d", gSubMenuSelection);
+			sprintf(String, "%+d", gSubMenuSelection);
 			break;
 
 		#endif

@@ -21,7 +21,7 @@
 
 #include "driver/keyboard.h"
 
-#define LIMIT_TO_RANGE(x, low, high) ( (x > high) ? (high) : ((x < low) ? (low) : (x)) )
+#define LIMIT_TO_RANGE(x, low, high) ( ((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)) )
 
 
 #define ARDF_NUM_FOX_MAX 10
@@ -41,6 +41,7 @@
 #define ARDF_DEFAULT_RSSI0AT100M 115
 #define ARDF_RSSI0_MAX 226
 #define ARDF_RSSI0_GAINCHEAT_IDX_STEP 9 // signal with gain cheat on is very roughly about 45 dB = 9 * 5 dB/step lower
+#define ARDF_LNA_OFF_WITH_GAIN_GAINIDX 3 // gain index in lna off with gain mode. 3 => 15dB
 #define ARDF_CLOCK_CORR_TICKS_PER_MIN (+00) // default clock correction
 
 //#define ARDF_ENABLE_SHOW_DEBUG_DATA
@@ -58,6 +59,7 @@ typedef struct
 typedef enum
 {
    ARDF_NO_GAIN_CHEAT,
+   ARDF_INT_LNA_OFF_WITH_GAIN,
    ARDF_INT_LNA_OFF,
    ARDF_HARMONIC_2,
    ARDF_HARMONIC_3
@@ -71,7 +73,9 @@ extern const char *ardf_rssi2distance[];
 extern uint8_t               ardf_gain_index[2][ARDF_NUM_FOX_MAX];
 extern t_ardf_gain_cheat_type ardf_type_gain_cheat[2][ARDF_NUM_FOX_MAX];
 
-extern uint32_t              gARDFTime10ms;
+extern volatile uint32_t     gARDFTime10ms;
+extern uint32_t              gARDFCnt10ms;
+extern uint32_t              gARDFCnt10msCorr;
 extern uint32_t              gARDFFoxDuration10ms;
 extern uint32_t              gARDFFoxDuration10ms_corr;
 extern uint8_t               gARDFNumFoxes;
@@ -106,6 +110,7 @@ extern bool ARDF_ActVfoHasGainRemember(uint8_t vfo);
 extern void ARDF_ActivateGainIndex(void);
 extern int32_t ARDF_GetRestTime_s(void);
 extern int8_t ARDF_Get_GainDiff(void);
+extern int8_t ARDF_Get_GainDB(void);
 extern void ARDF_DoGainCheat(void);
 extern void ARDF_UndoGainCheat(void);
 extern void ARDF_StopGainCheatFox(void);

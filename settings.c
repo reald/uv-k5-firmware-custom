@@ -271,21 +271,12 @@ void SETTINGS_InitEEPROM(void)
 	// read second part
 	EEPROM_ReadBuffer(0x0F28, Data, 8);
 
-	if ( (Data[0] == 0xFF) && (Data[1] == 0xFF) )
+	memcpy(&gARDFClockCorrAddTicksPerMin, &Data[0], sizeof(gARDFClockCorrAddTicksPerMin));
+
+	if ( (gARDFClockCorrAddTicksPerMin < -500) || (gARDFClockCorrAddTicksPerMin > 500) )
 	{
-		// eeprom empty
 		gARDFClockCorrAddTicksPerMin = ARDF_CLOCK_CORR_TICKS_PER_MIN;
 	}
-	else
-	{
-		memcpy(&gARDFClockCorrAddTicksPerMin, &Data[0], sizeof(gARDFClockCorrAddTicksPerMin));
-
-		if ( (gARDFClockCorrAddTicksPerMin < -500) || (gARDFClockCorrAddTicksPerMin > 500) )
-		{
-			gARDFClockCorrAddTicksPerMin = ARDF_CLOCK_CORR_TICKS_PER_MIN;
-		}
-	}
-	gARDFFoxDuration10ms_corr = (uint32_t)( (int32_t)gARDFFoxDuration10ms + ( (int32_t)gARDFFoxDuration10ms * (int32_t)gARDFClockCorrAddTicksPerMin)/6000 );
 
 	if ( Data[2] != 0xFF )
 	{
@@ -301,7 +292,10 @@ void SETTINGS_InitEEPROM(void)
 		gARDFNumFoxes = ARDF_DEFAULT_NUM_FOXES;
 		gARDFGainRemember = ARDF_DEFAULT_GAIN_REMEMBER;
 		gARDFDFSimpleMode = ARDF_DEFAULT_DF_SIMPLE;
+		gARDFClockCorrAddTicksPerMin = ARDF_CLOCK_CORR_TICKS_PER_MIN;
 	}
+
+	gARDFFoxDuration10ms_corr = (uint32_t)( (int32_t)gARDFFoxDuration10ms + ( (int32_t)gARDFFoxDuration10ms * (int32_t)gARDFClockCorrAddTicksPerMin)/6000 );
 
 	if ( Data[3] != 0xFF )
 	{
@@ -560,7 +554,8 @@ void SETTINGS_SaveARDF(void)
 			uint8_t  DFSimpleMode:1;
 
 			uint8_t  CycleEndBeep_s;
-			uint32_t free1;
+			uint16_t reserved;
+			uint16_t free1;
 		};
 		uint8_t __raw[8];
 	} __attribute__((packed)) ARDFCfg2;

@@ -59,6 +59,8 @@ void SystickHandler(void)
 
 #ifdef ENABLE_ARDF
 	gARDFTime10ms++;
+	gARDFCnt10ms++;
+	gARDFCnt10msCorr++;
 #endif
 
 	if ((gGlobalSysTickCounter % 50) == 0) {

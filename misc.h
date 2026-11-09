@@ -140,6 +140,8 @@ extern const uint16_t        scan_pause_delay_in_7_10ms;
 
 extern const uint8_t         gMicGain_dB2[5];
 
+extern int32_t               gRCFrequencyDelta;
+
 extern bool                  gSetting_350TX;
 #ifdef ENABLE_DTMF_CALLING
 extern bool                  gSetting_KILLED;

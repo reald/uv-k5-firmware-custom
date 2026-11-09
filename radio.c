@@ -598,7 +598,9 @@ void RADIO_SetupRegisters(bool switchToForeground)
 		gRxVfo->SquelchCloseGlitchThresh, gRxVfo->SquelchOpenGlitchThresh);
 
 	#ifdef ENABLE_ARDF
-        if ( (gSetting_ARDFEnable) && (ARDF_ActiveGainCheatType(gEeprom.RX_VFO) == ARDF_INT_LNA_OFF) )
+        if ( (gSetting_ARDFEnable)
+			 && ( (ARDF_ActiveGainCheatType(gEeprom.RX_VFO) == ARDF_INT_LNA_OFF)
+				|| (ARDF_ActiveGainCheatType(gEeprom.RX_VFO) == ARDF_INT_LNA_OFF_WITH_GAIN) ) )
         {
         	// if ARDF is on and rx path is switched off keep this setting
         }

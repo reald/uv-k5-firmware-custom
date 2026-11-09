@@ -42,6 +42,9 @@
 	#include "sram-overlay.h"
 #endif
 
+#ifdef ENABLE_ARDF
+	#include "app/ardf.h"
+#endif
 
 #define DMA_INDEX(x, y) (((x) + (y)) % sizeof(UART_DMA_Buffer))
 
@@ -126,6 +129,36 @@ typedef struct {
 	Header_t Header;
 	uint32_t Response[4];
 } CMD_052D_t;
+
+#ifdef ENABLE_ARDF
+typedef struct {
+	Header_t Header;
+	struct {
+		uint32_t ARDFFoxDuration10ms_corr;
+		int16_t ARDFClockCorrAddTicksPerMin;
+		int16_t HW_Version;
+	} Data;
+} REPLY_0542_t;
+
+typedef struct {
+	Header_t Header;
+	struct {
+		uint32_t ARDFCnt10ms;
+		uint32_t ARDFCnt10msCorr;
+		uint16_t BatteryVoltageAverage;
+		int16_t temp;
+	} Data;
+} REPLY_0543_t;
+
+typedef struct {
+    Header_t Header;
+    int16_t ARDFClockCorrAddTicksPerMin;
+    int16_t dontcare;
+} CMD_0544_t;
+
+#endif
+
+
 
 typedef struct {
 	Header_t Header;
@@ -325,6 +358,52 @@ static void CMD_051D(const uint8_t *pBuffer)
 
 	SendReply(&Reply, sizeof(Reply));
 }
+
+
+#ifdef ENABLE_ARDF
+// read/write ARDF values
+static void CMD_0542(void)
+{
+	REPLY_0542_t Reply;
+
+	Reply.Header.ID             = 0x0542;
+	Reply.Header.Size           = sizeof(Reply.Data);
+	Reply.Data.ARDFFoxDuration10ms_corr = gARDFFoxDuration10ms_corr;
+	Reply.Data.ARDFClockCorrAddTicksPerMin = gARDFClockCorrAddTicksPerMin;
+	Reply.Data.HW_Version = 32701; // HW Version 1
+
+	SendReply(&Reply, sizeof(Reply));
+}
+
+static void CMD_0543(void)
+{
+	REPLY_0543_t Reply;
+
+	Reply.Header.ID             = 0x0543;
+	Reply.Header.Size           = sizeof(Reply.Data);
+	Reply.Data.ARDFCnt10ms = gARDFCnt10ms;
+	Reply.Data.ARDFCnt10msCorr = gARDFCnt10msCorr;
+	Reply.Data.BatteryVoltageAverage = gBatteryVoltageAverage;
+	Reply.Data.temp = 32767;
+
+	SendReply(&Reply, sizeof(Reply));
+}
+
+static void CMD_0544(const uint8_t *pBuffer)
+{
+	const CMD_0544_t *pCmd = (const CMD_0544_t *)pBuffer;
+
+	gARDFClockCorrAddTicksPerMin = LIMIT_TO_RANGE(pCmd->ARDFClockCorrAddTicksPerMin, -500, 500);
+
+	gARDFFoxDuration10ms_corr = (uint32_t)( (int32_t)gARDFFoxDuration10ms + ( (int32_t)gARDFFoxDuration10ms * (int32_t)gARDFClockCorrAddTicksPerMin)/6000 );
+	gARDFRequestSaveEEPROM = true;
+
+	CMD_0542();
+}
+
+
+
+#endif
 
 // read RSSI
 static void CMD_0527(void)
@@ -589,6 +668,20 @@ void UART_HandleCommand(void)
 		case 0x0521:	// Not implementing non-authentic command
 			break;
 	
+#ifdef ENABLE_ARDF
+		case 0x0542:
+			CMD_0542();
+			break;
+
+		case 0x0543:
+			CMD_0543();
+			break;
+
+		case 0x0544:
+			CMD_0544(UART_Command.Buffer);
+			break;
+#endif
+
 		case 0x0527:
 			CMD_0527();
 			break;
