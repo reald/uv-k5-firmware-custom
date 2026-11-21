@@ -256,7 +256,13 @@ So all timers in the CPU are not very precise. This leads to a heavily drifting 
 
 The firmware provides a correction mechanism to reach acceptable ranges.
 
-To find the right correction value
+##### Automatic Calibration
+
+The latest firmware versions support automatic calibration using a [clock calibration tool](https://github.com/reald/uv-k1-k5v3-firmware-custom/tree/main/tools/ardf_clk_drift_tool).
+This is the recommended way.
+
+##### Manual Calibration
+Alternativly a manual way is possible: To find the right correction value
 
 * Set the corretion value to 0 (menu "ClkCor")
 * Start ARDF mode
